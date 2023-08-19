@@ -120,7 +120,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -131,7 +131,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -148,6 +148,91 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://misslh88.github.io/2023/08/19/WRF-learning-log/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="MissLH88">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LH's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | LH's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/08/19/WRF-learning-log/" class="post-title-link" itemprop="url">WRF learning log</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-08-19 15:10:10 / 修改时间：15:29:37" itemprop="dateCreated datePublished" datetime="2023-08-19T15:10:10+08:00">2023-08-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>2023年8月18日老师给了机器账号之后，开始自主安装WRF模式。</p>
+<p>主要参考网站：</p>
+<p><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/OnLineTutorial/compilation_tutorial.php#STEP1">Compiling WRF</a></p>
+<p>记录：</p>
+<p>安装包的时候，最容易出问题的地方，就是环境。</p>
+<ol>
+<li>在安装netcdf-fortran-4.5.2过程中，经验如下：</li>
+</ol>
+<p>./configure 的时候是在检查环境，报错：C compiler cannot create executables</p>
+<p>解决方法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export LIBS=</span><br><span class="line">export CFLAGS=</span><br></pre></td></tr></table></figure>
+<p>这时候会报新的错：netcdf.h could not be found. Please set CPPFLAGS</p>
+<p>可以echo $CPPFLAGS查看一下对应的路径下面是否有netcdf.h文件，是没有的，那肯定找不到，<a target="_blank" rel="noopener" href="https://github.com/Unidata/netcdf-fortran/issues/73">解决方法</a>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export CPPFLAGS=-I$&#123;NCDIR&#125;/include</span><br><span class="line">export LDFLAGS=-L$&#123;NCDIR&#125;/lib</span><br></pre></td></tr></table></figure>
+<p>其中{NCDIR}是安装netcdf包的位置，比如笔者按照官网教程安装就是在/Build_WRF/LIBRARIES/netcdf</p>
+<p>然后再configure就行</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
