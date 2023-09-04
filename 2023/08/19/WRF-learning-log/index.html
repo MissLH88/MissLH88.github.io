@@ -19,15 +19,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"misslh88.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="2023年8月18日老师给了机器账号之后，开始自主安装WRF模式。">
+    <meta name="description" content="2023年8月18日老师给了机器账号之后，开始自主安装WRF模式。本文中所有操作仅供参考，具体看个人机器情况而定。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="WRF learning log">
 <meta property="og:url" content="https://misslh88.github.io/2023/08/19/WRF-learning-log/index.html">
 <meta property="og:site_name" content="LH&#39;s blog">
-<meta property="og:description" content="2023年8月18日老师给了机器账号之后，开始自主安装WRF模式。">
+<meta property="og:description" content="2023年8月18日老师给了机器账号之后，开始自主安装WRF模式。本文中所有操作仅供参考，具体看个人机器情况而定。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-08-19T07:10:10.000Z">
-<meta property="article:modified_time" content="2023-08-28T12:06:10.410Z">
+<meta property="article:modified_time" content="2023-09-04T11:05:08.225Z">
 <meta property="article:author" content="MissLH88">
 <meta property="article:tag" content="WRF">
 <meta property="article:tag" content="Linux">
@@ -101,7 +101,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -114,6 +114,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">安装模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%8C%85"><span class="nav-number">1.1.</span> <span class="nav-text">安装包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85WRF"><span class="nav-number">1.2.</span> <span class="nav-text">安装WRF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85WPS"><span class="nav-number">1.3.</span> <span class="nav-text">安装WPS</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">运行模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%84%E7%90%86wrfout%E6%96%87%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">处理wrfout文件</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -200,7 +201,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-08-28 20:06:10" itemprop="dateModified" datetime="2023-08-28T20:06:10+08:00">2023-08-28</time>
+      <time title="修改时间：2023-09-04 19:05:08" itemprop="dateModified" datetime="2023-09-04T19:05:08+08:00">2023-09-04</time>
     </span>
 
   
@@ -212,10 +213,16 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>2023年8月18日老师给了机器账号之后，开始自主安装WRF模式。</p>
+    <div class="post-body" itemprop="articleBody"><p>2023年8月18日老师给了机器账号之后，开始自主安装WRF模式。本文中所有操作仅供参考，具体看个人机器情况而定。</p>
 <span id="more"></span>
-<p>主要参考网站：</p>
+<h1 id="安装模式"><a href="#安装模式" class="headerlink" title="安装模式"></a>安装模式</h1><p>主要参考网站：</p>
 <p><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/OnLineTutorial/compilation_tutorial.php#STEP1">Compiling WRF</a></p>
+<p><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/wrf_users_guide/build/html/index.html">最新WRF4.5手册网站 WRF Users Guide documentation</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_40483871/article/details/123322888">WRF安装及运行——在服务器上_qq_40483871的博客-CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43750300/article/details/125741208?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-0-125741208-blog-126924512.235^v38^pc_relevant_yljh&amp;spm=1001.2101.3001.4242.1&amp;utm_relevant_index=3">超算入门笔记：大型机上如何运行WRF模式？一文总结（并行运算、Linux基础、作业调度、WRF运行）_什么都不会的张同学的博客-CSDN博客</a></p>
+<h2 id="安装包"><a href="#安装包" class="headerlink" title="安装包"></a>安装包</h2><p>安装包下载地址：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WPS/releases">https://github.com/wrf-model/WPS/releases</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/releases">https://github.com/wrf-model/WRF/releases</a></p>
 <p>记录：</p>
 <p>安装包的时候，最容易出问题的地方，就是环境。</p>
 <ol>
@@ -230,7 +237,7 @@
 <p>其中{NCDIR}是安装netcdf包的位置，比如笔者按照官网教程安装就是在/Build_WRF/LIBRARIES/netcdf</p>
 <p>然后再configure就行</p>
 <p>背景：后续，我发现使用ifort/icc编译更加稳定，机器上的版本也更合适，所以就换成了intel。</p>
-<ol>
+<h2 id="安装WRF"><a href="#安装WRF" class="headerlink" title="安装WRF"></a>安装WRF</h2><ol>
 <li>在编译WRF的时候，总是无法生成exe文件</li>
 </ol>
 <p>最新的WRF4.5.1/4.5/4.4，我编译的时候，总是报各种奇怪的错，还很多，我就一路版本降级，到WRF4.3的时候，比较正常，只有17个error在我的compile.log里面了。</p>
@@ -244,8 +251,41 @@
 <p>还可以使用</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo $LD_LIBRARY_PATH</span><br></pre></td></tr></table></figure>
 <p>命令输出当前的路径有哪里，检查这一条路径是否顺利加进去。</p>
-<p>有的时候有的文件找不到，也可以echo检查自己是不是写错了什么字母。我我有一次把grib2写成了gribs，哈哈哈。</p>
-
+<p>有的时候有的文件找不到，也可以echo检查自己是不是写错了什么字母。我有一次把grib2写成了gribs，哈哈哈。</p>
+<h2 id="安装WPS"><a href="#安装WPS" class="headerlink" title="安装WPS"></a>安装WPS</h2><ol>
+<li>安装WPS</li>
+</ol>
+<p>先确定WRF_DIR:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export WRF_DIR=/public/home/Build_WRF/WRFV4.5.1</span><br></pre></td></tr></table></figure>
+<p>注意编译WPS之前要设置好jasper库的地址：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export JASPERLIB=$DIR/grib2/lib</span><br><span class="line">export JASPERINC=$DIR/grib2/include</span><br></pre></td></tr></table></figure>
+<p>实际编译的命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">./clean</span><br><span class="line">./configure</span><br><span class="line">./compile &gt;&amp; log.compile</span><br><span class="line">或者nohup ./compile &gt; wpslog.compile 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+<h1 id="运行模式"><a href="#运行模式" class="headerlink" title="运行模式"></a>运行模式</h1><ol>
+<li>使用ERA5数据驱动WRF</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43750300/article/details/115320311?spm=1001.2014.3001.5502">毕业实习笔记——WRF模式入门(Cygwin版）</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.heywhale.com/mw/project/634388b59778356ddcd0ac66">下载ERA5等压面和地表数据，驱动WRF模式</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43750300/article/details/126544394?spm=1001.2014.3001.5502">WRF学习笔记之三：使用ERA5数据驱动并运行WRFV4.4（一层嵌套）</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jiangleads/articles/14211982.html">WRF学习之 ch3 WPS（三）WPS并行，检查WPS输出，WPS工具，输出到中间文件，运行WRF所需要的气象场，使用MPAS输出作为WRF初边界条件 - chinagod - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://xg1990.com/blog/archives/206">用WRF模型进行气象模拟入门(2)——WPS的配置与使用 - xg1990</a></p>
+<p><strong>运行WPS：</strong></p>
+<p>修改WPS目录下的namelist.wps文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">&amp;share</span><br><span class="line"> wrf_core = &#x27;ARW&#x27;,#运行核心模块</span><br><span class="line"> max_dom = 1,#最大网格嵌套层数</span><br><span class="line"> start_date = &#x27;2000-01-24_12:00:00&#x27;,&#x27;2000-01-24_12:00:00&#x27;,</span><br><span class="line"> end_date   = &#x27;2000-01-25_00:00:00&#x27;,&#x27;2000-01-25_00:00:00&#x27;,</span><br><span class="line"> interval_seconds = 21600 #前处理的两次分析时间之间的时间间隔，以s为单位，对于6小时在分析文件设为21600</span><br><span class="line"> io_form_geogrid = 2,#geogrid输出格式，一般为2，输入1时为binary，后缀是.int文件，当输入2时为NetCDF，后缀为.nc文件，当输入3时为GRIB1，后缀为.gr1文件</span><br><span class="line">/</span><br><span class="line"></span><br><span class="line">&amp;geogrid</span><br><span class="line"> parent_id         =   1,   1,#嵌套区域的母区域的标号。注意MOAD 本身没有母区域，因此PARENT_ID </span><br><span class="line">的第一列总是设为1。第二列必须等于1。总列数必须等于NUM_DOMAINS</span><br><span class="line"> parent_grid_ratio =   1,   3,#嵌套时母网格与子网格之间的比例</span><br><span class="line"> i_parent_start    =   1,  31,#嵌套网格的左下角（LLC）在上一级网格（母网格）中x方向的起始位置</span><br><span class="line"> j_parent_start    =   1,  17,#嵌套网格的左下角（LLC）在上一级网格（母网格）中y方向的起始位置</span><br><span class="line"> e_we              =  74, 112,#不同层网格x方向格点数</span><br><span class="line"> e_sn              =  61,  97,#不同层网格y方向格点数</span><br><span class="line"> geog_data_res     = &#x27;10m&#x27;,&#x27;2m&#x27;,#区域所对应选择的地表面静态数据</span><br><span class="line"> dx = 30000,</span><br><span class="line"> dy = 30000,#x/y方向格距，单位m，</span><br><span class="line"> map_proj = &#x27;lambert&#x27;,#选择的投影方式&#x27;lambert&#x27;, &#x27;polar&#x27;, &#x27;mercator&#x27;, and &#x27;lat-lon&#x27;</span><br><span class="line"> ref_lat   =  34.83,#中心纬度，即模式最外层中心位置纬度</span><br><span class="line"> ref_lon   = -81.03,#中心经度，即模式最外层中心位置经度</span><br><span class="line"> truelat1  =  30.0,</span><br><span class="line"> truelat2  =  60.0,#标准经纬度，根据投影确定</span><br><span class="line"> stand_lon = -98.0,#标准经度，与中心经度保持一致</span><br><span class="line"> geog_data_path = &#x27;/opt/GEOG&#x27;#地表静态数据的路径</span><br><span class="line">/</span><br><span class="line"></span><br><span class="line">&amp;ungrib</span><br><span class="line"> out_format = &#x27;WPS&#x27;,#输出文件的形式，有MM5，WPS和SI三种形式</span><br><span class="line"> prefix = &#x27;FILE&#x27;,#输出文件的前缀，默认为FILE形式</span><br><span class="line">/</span><br><span class="line"></span><br><span class="line">&amp;metgrid</span><br><span class="line"> fg_name = &#x27;FILE&#x27;</span><br><span class="line"> io_form_metgrid = 2, </span><br><span class="line">/</span><br></pre></td></tr></table></figure>
+<p>运行WPS：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">./geogrid.exe &gt;&amp; geogrid.log</span><br><span class="line">ln -sf ungrib/Variable_Tables/Vtable.ECMWF Vtable</span><br><span class="line">./link_grib.csh /public/home/sungd/liuhui/Build_WRF/DATA/era5/*.grib</span><br><span class="line">./ungrib.exe &gt;&amp; ungrib.log</span><br><span class="line">./metgrid.exe &gt;&amp; metgrid.log</span><br></pre></td></tr></table></figure>
+<p>查看嵌套区域：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">先打开plotgrids_new.ncl文件，将type=x11注释，改为type=pdf</span><br><span class="line">ncl util/plotgrids_new.ncl</span><br></pre></td></tr></table></figure>
+<p>会在WPS路径下生成：wps_show_dom.pdf文件。</p>
+<p><strong>运行WRF：</strong></p>
+<p>先在WPS路径下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ncdump -h met_em.d01.2016-07-03_00\:00\:00.nc &gt;&amp; ncinfo.log</span><br></pre></td></tr></table></figure>
+<p>查看预处理后的文件的信息，保证前后的设置一致。</p>
+<p>修改WRF/run或者WRF/test/em_real（或者复制一下这两个文件夹）下namelist.imput文件。记得把namelist.input里num_metgrid_levels的值改为38。<br><a target="_blank" rel="noopener" href="https://esrl.noaa.gov/gsd/wrfportal/namelist_input_options.html#:~:text=WRF%20NAMELIST.INPUT%20FILE%20DESCRIPTION%20%20%20Name%20,time%20in%20minutes%20%2030%20more%20rows%20">WRF NAMELIST.INPUT FILE DESCRIPTION</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd WRF/test/em_real2</span><br><span class="line">ln -sf ../../../WPS/met_em* .</span><br><span class="line">./real.exe &gt;&amp; real.log</span><br><span class="line">./wrf.exe &gt;&amp; wrfexe.log</span><br></pre></td></tr></table></figure>
+<p>生成wrfout文件即为运行成功！</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ncdump -h wrfout_d01_2016-07-03_00\:00\:00 &gt;&amp; wrfout_info.log</span><br></pre></td></tr></table></figure>
+<h1 id="处理wrfout文件"><a href="#处理wrfout文件" class="headerlink" title="处理wrfout文件"></a>处理wrfout文件</h1>
     </div>
 
     
