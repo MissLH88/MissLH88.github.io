@@ -19,27 +19,29 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"misslh88.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.">
+    <meta name="description" content="在前文已经成功驱动WRF模式的背景下，记录如何使用python处理wrfout文件。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://misslh88.github.io/2023/08/10/hello-world/index.html">
+<meta property="og:title" content="使用python处理wrfout文件">
+<meta property="og:url" content="https://misslh88.github.io/2023/09/04/%E4%BD%BF%E7%94%A8python%E5%A4%84%E7%90%86wrfout%E6%96%87%E4%BB%B6/index.html">
 <meta property="og:site_name" content="LH&#39;s blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.">
+<meta property="og:description" content="在前文已经成功驱动WRF模式的背景下，记录如何使用python处理wrfout文件。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-08-10T06:42:51.643Z">
-<meta property="article:modified_time" content="2023-08-28T12:07:06.046Z">
+<meta property="article:published_time" content="2023-09-04T11:29:13.000Z">
+<meta property="article:modified_time" content="2023-09-04T14:10:23.705Z">
 <meta property="article:author" content="MissLH88">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="python">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://misslh88.github.io/2023/08/10/hello-world/">
+<link rel="canonical" href="https://misslh88.github.io/2023/09/04/%E4%BD%BF%E7%94%A8python%E5%A4%84%E7%90%86wrfout%E6%96%87%E4%BB%B6/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://misslh88.github.io/2023/08/10/hello-world/","path":"2023/08/10/hello-world/","title":"Hello World"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://misslh88.github.io/2023/09/04/%E4%BD%BF%E7%94%A8python%E5%A4%84%E7%90%86wrfout%E6%96%87%E4%BB%B6/","path":"2023/09/04/使用python处理wrfout文件/","title":"使用python处理wrfout文件"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Hello World | LH's blog</title>
+<title>使用python处理wrfout文件 | LH's blog</title>
   
 
 
@@ -99,7 +101,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+    <div class="sidebar-inner sidebar-overview-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -112,7 +114,6 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -163,7 +164,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://misslh88.github.io/2023/08/10/hello-world/">
+    <link itemprop="mainEntityOfPage" href="https://misslh88.github.io/2023/09/04/%E4%BD%BF%E7%94%A8python%E5%A4%84%E7%90%86wrfout%E6%96%87%E4%BB%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -176,12 +177,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Hello World | LH's blog">
+      <meta itemprop="name" content="使用python处理wrfout文件 | LH's blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Hello World
+          使用python处理wrfout文件
         </h1>
 
         <div class="post-meta-container">
@@ -191,15 +192,18 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2023-08-10 14:42:51" itemprop="dateCreated datePublished" datetime="2023-08-10T14:42:51+08:00">2023-08-10</time>
+      <time title="创建时间：2023-09-04 19:29:13 / 修改时间：22:10:23" itemprop="dateCreated datePublished" datetime="2023-09-04T19:29:13+08:00">2023-09-04</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
+        <i class="far fa-folder"></i>
       </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-08-28 20:07:06" itemprop="dateModified" datetime="2023-08-28T20:07:06+08:00">2023-08-28</time>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%A7%91%E7%A0%94%E5%AE%9E%E8%B7%B5/" itemprop="url" rel="index"><span itemprop="name">科研实践</span></a>
+        </span>
     </span>
 
   
@@ -211,16 +215,139 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+    <div class="post-body" itemprop="articleBody"><p>在前文已经成功驱动WRF模式的背景下，记录如何使用python处理wrfout文件。</p>
 <span id="more"></span>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<p>参考网址：</p>
+<p><a target="_blank" rel="noopener" href="https://wrf-python.readthedocs.io/en/latest/installation.html">wrf-python 1.3.4.1 documentation</a></p>
+<p>首先在anaconda环境中安装wrf-python包：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install -c conda-forge wrf-python</span><br></pre></td></tr></table></figure>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>NCL</th>
+<th>wrf-python</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>wrf_user_get_var</td>
+<td>wrf.getvar</td>
+<td>提取和计算变量，变量名参考<a target="_blank" rel="noopener" href="https://www.ncl.ucar.edu/Document/Functions/WRF_arw/wrf_user_getvar.shtml">wrf_user_getvar</a></td>
+</tr>
+<tr>
+<td>wrf_user_interp_level</td>
+<td>wrf.vinterp或wrf.interplevel</td>
+<td>将3D数据场插值到某个/些垂直层上</td>
+</tr>
+<tr>
+<td>wrf_user_vert_cross</td>
+<td>wrf.vertcross</td>
+<td>将3D数据场插值到某个水平线上</td>
+</tr>
+<tr>
+<td>wrf_user_interp_line</td>
+<td>wrf.interpline</td>
+<td>将2D数据场插值到某个线上</td>
+</tr>
+<tr>
+<td>wrf_user_ll_to_xy</td>
+<td>wrf.ll_to_xy</td>
+<td>Lat/Lon &lt;-&gt; XY Routines</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>获取文件中的诊断变量：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> netCDF4 <span class="keyword">import</span> Dataset</span><br><span class="line"><span class="keyword">from</span> wrf <span class="keyword">import</span> getvar</span><br><span class="line"></span><br><span class="line">ncfile = Dataset(<span class="string">&quot;wrfout_d01_2016-10-07_00_00_00&quot;</span>)</span><br><span class="line"></span><br><span class="line">p = getvar(ncfile, <span class="string">&quot;P&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(p)</span><br></pre></td></tr></table></figure>
+<p>常用的一些诊断变量：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>varname</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>lat</td>
+<td>latitude</td>
+</tr>
+<tr>
+<td>lon</td>
+<td>longitude</td>
+</tr>
+<tr>
+<td>p/pres</td>
+<td>Full model pressure [Pa]</td>
+</tr>
+<tr>
+<td>pressure</td>
+<td>Full model pressure [hPa]</td>
+</tr>
+<tr>
+<td>pvo</td>
+<td>potential vorticity [PVU]</td>
+</tr>
+<tr>
+<td>slp</td>
+<td>Sea level pressure [hPa]</td>
+</tr>
+<tr>
+<td>ter</td>
+<td>Model terrain height [m]</td>
+</tr>
+<tr>
+<td>tc</td>
+<td>Temperature [C]</td>
+</tr>
+<tr>
+<td>tk</td>
+<td>Temperature [K]</td>
+</tr>
+<tr>
+<td>th/theta</td>
+<td>Potential temperature [K]</td>
+</tr>
+<tr>
+<td>times</td>
+<td>Times in file (return strings - recommended)</td>
+</tr>
+<tr>
+<td>Times</td>
+<td>Times in file (return characters)</td>
+</tr>
+<tr>
+<td>ua</td>
+<td>U component of wind on mass points</td>
+</tr>
+<tr>
+<td>va</td>
+<td>V component of wind on mass points</td>
+</tr>
+<tr>
+<td>wa</td>
+<td>W component of wind on mass points</td>
+</tr>
+<tr>
+<td>uvmet10</td>
+<td>10m U and V components of wind rotated to earth coordinates</td>
+</tr>
+<tr>
+<td>uvmet</td>
+<td>U and V components of wind rotated to earth coordinates</td>
+</tr>
+<tr>
+<td>z/height</td>
+<td>Full model height [m]</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>以数组的方式获取变量：disable xarray</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> netCDF4 <span class="keyword">import</span> Dataset</span><br><span class="line"><span class="keyword">from</span> wrf <span class="keyword">import</span> getvar, disable_xarray</span><br><span class="line"></span><br><span class="line">ncfile = Dataset(<span class="string">&quot;wrfout_d01_2016-10-07_00_00_00&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Disable xarray completely</span></span><br><span class="line">disable_xarray()</span><br><span class="line">p_no_meta = getvar(ncfile, <span class="string">&quot;P&quot;</span>)</span><br><span class="line"><span class="built_in">print</span> (<span class="built_in">type</span>(p_no_meta))</span><br><span class="line">enable_xarray()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Disable by using the meta parameter</span></span><br><span class="line">p_no_meta = getvar(ncfile, <span class="string">&quot;P&quot;</span>, meta=<span class="literal">False</span>)</span><br><span class="line"><span class="built_in">print</span> (<span class="built_in">type</span>(p_no_meta))</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -229,16 +356,20 @@
     
 
     <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/WRF/" rel="tag"># WRF</a>
+              <a href="/tags/python/" rel="tag"># python</a>
+          </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
+                <a href="/2023/08/28/Log/" rel="prev" title="Captain's Log">
+                  <i class="fa fa-angle-left"></i> Captain's Log
+                </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2023/08/10/CNOP-for-Lorenz63/" rel="next" title="CNOP for Lorenz63">
-                  CNOP for Lorenz63 <i class="fa fa-angle-right"></i>
-                </a>
             </div>
           </div>
     </footer>
