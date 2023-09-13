@@ -27,7 +27,7 @@
 <meta property="og:description" content="2023年8月18日老师给了机器账号之后，开始自主安装WRF模式。本文中所有操作仅供参考，具体看个人机器情况而定。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-08-19T07:10:10.000Z">
-<meta property="article:modified_time" content="2023-09-13T02:50:59.863Z">
+<meta property="article:modified_time" content="2023-09-13T12:21:46.833Z">
 <meta property="article:author" content="MissLH88">
 <meta property="article:tag" content="WRF">
 <meta property="article:tag" content="Linux">
@@ -114,7 +114,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">安装模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%8C%85"><span class="nav-number">1.1.</span> <span class="nav-text">安装包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85WRF"><span class="nav-number">1.2.</span> <span class="nav-text">安装WRF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85WPS"><span class="nav-number">1.3.</span> <span class="nav-text">安装WPS</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">运行模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B6%85%E7%AE%97%E8%BF%90%E8%A1%8C"><span class="nav-number">3.</span> <span class="nav-text">超算运行</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#qsub"><span class="nav-number">3.1.</span> <span class="nav-text">qsub</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sbatch"><span class="nav-number">3.2.</span> <span class="nav-text">sbatch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E5%AE%83%E9%97%AE%E9%A2%98"><span class="nav-number">3.3.</span> <span class="nav-text">其它问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#forrtl-severe-174"><span class="nav-number">3.3.1.</span> <span class="nav-text">forrtl: severe (174)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E5%BE%97%E6%85%A2"><span class="nav-number">3.3.2.</span> <span class="nav-text">算得慢</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E7%BB%A7%E7%BB%AD%E8%AE%A1%E7%AE%97"><span class="nav-number">3.4.</span> <span class="nav-text">关于继续计算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E8%AE%A1%E7%AE%97%E6%97%B6%E9%95%BF"><span class="nav-number">3.5.</span> <span class="nav-text">关于计算时长</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">安装模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%8C%85"><span class="nav-number">1.1.</span> <span class="nav-text">安装包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85WRF"><span class="nav-number">1.2.</span> <span class="nav-text">安装WRF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85WPS"><span class="nav-number">1.3.</span> <span class="nav-text">安装WPS</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">运行模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B6%85%E7%AE%97%E8%BF%90%E8%A1%8C"><span class="nav-number">3.</span> <span class="nav-text">超算运行</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#qsub"><span class="nav-number">3.1.</span> <span class="nav-text">qsub</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sbatch"><span class="nav-number">3.2.</span> <span class="nav-text">sbatch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E5%AE%83%E9%97%AE%E9%A2%98"><span class="nav-number">3.3.</span> <span class="nav-text">其它问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#forrtl-severe-174"><span class="nav-number">3.3.1.</span> <span class="nav-text">forrtl: severe (174)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E5%BE%97%E6%85%A2%EF%BC%88%E8%A1%80%E6%B3%AA%EF%BC%89"><span class="nav-number">3.3.2.</span> <span class="nav-text">算得慢（血泪）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E7%BB%A7%E7%BB%AD%E8%AE%A1%E7%AE%97"><span class="nav-number">3.4.</span> <span class="nav-text">关于继续计算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E8%AE%A1%E7%AE%97%E6%97%B6%E9%95%BF"><span class="nav-number">3.5.</span> <span class="nav-text">关于计算时长</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -201,7 +201,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-09-13 10:50:59" itemprop="dateModified" datetime="2023-09-13T10:50:59+08:00">2023-09-13</time>
+      <time title="修改时间：2023-09-13 20:21:46" itemprop="dateModified" datetime="2023-09-13T20:21:46+08:00">2023-09-13</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -298,7 +298,8 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd WRF/test/em_real2</span><br><span class="line">ln -sf ../../../WPS-4.5/met_em* .</span><br><span class="line">./real.exe &gt;&amp; log.real</span><br><span class="line">或者nohup ./real.exe &gt;&amp; log.real 2&gt;&amp;1 &amp;</span><br><span class="line">./wrf.exe &gt;&amp; log.wrfexe</span><br><span class="line">或者nohup ./wrf.exe &gt;&amp; log.wrfexe 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
 <p>生成wrfout文件即为运行成功！</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ncdump -h wrfout_d01_2016-07-03_00\:00\:00 &gt;&amp; wrfout_info.log</span><br></pre></td></tr></table></figure>
-<h1 id="超算运行"><a href="#超算运行" class="headerlink" title="超算运行"></a>超算运行</h1><h2 id="qsub"><a href="#qsub" class="headerlink" title="qsub"></a>qsub</h2><p>呜呜呜好搞笑。</p>
+<h1 id="超算运行"><a href="#超算运行" class="headerlink" title="超算运行"></a>超算运行</h1><p>查看机器配置情况——lscpu</p>
+<h2 id="qsub"><a href="#qsub" class="headerlink" title="qsub"></a>qsub</h2><p>呜呜呜好搞笑。</p>
 <p>我和师姐说我模拟的一个月，已经跑了一天了，师姐说你肯定有问题，她只要算2-3小时。我就懵了哈哈哈。</p>
 <p>原来是因为我是单核在算，师姐说要提交多核运算。</p>
 <p>这里补充一些在超算上提交任务查看任务的学习。</p>
@@ -330,8 +331,13 @@
 <p><strong>scancel-删除作业</strong></p>
 <p>scancel &lt;作业号&gt;</p>
 <h2 id="其它问题"><a href="#其它问题" class="headerlink" title="其它问题"></a>其它问题</h2><h3 id="forrtl-severe-174"><a href="#forrtl-severe-174" class="headerlink" title="forrtl: severe (174)"></a>forrtl: severe (174)</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42487488/article/details/119703861">WRF运行wrf.exe出现forrtl: severe (174): SIGSEGV, segmentation fault occurred问题原因与解决合集_陆詟水栗的博客-CSDN博客</a></p>
-<h3 id="算得慢"><a href="#算得慢" class="headerlink" title="算得慢"></a>算得慢</h3><p>要注意，之前按照教程configure WRF的时候，选择的编译器选项都是13，如果要并行，要重新configure和compile，选择编译器15。</p>
+<h3 id="算得慢（血泪）"><a href="#算得慢（血泪）" class="headerlink" title="算得慢（血泪）"></a>算得慢（血泪）</h3><p>要注意，之前按照教程configure WRF的时候，选择的编译器选项都是13，如果要并行，要重新configure和compile，选择编译器15。</p>
 <p>注意WPS也要重新configure，选择19.</p>
+<p>还是算得很慢</p>
+<p>把模式版本降低从4.5.1降低到4.2.1，计算时间从1h/天降低到30min/天。</p>
+<p>但是还是很慢</p>
+<p>把使用的结点和线程从4结点，80线程降低到2结点，40线程，计算速度大幅提高，达到6min/天。</p>
+<p>老天爷，谁想到，用的结点和线程多了，反而会影响计算效率。</p>
 <h2 id="关于继续计算"><a href="#关于继续计算" class="headerlink" title="关于继续计算"></a>关于继续计算</h2><p>可以打开namelist.input中restart按钮，就会使用保存到wrfrst开头文件进行继续计算。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">restart   = .true.,</span><br></pre></td></tr></table></figure>
 <h2 id="关于计算时长"><a href="#关于计算时长" class="headerlink" title="关于计算时长"></a>关于计算时长</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;Job start time =&quot; `date`</span><br><span class="line">mpirun -machinefile $PBS_NODEFILE -np $NSLOTS  ./wrf.exe</span><br><span class="line">echo &quot;Job end time =&quot; `date`</span><br></pre></td></tr></table></figure>
