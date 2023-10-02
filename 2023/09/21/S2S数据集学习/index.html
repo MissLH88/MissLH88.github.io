@@ -19,23 +19,28 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"misslh88.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta property="og:type" content="website">
-<meta property="og:title" content="LH&#39;s blog">
-<meta property="og:url" content="https://misslh88.github.io/tags/AI/index.html">
+    <meta name="description" content="想系统学习了解一下，目前现有的S2S项目和数据集状况，了解一下大家到底是怎么预报的，下载数据的方式和那些选项是什么意思。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="S2S数据集学习">
+<meta property="og:url" content="https://misslh88.github.io/2023/09/21/S2S%E6%95%B0%E6%8D%AE%E9%9B%86%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="LH&#39;s blog">
+<meta property="og:description" content="想系统学习了解一下，目前现有的S2S项目和数据集状况，了解一下大家到底是怎么预报的，下载数据的方式和那些选项是什么意思。">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-09-21T01:34:40.000Z">
+<meta property="article:modified_time" content="2023-09-21T05:26:06.657Z">
 <meta property="article:author" content="MissLH88">
+<meta property="article:tag" content="S2S">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://misslh88.github.io/tags/AI/">
+<link rel="canonical" href="https://misslh88.github.io/2023/09/21/S2S%E6%95%B0%E6%8D%AE%E9%9B%86%E5%AD%A6%E4%B9%A0/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"tags/AI/index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://misslh88.github.io/2023/09/21/S2S%E6%95%B0%E6%8D%AE%E9%9B%86%E5%AD%A6%E4%B9%A0/","path":"2023/09/21/S2S数据集学习/","title":"S2S数据集学习"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>标签: AI | LH's blog</title>
+<title>S2S数据集学习 | LH's blog</title>
   
 
 
@@ -95,7 +100,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -108,6 +113,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#S2S%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">S2S项目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#TIGGE-archive"><span class="nav-number">1.1.</span> <span class="nav-text">TIGGE archive</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#S2S%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">S2S模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ECMWF%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.1.</span> <span class="nav-text">ECMWF模式</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -147,50 +153,109 @@
 
     </div>
 
-    <div class="main-inner tag posts-collapse">
+    <div class="main-inner post posts-expand">
 
 
   
+
+
+<div class="post-block">
   
   
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <h1 class="collection-header">AI
-          <small>标签</small>
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://misslh88.github.io/2023/09/21/S2S%E6%95%B0%E6%8D%AE%E9%9B%86%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="MissLH88">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LH's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="S2S数据集学习 | LH's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          S2S数据集学习
         </h1>
-      </div>
 
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
       
-    <div class="collection-year">
-      <span class="collection-header">2023</span>
+
+      <time title="创建时间：2023-09-21 09:34:40 / 修改时间：13:26:06" itemprop="dateCreated datePublished" datetime="2023-09-21T09:34:40+08:00">2023-09-21</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>想系统学习了解一下，目前现有的S2S项目和数据集状况，了解一下大家到底是怎么预报的，下载数据的方式和那些选项是什么意思。</p>
+<span id="more"></span>
+<h1 id="S2S项目"><a href="#S2S项目" class="headerlink" title="S2S项目"></a>S2S项目</h1><p><a target="_blank" rel="noopener" href="http://wwww.s2sprediction.net/">S2S项目官网</a></p>
+<p><a target="_blank" rel="noopener" href="https://confluence.ecmwf.int/display/S2S/Project">S2S项目介绍-EC百科</a></p>
+<p>S2S是WWRP/THORPEX-WCRP的联合研究项目，旨在提高对分季节到季节时间尺度的预测技能和理解，促进业务中心对其的吸收和应用社区的利用。</p>
+<p>项目的第一个5年阶段于2013年11月开始<br>S2S的第二阶段于2019年1月开始，将于2023年12月结束。</p>
+<h2 id="TIGGE-archive"><a href="#TIGGE-archive" class="headerlink" title="TIGGE archive"></a><a target="_blank" rel="noopener" href="https://confluence.ecmwf.int/display/TIGGE/TIGGE+archive">TIGGE archive</a></h2><p>TIGGE数据集包括从2006年10月开始的13个全球NWP中心的综合预报数据。TIGGE是世界天气研究计划THORPEX的重要组成部分，旨在加速提高1天至2周高影响天气预报的准确性，造福人类。尽管为期10年的THORPEX项目于2014年底结束，但TIGGE又持续了5年。目前，TIGGE档案的另一个阶段已经确定，将再持续4年，直到2023年底。</p>
+<p><a target="_blank" rel="noopener" href="https://apps.ecmwf.int/datasets/data/tigge/levtype=sfc/type=fc/">ECMWF | TIGGE Data Retrieval</a></p>
+<h1 id="S2S模式"><a href="#S2S模式" class="headerlink" title="S2S模式"></a>S2S模式</h1><p><a target="_blank" rel="noopener" href="https://confluence.ecmwf.int/display/S2S/Models">EC官方的最新模式介绍</a></p>
+<p>S2S模型输出数据存储在MARS中，使用通用的1.5/1.5规则网格上的MARS中。</p>
+<ul>
+<li><p>唯一的例外是BoM (ammc)，它具有较粗的分辨率并存储在其原始模型网格中。</p>
+</li>
+<li><p>额外的海洋参数存储在1.0/1.0规则的网格中。</p>
+</li>
+</ul>
+<h2 id="ECMWF模式"><a href="#ECMWF模式" class="headerlink" title="ECMWF模式"></a>ECMWF模式</h2><p><a target="_blank" rel="noopener" href="https://apps.ecmwf.int/datasets/data/s2s-reforecasts-instantaneous-accum-ecmf/levtype=sfc/type=cf/">ECMWF | S2S, ECMWF, Reforecasts, Instantaneous and Accumulated</a></p>
+<p>ECMWF次季节预报系统在1995-2014年20年的重预报期间，每星期一和星期四初始化一次重预报，在同一日历日期初始化10个集合成员(即动态方法)。每次重新预测持续47天。</p>
+<p>EC模式每次更新都会对过去20年的数据进行一次重报。</p>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2023-09-17T19:59:36+08:00"
-              content="2023-09-17">
-          09-17
-        </time>
-      </div>
+    
+    
+    
 
-      <div class="post-title">
-        <a class="post-title-link" href="/2023/09/17/%E5%AD%A6%E4%B9%A0%E5%92%8C%E5%AE%9E%E8%B7%B5%E7%9B%98%E5%8F%A4AI%E6%B0%94%E8%B1%A1%E6%A8%A1%E5%9E%8B/" itemprop="url">
-          <span itemprop="name">学习和实践盘古AI气象模型</span>
-        </a>
-      </div>
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/S2S/" rel="tag"># S2S</a>
+          </div>
 
-      
-    </header>
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/09/21/%E5%AF%B9WRF%E5%8F%82%E6%95%B0%E5%8C%96%E9%80%89%E6%8B%A9%E5%92%8Cnamelist-input%E6%96%87%E4%BB%B6%E7%9A%84%E5%AD%A6%E4%B9%A0/" rel="prev" title="对WRF参数化选择和namelist.input文件的学习">
+                  <i class="fa fa-angle-left"></i> 对WRF参数化选择和namelist.input文件的学习
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
   </article>
+</div>
 
-    </div>
-  </div>
-  
-  
-  
+
+
+
+
 
 </div>
   </main>
