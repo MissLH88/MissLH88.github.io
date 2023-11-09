@@ -27,7 +27,7 @@
 <meta property="og:description" content="因为要进行一些关于陆面过程的研究，所以希望可以系统地学习一下陆面模式。通过啃NoahMP的手册进行学习。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-10-24T14:21:19.000Z">
-<meta property="article:modified_time" content="2023-11-03T12:58:45.461Z">
+<meta property="article:modified_time" content="2023-11-09T05:42:35.162Z">
 <meta property="article:author" content="MissLH88">
 <meta property="article:tag" content="模式">
 <meta name="twitter:card" content="summary">
@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -200,7 +200,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-11-03 20:58:45" itemprop="dateModified" datetime="2023-11-03T20:58:45+08:00">2023-11-03</time>
+      <time title="修改时间：2023-11-09 13:42:35" itemprop="dateModified" datetime="2023-11-09T13:42:35+08:00">2023-11-09</time>
     </span>
 
   
@@ -221,7 +221,12 @@
 <p>目前NoahMP只在自然作物和农作物中考虑生物化学过程（目前只有碳循环）。</p>
 <h1 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h1><p>主要是能量、水和生物质过程，包括三类变量：通量、状态变量、参数。</p>
 <p>$\theta_{sfc},[K]$ : Surface potential temperature 表面位温</p>
-<h1 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h1>
+<h1 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h1><p>大气模式为陆面模式提供大气强迫场，包括地面气温、地面气压、降水、风场、比湿和向下的长波和短波辐射。</p>
+<p>而陆面模式则至少为大气提供潜热通量、感热通量和向上的长波和短波辐射。</p>
+<p>在陆气模式的边界上，这些交换量由大气和陆面模式互相提供的情况，称之为陆气耦合。</p>
+<p>如果在边界上，这些外界强迫场是通过再分析、观测等给出，结合经验公式计算得到的话，这就是非耦合的情况。</p>
+<p>很明显，WRF中如果使用了陆面模式的话，就是陆气耦合的了。</p>
+
     </div>
 
     
@@ -242,6 +247,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2023/11/09/%E5%9C%9F%E5%A3%A4%E6%B9%BF%E5%BA%A6%E8%B5%84%E6%96%99%E5%90%88%E9%9B%86/" rel="next" title="土壤湿度资料合集">
+                  土壤湿度资料合集 <i class="fa fa-angle-right"></i>
+                </a>
             </div>
           </div>
     </footer>
