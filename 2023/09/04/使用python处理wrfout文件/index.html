@@ -27,7 +27,7 @@
 <meta property="og:description" content="在前文已经成功驱动WRF模式的背景下，记录如何使用python处理wrfout文件。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-09-04T11:29:13.000Z">
-<meta property="article:modified_time" content="2023-12-06T12:02:27.248Z">
+<meta property="article:modified_time" content="2024-03-31T01:30:02.150Z">
 <meta property="article:author" content="MissLH88">
 <meta property="article:tag" content="WRF">
 <meta property="article:tag" content="python">
@@ -114,7 +114,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6%EF%BC%8C%E8%8E%B7%E5%8F%96%E5%8F%98%E9%87%8F"><span class="nav-number">1.</span> <span class="nav-text">读取文件，获取变量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96%E5%A4%9A%E6%97%B6%E6%AC%A1%E5%8D%95%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.</span> <span class="nav-text">读取多时次单文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%B9%E9%87%8F%E8%AF%BB%E5%8F%96%E5%8D%95%E6%97%B6%E6%AC%A1%E6%96%87%E4%BB%B6%E5%B9%B6%E6%8B%BC%E6%8E%A5"><span class="nav-number">1.2.</span> <span class="nav-text">批量读取单时次文件并拼接</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%BB%E5%9B%BE"><span class="nav-number">2.</span> <span class="nav-text">画图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%BB%E5%85%A8%E7%90%83%E5%9B%BE"><span class="nav-number">2.1.</span> <span class="nav-text">画全球图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%BBwrf-domain"><span class="nav-number">2.2.</span> <span class="nav-text">画wrf domain</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%BB%E5%A4%9A%E5%AD%90%E5%9B%BE"><span class="nav-number">2.3.</span> <span class="nav-text">画多子图</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E7%AE%97"><span class="nav-number">3.</span> <span class="nav-text">运算</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%80%BC%E5%88%B0%E8%A7%84%E5%88%99%E7%BB%8F%E7%BA%AC%E7%BD%91%E6%A0%BC"><span class="nav-number">3.1.</span> <span class="nav-text">插值到规则经纬网格</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Geocat"><span class="nav-number">3.1.1.</span> <span class="nav-text">Geocat</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6%EF%BC%8C%E8%8E%B7%E5%8F%96%E5%8F%98%E9%87%8F"><span class="nav-number">1.</span> <span class="nav-text">读取文件，获取变量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96%E5%A4%9A%E6%97%B6%E6%AC%A1%E5%8D%95%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.</span> <span class="nav-text">读取多时次单文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%B9%E9%87%8F%E8%AF%BB%E5%8F%96%E5%8D%95%E6%97%B6%E6%AC%A1%E6%96%87%E4%BB%B6%E5%B9%B6%E6%8B%BC%E6%8E%A5"><span class="nav-number">1.2.</span> <span class="nav-text">批量读取单时次文件并拼接</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%BB%E5%9B%BE"><span class="nav-number">2.</span> <span class="nav-text">画图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%BB%E5%85%A8%E7%90%83%E5%9B%BE"><span class="nav-number">2.1.</span> <span class="nav-text">画全球图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%BBwrf-domain"><span class="nav-number">2.2.</span> <span class="nav-text">画wrf domain</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%BB%E5%A4%9A%E5%AD%90%E5%9B%BE"><span class="nav-number">2.3.</span> <span class="nav-text">画多子图</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E7%AE%97"><span class="nav-number">3.</span> <span class="nav-text">运算</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%80%BC%E5%88%B0%E8%A7%84%E5%88%99%E7%BB%8F%E7%BA%AC%E7%BD%91%E6%A0%BC"><span class="nav-number">3.1.</span> <span class="nav-text">插值到规则经纬网格</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Geocat"><span class="nav-number">3.1.1.</span> <span class="nav-text">Geocat</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#wrfout%E6%96%87%E4%BB%B6%E8%A7%A3%E8%AF%BB%EF%BC%88%E6%8C%89%E7%85%A7%E5%BC%80%E5%A4%B4%E5%AD%97%E6%AF%8D%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">wrfout文件解读（按照开头字母）</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -201,7 +201,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-12-06 20:02:27" itemprop="dateModified" datetime="2023-12-06T20:02:27+08:00">2023-12-06</time>
+      <time title="修改时间：2024-03-31 09:30:02" itemprop="dateModified" datetime="2024-03-31T09:30:02+08:00">2024-03-31</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -384,6 +384,117 @@
 <p><a target="_blank" rel="noopener" href="https://geocat-comp.readthedocs.io/en/v2023.03.0/installation.html">Installation (geocat-comp.readthedocs.io)</a></p>
 <p>不知道哪个可以用，就都安装试一下，但是貌似只能在linux下使用，在win下是不行的。</p>
 <p>使用了，goecat.comp以及被淘汰，目前新的在使用的是geocat.f2py</p>
+<h1 id="wrfout文件解读（按照开头字母）"><a href="#wrfout文件解读（按照开头字母）" class="headerlink" title="wrfout文件解读（按照开头字母）"></a>wrfout文件解读（按照开头字母）</h1><p><a target="_blank" rel="noopener" href="https://bbs.06climate.com/forum.php?mod=viewthread&amp;tid=13277">https://bbs.06climate.com/forum.php?mod=viewthread&amp;tid=13277</a></p>
+<p>float <strong>LU_INDEX</strong>(Time, south_north, west_east) ;<br>LU_INDEX:description = “LAND USE CATEGORY” ;<br>LU_INDEX:units = “” ;<br>土地利用类型（如城市、植被、湖泊等）  </p>
+<p>float <strong>ZNU</strong>(Time, bottom_top) ;<br>ZNU:description = “eta values on half (mass) levels” ;<br>ZNU:units = “” ;<br>eta半层（质量点）坐标值  </p>
+<p>float <strong>ZNW</strong>(Time, bottom_top_stag) ;<br>ZNW:description = “eta values on full (w) levels” ;<br>ZNW:units = “” ;<br>eta整层（w点）坐标值  </p>
+<p>float <strong>ZS</strong>(Time, soil_layers_stag) ;<br>ZS:description = “DEPTHS OF CENTERS OF SOIL LAYERS” ;<br>ZS:units = “m” ;<br>土壤层各层中间的深度  </p>
+<p>float <strong>DZS</strong>(Time, soil_layers_stag) ;<br>DZS:description = “THICKNESSES OF SOIL LAYERS” ;<br>DZS:units = “m” ;<br>土壤层厚度  </p>
+<p>float <strong>U</strong>(Time, bottom_top, south_north, west_east_stag) ;<br>U:description = “x-wind component” ;<br>U:units = “m s-1” ;<br>x方向风分量  </p>
+<p>float <strong>V</strong>(Time, bottom_top, south_north_stag, west_east) ;<br>V:description = “y-wind component” ;<br>V:units = “m s-1” ;<br>y方向风分量  </p>
+<p>float <strong>W</strong>(Time, bottom_top_stag, south_north, west_east) ;<br>W:description = “z-wind component” ;<br>W:units = “m s-1” ;<br>垂直风分量  </p>
+<p>float <strong>PH</strong>(Time, bottom_top_stag, south_north, west_east) ;<br>PH:description = “perturbation geopotential” ;<br>PH:units = “m2 s-2” ;<br>扰动位势高度  </p>
+<p>float <strong>PHB</strong>(Time, bottom_top_stag, south_north, west_east) ;<br>PHB:description = “base-state geopotential” ;<br>PHB:units = “m2 s-2” ;<br>基准态位势高度  </p>
+<p>float <strong>T</strong>(Time, bottom_top, south_north, west_east) ;<br>T:description = “perturbation potential temperature (theta-t0)” ;<br>T:units = “K” ;<br>扰动位温（theta-t0）  </p>
+<p>float <strong>MU</strong>(Time, south_north, west_east) ;<br>MU:description = “perturbation dry air mass in column” ;<br>MU:units = “Pa” ;<br>柱内扰动干空气质量  </p>
+<p>float <strong>MUB</strong>(Time, south_north, west_east) ;<br>MUB:description = “base state dry air mass in column” ;<br>MUB:units = “Pa” ;<br>柱内基准态干空气质量  </p>
+<p>float <strong>NEST_POS</strong>(Time, south_north, west_east) ;<br>NEST_POS:description = “-“ ;<br>NEST_POS:units = “-“ ;<br>作多层嵌套时粗（母）网格位置  </p>
+<p>float <strong>P</strong>(Time, bottom_top, south_north, west_east) ;<br>P:description = “perturbation pressure” ;<br>P:units = “Pa” ;<br>扰动气压  </p>
+<p>float <strong>PB</strong>(Time, bottom_top, south_north, west_east) ;<br>PB:description = “BASE STATE PRESSURE” ;<br>PB:units = “Pa” ;<br>基准态气压  </p>
+<p>float <strong>SR</strong>(Time, south_north, west_east) ;<br>SR:description = “fraction of frozen precipitation” ;<br>SR:units = “-“ ;<br>固体降水比例  </p>
+<p>float <strong>POTEVP</strong>(Time, south_north, west_east) ;<br>POTEVP:description = “accumulated potential evaporation” ;<br>POTEVP:units = “W m-2” ;<br>累计的潜在蒸发  </p>
+<p>float <strong>SNOPCX</strong>(Time, south_north, west_east) ;<br>SNOPCX:description = “snow phase change heat flux” ;<br>SNOPCX:units = “W m-2” ;<br>雪相态改变的热通量  </p>
+<p>float <strong>SOILTB</strong>(Time, south_north, west_east) ;<br>SOILTB:description = “bottom soil temperature” ;<br>SOILTB:units = “K” ;<br>土壤底部温度  </p>
+<p>float <strong>FNM</strong>(Time, bottom_top) ;<br>FNM:description = “upper weight for vertical stretching” ;<br>FNM:units = “” ;<br>作垂直方向展开时上层权重  </p>
+<p>float <strong>FNP</strong>(Time, bottom_top) ;<br>FNP:description = “lower weight for vertical stretching” ;<br>FNP:units = “” ; 作垂直方向展开时下层权重  </p>
+<p>float <strong>RDNW</strong>(Time, bottom_top) ;<br>RDNW:description = “inverse d(eta) values between full (w) levels” ;<br>RDNW:units = “” ;<br>1除以整层（w层）间eta值之差  </p>
+<p>float <strong>RDN</strong>(Time, bottom_top) ;<br>RDN:description = “inverse d(eta) values between half (mass) levels” ;<br>RDN:units = “” ;<br>1除以半层（质量层）间eta值之差  </p>
+<p>float <strong>DNW</strong>(Time, bottom_top) ;<br>DNW:description = “d(eta) values between full (w) levels” ;<br>DNW:units = “” ;<br>整层（w层）间eta值之差  </p>
+<p>float <strong>DN</strong>(Time, bottom_top) ;<br>DN:description = “d(eta) values between half (mass) levels” ;<br>DN:units = “” ;<br>半层（质量层）间eta值之差  </p>
+<p>float <strong>CFN</strong>(Time) ;<br>CFN:description = “extrapolation constant” ;<br>CFN:units = “” ;<br>外推常数  </p>
+<p>float <strong>CFN1</strong>(Time) ;<br>CFN1:description = “extrapolation constant” ;<br>CFN1:units = “” ;<br>外推常数1  </p>
+<p>float <strong>Q2</strong>(Time, south_north, west_east) ;<br>Q2:description = “QV at 2 M” ;<br>Q2:units = “kg kg-1” ;<br>地面上2m高度的比湿  </p>
+<p>float <strong><mark>T2</mark></strong>(Time, south_north, west_east) ;<br>T2:description = “TEMP at 2 M” ;<br>T2:units = “K” ;<br>地面上2m高度的温度  </p>
+<p>float <strong>TH2</strong>(Time, south_north, west_east) ;<br>TH2:description = “POT TEMP at 2 M” ;<br>TH2:units = “K” ;<br>地面上2m高度的位温  </p>
+<p>float <strong>PSFC</strong>(Time, south_north, west_east) ;<br>PSFC:description = “SFC PRESSURE” ;<br>PSFC:units = “Pa” ; 地面气压  </p>
+<p>float <strong>U10</strong>(Time, south_north, west_east) ;<br>U10:description = “U at 10 M” ;<br>U10:units = “m s-1” ;<br>地面上10m风场的纬向分量  </p>
+<p>float <strong>V10</strong>(Time, south_north, west_east) ;<br>V10:description = “V at 10 M” ;<br>V10:units = “m s-1” ;<br>地面上10m风场的经向分量  </p>
+<p>float <strong>RDX</strong>(Time) ;<br>RDX:description = “INVERSE X GRID LENGTH” ;<br>RDX:units = “” ;<br>1除以x方向网格距  </p>
+<p>float RDY(Time) ;<br>RDY:description = “INVERSE Y GRID LENGTH” ;<br>RDY:units = “” ;<br>1除以y方向网格距  </p>
+<p>float RESM(Time) ;<br>RESM:description = “TIME WEIGHT CONSTANT FOR SMALL STEPS” ;<br>RESM:units = “” ;<br>对小时间步长时的时间权重常数  </p>
+<p>float ZETATOP(Time) ;<br>ZETATOP:description = “ZETA AT MODEL TOP” ;<br>ZETATOP:units = “” ;<br>模式大气层顶的eta值  </p>
+<p>float CF1(Time) ;<br>CF1:description = “2nd order extrapolation constant” ;<br>CF1:units = “” ;<br>2阶外推常数1  </p>
+<p>float CF2(Time) ;<br>CF2:description = “2nd order extrapolation constant” ;<br>CF2:units = “” ;<br>2阶外推常数2  </p>
+<p>float CF3(Time) ;<br>CF3:description = “2nd order extrapolation constant” ;<br>CF3:units = “” ;<br>2阶外推常数3  </p>
+<p>int ITIMESTEP(Time) ;<br>ITIMESTEP:description = “” ;<br>ITIMESTEP:units = “” ;<br>时间步长计数  </p>
+<p>float XTIME(Time) ;<br>XTIME:description = “minutes since simulation start” ;<br>XTIME:units = “” ;<br>已经模拟时间的长度  </p>
+<p>float <strong>QVAPOR</strong>(Time, bottom_top, south_north, west_east) ;<br>QVAPOR:description = “Water vapor mixing ratio” ;<br>QVAPOR:units = “kg kg-1” ;<br>水汽混合比  </p>
+<p>float <strong>QCLOUD</strong>(Time, bottom_top, south_north, west_east) ;<br>QCLOUD:description = “Cloud water mixing ratio” ;<br>QCLOUD:units = “kg kg-1” ;<br>云水混合比  </p>
+<p>float <strong>QRAIN</strong>(Time, bottom_top, south_north, west_east) ;<br>QRAIN:description = “Rain water mixing ratio” ;<br>QRAIN:units = “kg kg-1” ;<br>雨水混合比  </p>
+<p>float <strong>LANDMASK</strong>(Time, south_north, west_east) ;<br>LANDMASK:description = “LAND MASK (1 FOR LAND, 0 FOR WATER)” ;<br>LANDMASK:units = “” ;<br>陆面指标（1是陆地，0是水体）  </p>
+<p>float <strong><mark>TSLB</mark></strong>(Time, soil_layers_stag, south_north, west_east) ;<br>TSLB:description = “SOIL TEMPERATURE” ;<br>TSLB:units = “K” ;<br>各层土壤温度  </p>
+<p>float <strong><mark>SMOIS</mark></strong>(Time, soil_layers_stag, south_north, west_east) ;<br>SMOIS:description = “SOIL MOISTURE” ;<br>SMOIS:units = “m3 m-3” ;<br>各层土壤湿度  </p>
+<p>float <strong>SH2O</strong>(Time, soil_layers_stag, south_north, west_east) ;<br>SH2O:description = “SOIL LIQUID WATER” ;<br>SH2O:units = “m3 m-3” ;<br>各层土壤液态水含量？  </p>
+<p>float <strong>SEAICE</strong>(Time, south_north, west_east) ;<br>SEAICE:description = “SEA ICE FLAG” ;<br>SEAICE:units = “” ;<br>海冰标志  </p>
+<p>float <strong>XICEM</strong>(Time, south_north, west_east) ;<br>XICEM:description = “SEA ICE FLAG (PREVIOUS STEP)” ;<br>XICEM:units = “” ;<br>上一步时的海冰标志  </p>
+<p>float <strong>SFROFF</strong>(Time, south_north, west_east) ;<br>SFROFF:description = “SURFACE RUNOFF” ;<br>SFROFF:units = “mm” ;<br>地表径流  </p>
+<p>float <strong>UDROFF</strong>(Time, south_north, west_east) ;<br>UDROFF:description = “UNDERGROUND RUNOFF” ;<br>UDROFF:units = “mm” ;<br>地下径流  </p>
+<p>int <strong>IVGTYP</strong>(Time, south_north, west_east) ;<br>IVGTYP:description = “DOMINANT VEGETATION CATEGORY” ;<br>IVGTYP:units = “” ;<br>占主导的植被种类  </p>
+<p>int <strong>ISLTYP</strong>(Time, south_north, west_east) ;<br>ISLTYP:description = “DOMINANT SOIL CATEGORY” ;<br>ISLTYP:units = “” ;<br>占主导的土壤种类  </p>
+<p>float VEGFRA(Time, south_north, west_east) ;<br>VEGFRA:description = “VEGETATION FRACTION” ;<br>VEGFRA:units = “” ;<br>植被比例  </p>
+<p>float <strong>GRDFLX</strong>(Time, south_north, west_east) ;<br>GRDFLX:description = “GROUND HEAT FLUX” ;<br>GRDFLX:units = “W m-2” ;<br>地面热通量  </p>
+<p>float SNOW(Time, south_north, west_east) ;<br>SNOW:description = “SNOW WATER EQUIVALENT” ;<br>SNOW:units = “kg m-2” ;<br>雪水当量  </p>
+<p>float SNOWH(Time, south_north, west_east) ;<br>SNOWH:description = “PHYSICAL SNOW DEPTH” ;<br>SNOWH:units = “m” ;<br>实际雪厚  </p>
+<p>float RHOSN(Time, south_north, west_east) ;<br>RHOSN:description = “ SNOW DENSITY” ;<br>RHOSN:units = “kg m-3” ;<br>雪密度  </p>
+<p>float CANWAT(Time, south_north, west_east) ;<br>CANWAT:description = “CANOPY WATER” ;<br>CANWAT:units = “kg m-2” ;<br>冠层中的水  </p>
+<p>float SST(Time, south_north, west_east) ;<br>SST:description = “SEA SURFACE TEMPERATURE” ;<br>SST:units = “K” ;<br>海表面温度  </p>
+<p>float QNDROPSOURCE(Time, bottom_top, south_north, west_east) ;<br>QNDROPSOURCE:description = “Droplet number source” ;<br>QNDROPSOURCE:units = “ /kg/s” ;<br>水滴数源  </p>
+<p>float MAPFAC_M(Time, south_north, west_east) ;<br>MAPFAC_M:description = “Map scale factor on mass grid” ;<br>MAPFAC_M:units = “” ;<br>质量格点处的地图比例系数  </p>
+<p>float MAPFAC_U(Time, south_north, west_east_stag) ;<br>MAPFAC_U:description = “Map scale factor on u-grid” ;<br>MAPFAC_U:units = “” ;<br>u-格点处的地图比例系数  </p>
+<p>float MAPFAC_V(Time, south_north_stag, west_east) ;<br>MAPFAC_V:description = “Map scale factor on v-grid” ;<br>MAPFAC_V:units = “” ;<br>v-格点处的地图比例系数  </p>
+<p>float MAPFAC_MX(Time, south_north, west_east) ;<br>MAPFAC_MX:description = “Map scale factor on mass grid, x direction” ;<br>MAPFAC_MX:units = “” ;<br>x方向上质量格点处的地图比例系数  </p>
+<p>float MAPFAC_MY(Time, south_north, west_east) ;<br>MAPFAC_MY:description = “Map scale factor on mass grid, y direction” ;<br>MAPFAC_MY:units = “” ;<br>y方向上质量格点处的地图比例系数  </p>
+<p>float MAPFAC_UX(Time, south_north, west_east_stag) ;<br>MAPFAC_UX:description = “Map scale factor on u-grid, x direction” ;<br>MAPFAC_UX:units = “” ;<br>x方向上u-格点处的地图比例系数  </p>
+<p>float MAPFAC_UY(Time, south_north, west_east_stag) ;<br>MAPFAC_UY:description = “Map scale factor on u-grid, y direction” ;<br>MAPFAC_UY:units = “” ;<br>y方向上u-格点处的地图比例系数  </p>
+<p>float MAPFAC_VX(Time, south_north_stag, west_east) ;<br>MAPFAC_VX:description = “Map scale factor on v-grid, x direction” ;<br>MAPFAC_VX:units = “” ;<br>x方向上v-格点处的地图比例系数  </p>
+<p>float MF_VX_INV(Time, south_north_stag, west_east) ;<br>MF_VX_INV:description = “Inverse map scale factor on v-grid, x direction”<br>MF_VX_INV:units = “” ;<br>1除以x方向上v-格点处的地图比例系数  </p>
+<p>float MAPFAC_VY(Time, south_north_stag, west_east) ;<br>MAPFAC_VY:description = “Map scale factor on v-grid, y direction” ;<br>MAPFAC_VY:units = “” ;<br>y方向上v-格点处的地图比例系数  </p>
+<p>float F(Time, south_north, west_east) ;<br>F:description = “Coriolis sine latitude term” ;<br>F:units = “s-1” ;<br>科氏力中sin(Ω)的部分，Ω为纬度  </p>
+<p>float E(Time, south_north, west_east) ;<br>E:description = “Coriolis cosine latitude term” ;<br>E:units = “s-1” ;<br>科氏力中cos(Ω)的部分，Ω为纬度  </p>
+<p>float SINALPHA(Time, south_north, west_east) ;<br>SINALPHA:description = “Local sine of map rotation” ;<br>SINALPHA:units = “” ;<br>局地sin（地图旋转角）  </p>
+<p>float COSALPHA(Time, south_north, west_east) ;<br>COSALPHA:description = “Local cosine of map rotation” ;<br>COSALPHA:units = “” ;<br>局地cos（地图旋转角）  </p>
+<p>float HGT(Time, south_north, west_east) ;<br>HGT:description = “Terrain Height” ;<br>HGT:units = “m” ;<br>地形高度  </p>
+<p>float HGT_SHAD(Time, south_north, west_east) ;<br>HGT_SHAD:description = “Height of orographic shadow” ;<br>HGT_SHAD:units = “m” ;<br>山岳背光坡的高度  </p>
+<p>float TSK(Time, south_north, west_east) ;<br>TSK:description = “SURFACE SKIN TEMPERATURE” ;<br>TSK:units = “K” ;<br>地表温度  </p>
+<p>float P_TOP(Time) ;<br>P_TOP:description = “PRESSURE TOP OF THE MODEL” ;<br>P_TOP:units = “Pa” ;<br>模式顶的气压  </p>
+<p>float MAX_MSTFX(Time) ;<br>MAX_MSTFX:description = “Max map factor in domain” ;<br>MAX_MSTFX:units = “” ;<br>区域内的最大地图比例系数  </p>
+<p>float RAINC(Time, south_north, west_east) ;<br>RAINC:description = “ACCUMULATED TOTAL CUMULUS PRECIPITATION” ;<br>RAINC:units = “mm” ;<br>累积的积云对流降水  </p>
+<p>float RAINNC(Time, south_north, west_east) ;<br>RAINNC:description = “ACCUMULATED TOTAL GRID SCALE PRECIPITATION” ;<br>RAINNC:units = “mm” ;<br>累积的格点降水  </p>
+<p>float PRATEC(Time, south_north, west_east) ;<br>PRATEC:description = “PRECIP RATE FROM CUMULUS SCHEME” ;<br>PRATEC:units = “mm s-1” ;<br>由积云方案算的对流降水率  </p>
+<p>float RAINCV(Time, south_north, west_east) ;<br>RAINCV:description = “TIME-STEP CUMULUS PRECIPITATION” ;<br>RAINCV:units = “mm” ;<br>计算对流降水的时间步长  </p>
+<p>float SNOWNC(Time, south_north, west_east) ;<br>SNOWNC:description = “ACCUMULATED TOTAL GRID SCALE SNOW AND ICE” ;<br>SNOWNC:units = “mm” ;<br>累积的格点降雪和冰量  </p>
+<p>float GRAUPELNC(Time, south_north, west_east) ;<br>GRAUPELNC:description = “ACCUMULATED TOTAL GRID SCALE GRAUPEL” ;<br>GRAUPELNC:units = “mm” ;<br>累积的格点降雪丸量  </p>
+<p>float EDT_OUT(Time, south_north, west_east) ;<br>EDT_OUT:description = “EDT FROM GD SCHEME” ;<br>EDT_OUT:units = “” ;<br>Grell-Devenyi方案计算的edt场  </p>
+<p>float SWDOWN(Time, south_north, west_east) ;<br>SWDOWN:description = “DOWNWARD SHORT WAVE FLUX AT GROUND SURFACE” ;<br>SWDOWN:units = “W m-2” ;<br>地表处的向下短波辐射通量  </p>
+<p>float GLW(Time, south_north, west_east) ;<br>GLW:description = “DOWNWARD LONG WAVE FLUX AT GROUND SURFACE” ;<br>GLW:units = “W m-2” ;<br>地表处的向下长波辐射通量  </p>
+<p>float OLR(Time, south_north, west_east) ;<br>OLR:description = “TOA OUTGOING LONG WAVE” ;<br>OLR:units = “W m-2” ;<br>TOA处的向上长波辐射通量  </p>
+<p>float XLAT(Time, south_north, west_east) ;<br>XLAT:description = “LATITUDE, SOUTH IS NEGATIVE” ;<br>XLAT:units = “degree_north” ;<br>质量点的纬度（南半球为负值）  </p>
+<p>float XLONG(Time, south_north, west_east) ;<br>XLONG:description = “LONGITUDE, WEST IS NEGATIVE” ;<br>XLONG:units = “degree_east” ;<br>质量点的经度（西半球为负值）  </p>
+<p>float XLAT_U(Time, south_north, west_east_stag) ;<br>XLAT_U:description = “LATITUDE, SOUTH IS NEGATIVE” ;<br>XLAT_U:units = “degree_north” ;<br>U-格点的纬度（南半球为负值）  </p>
+<p>float XLONG_U(Time, south_north, west_east_stag) ;<br>XLONG_U:description = “LONGITUDE, WEST IS NEGATIVE” ;<br>XLONG_U:units = “degree_east” ;<br>U-格点的经度（西半球为负值）  </p>
+<p>float XLAT_V(Time, south_north_stag, west_east) ;<br>XLAT_V:description = “LATITUDE, SOUTH IS NEGATIVE” ;<br>XLAT_V:units = “degree_north” ;<br>V-格点的纬度（南半球为负值）  </p>
+<p>float XLONG_V(Time, south_north_stag, west_east) ;<br>XLONG_V:description = “LONGITUDE, WEST IS NEGATIVE” ;<br>XLONG_V:units = “degree_east” ;<br>V-格点的经度（西半球为负值）  </p>
+<p>float ALBEDO(Time, south_north, west_east) ;<br>ALBEDO:description = “ALBEDO” ;<br>ALBEDO:units = “-“ ;<br>反照率  </p>
+<p>float ALBBCK(Time, south_north, west_east) ;<br>ALBBCK:description = “BACKGROUND ALBEDO” ;<br>ALBBCK:units = “” ;<br>背景反照率  </p>
+<p>float EMISS(Time, south_north, west_east) ;<br>EMISS:description = “SURFACE EMISSIVITY” ;<br>EMISS:units = “” ;<br>地面发射率  </p>
+<p>float TMN(Time, south_north, west_east) ;<br>TMN:description = “SOIL TEMPERATURE AT LOWER BOUNDARY” ;<br>TMN:units = “K” ;<br>更低边界处的土壤温度  </p>
+<p>float XLAND(Time, south_north, west_east) ;<br>XLAND:description = “LAND MASK (1 FOR LAND, 2 FOR WATER)” ;<br>XLAND:units = “” ;<br>陆面指标（1是陆地，2是水体）  </p>
+<p>float UST(Time, south_north, west_east) ;<br>UST:description = “U* IN SIMILARITY THEORY” ;<br>UST:units = “m s-1” ;<br>相似性理论中的摩擦速度  </p>
+<p>float PBLH(Time, south_north, west_east) ;<br>PBLH:description = “PBL HEIGHT” ;<br>PBLH:units = “m” ;<br>行星边界层高度  </p>
+<p>float HFX(Time, south_north, west_east) ;<br>HFX:description = “UPWARD HEAT FLUX AT THE SURFACE” ;<br>HFX:units = “W m-2” ;<br>地表面处向上的热量通量（感热通量）  </p>
+<p>float QFX(Time, south_north, west_east) ;<br>QFX:description = “UPWARD MOISTURE FLUX AT THE SURFACE” ;<br>QFX:units = “kg m-2 s-1” ;<br>地表面处向上的水汽通量  </p>
+<p>float LH(Time, south_north, west_east) ;<br>LH:description = “LATENT HEAT FLUX AT THE SURFACE” ;<br>LH:units = “W m-2” ;<br>地表面处的潜热通量  </p>
+<p>float SNOWC(Time, south_north, west_east) ;<br>SNOWC:description = “FLAG INDICATING SNOW COVERAGE (1 FOR SNOW COVER)” ;<br>SNOWC:units = “” ;<br>雪盖标志（1是有雪）</p>
 
     </div>
 
