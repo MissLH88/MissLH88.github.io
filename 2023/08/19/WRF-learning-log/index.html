@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"misslh88.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="2023年8月18日老师给了机器账号之后，开始自主安装WRF模式。本文中所有操作仅供参考，具体看个人机器情况而定。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WRF learning log">
+<meta property="og:url" content="https://misslh88.github.io/2023/08/19/WRF-learning-log/index.html">
+<meta property="og:site_name" content="LH&#39;s blog">
+<meta property="og:description" content="2023年8月18日老师给了机器账号之后，开始自主安装WRF模式。本文中所有操作仅供参考，具体看个人机器情况而定。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-08-19T07:10:10.000Z">
+<meta property="article:modified_time" content="2024-09-02T09:14:11.799Z">
+<meta property="article:author" content="MissLH88">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://misslh88.github.io/2023/08/19/WRF-learning-log/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://misslh88.github.io/2023/08/19/WRF-learning-log/","path":"2023/08/19/WRF-learning-log/","title":"WRF learning log"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>WRF learning log | LH's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">LH's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Research in atmospheric sciences, IAP, Beijing, China</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">安装模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%8C%85"><span class="nav-number">1.1.</span> <span class="nav-text">安装包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85WRF"><span class="nav-number">1.2.</span> <span class="nav-text">安装WRF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85WPS"><span class="nav-number">1.3.</span> <span class="nav-text">安装WPS</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">运行模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ERA5"><span class="nav-number">2.0.1.</span> <span class="nav-text">ERA5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GFS"><span class="nav-number">2.0.2.</span> <span class="nav-text">GFS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8CWPS"><span class="nav-number">2.1.</span> <span class="nav-text">运行WPS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8CWRF"><span class="nav-number">2.2.</span> <span class="nav-text">运行WRF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AEsst-update-1"><span class="nav-number">2.3.</span> <span class="nav-text">设置sst_update&#x3D;1</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B6%85%E7%AE%97%E8%BF%90%E8%A1%8C"><span class="nav-number">3.</span> <span class="nav-text">超算运行</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#qsub"><span class="nav-number">3.1.</span> <span class="nav-text">qsub</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sbatch"><span class="nav-number">3.2.</span> <span class="nav-text">sbatch</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E5%AE%83%E9%97%AE%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text">其它问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%B8%A6%E7%9A%84%E8%AF%B4%E6%98%8E%E6%96%87%E4%BB%B6"><span class="nav-number">4.1.</span> <span class="nav-text">自带的说明文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E6%89%BErsl%E4%B8%AD%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">4.2.</span> <span class="nav-text">查找rsl中的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#forrtl-severe-174"><span class="nav-number">4.3.</span> <span class="nav-text">forrtl: severe (174)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E5%BE%97%E6%85%A2%EF%BC%88%E8%A1%80%E6%B3%AA%EF%BC%89"><span class="nav-number">4.4.</span> <span class="nav-text">算得慢（血泪）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E7%BB%A7%E7%BB%AD%E8%AE%A1%E7%AE%97"><span class="nav-number">4.5.</span> <span class="nav-text">关于继续计算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E8%AE%A1%E7%AE%97%E6%97%B6%E9%95%BF"><span class="nav-number">4.6.</span> <span class="nav-text">关于计算时长</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E5%85%85%E5%AE%89%E8%A3%85hdf5"><span class="nav-number">4.7.</span> <span class="nav-text">补充安装hdf5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%85%E7%90%86%E7%A9%BA%E9%97%B4"><span class="nav-number">4.8.</span> <span class="nav-text">清理空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D"><span class="nav-number">4.9.</span> <span class="nav-text">修改文件名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E4%BC%A0%E8%BE%93%E6%96%87%E4%BB%B6"><span class="nav-number">4.10.</span> <span class="nav-text">远程传输文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E7%9B%AE%E5%BD%95%E7%A9%BA%E9%97%B4%E5%A4%A7%E5%B0%8F"><span class="nav-number">4.11.</span> <span class="nav-text">查看当前目录空间大小</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wrf%E4%B8%AD%E7%9A%84%E5%9C%B0%E5%BD%A2%E6%95%B0%E6%8D%AE"><span class="nav-number">4.12.</span> <span class="nav-text">wrf中的地形数据</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8B%86%E8%A7%A3WRF%E6%BA%90%E7%A0%81"><span class="nav-number">5.</span> <span class="nav-text">拆解WRF源码</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">MissLH88</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://misslh88.github.io/2023/08/19/WRF-learning-log/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="MissLH88">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LH's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="WRF learning log | LH's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          WRF learning log
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-08-19 15:10:10" itemprop="dateCreated datePublished" datetime="2023-08-19T15:10:10+08:00">2023-08-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-09-02 17:14:11" itemprop="dateModified" datetime="2024-09-02T17:14:11+08:00">2024-09-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%A7%91%E7%A0%94%E5%AE%9E%E8%B7%B5/" itemprop="url" rel="index"><span itemprop="name">科研实践</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>2023年8月18日老师给了机器账号之后，开始自主安装WRF模式。本文中所有操作仅供参考，具体看个人机器情况而定。</p>
+<span id="more"></span>
+<h1 id="安装模式"><a href="#安装模式" class="headerlink" title="安装模式"></a>安装模式</h1><p>主要参考网站：</p>
+<p><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/OnLineTutorial/compilation_tutorial.php#STEP1">Compiling WRF</a></p>
+<p><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/wrf_users_guide/build/html/index.html">最新WRF4.5手册网站 WRF Users Guide documentation</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/column/c_1556313898067869696">WRF4.4中文手册</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_40483871/article/details/123322888">WRF安装及运行——在服务器上_qq_40483871的博客-CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43750300/article/details/125741208?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-0-125741208-blog-126924512.235^v38^pc_relevant_yljh&amp;spm=1001.2101.3001.4242.1&amp;utm_relevant_index=3">超算入门笔记：大型机上如何运行WRF模式？一文总结（并行运算、Linux基础、作业调度、WRF运行）_什么都不会的张同学的博客-CSDN博客</a></p>
+<h2 id="安装包"><a href="#安装包" class="headerlink" title="安装包"></a>安装包</h2><p>安装包下载地址：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WPS/releases">https://github.com/wrf-model/WPS/releases</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/releases">https://github.com/wrf-model/WRF/releases</a></p>
+<p>记录：</p>
+<p>安装包的时候，最容易出问题的地方，就是环境。</p>
+<ol>
+<li>在安装netcdf-fortran-4.5.2过程中，经验如下：</li>
+</ol>
+<p>./configure 的时候是在检查环境，报错：C compiler cannot create executables</p>
+<p>解决方法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export LIBS=</span><br><span class="line">export CFLAGS=</span><br></pre></td></tr></table></figure>
+<p>这时候会报新的错：netcdf.h could not be found. Please set CPPFLAGS</p>
+<p>可以echo $CPPFLAGS查看一下对应的路径下面是否有netcdf.h文件，是没有的，那肯定找不到，<a target="_blank" rel="noopener" href="https://github.com/Unidata/netcdf-fortran/issues/73">解决方法</a>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export CPPFLAGS=-I$NETCDF/include</span><br><span class="line">export LDFLAGS=-L$NETCDF/lib</span><br></pre></td></tr></table></figure>
+<p>其中{NCDIR}是安装netcdf包的位置，比如笔者按照官网教程安装就是在/Build_WRF/LIBRARIES/netcdf</p>
+<p>然后再configure就行</p>
+<p>背景：后续，我发现使用ifort/icc编译更加稳定，机器上的版本也更合适，所以就换成了intel。</p>
+<h2 id="安装WRF"><a href="#安装WRF" class="headerlink" title="安装WRF"></a>安装WRF</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup ./compile em_real &gt; log.compile 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>在编译WRF的时候，总是无法生成exe文件</li>
+</ol>
+<p>最新的WRF4.5.1/4.5/4.4，我编译的时候，总是报各种奇怪的错，还很多，我就一路版本降级，到WRF4.3的时候，比较正常，只有17个error在我的compile.log里面了。</p>
+<p>报错如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ld: warning: libimf.so, needed by ../src/.libs/libhdf5.so, not found (try using -rpath or -rpath-link)</span><br><span class="line">ld: warning: libsvml.so, needed by ../src/.libs/libhdf5.so, not found (try using -rpath or -rpath-link)</span><br><span class="line">ld: warning: libirng.so, needed by ../src/.libs/libhdf5.so, not found (try using -rpath or -rpath-link)</span><br><span class="line">ld: warning: libintlc.so.5, needed by ../src/.libs/libhdf5.so, not found (try using -rpath or -rpath-link)</span><br><span class="line">......之类的</span><br><span class="line">make[1]: [em_real] Error 1 (ignored)</span><br></pre></td></tr></table></figure>
+<p>总而言之就是libifport.so.5, libimf.so, libsvml.so，libintlc.so.5, libirng.so这几个文件找不到，说明这几个文件从LD_LIBRARY_PATH里面存储的路径中都找不到。</p>
+<p>网上很多教程是直接加上intel的文件夹，但是很多不同版本和习惯安装的结果是这些包存在的文件夹对不同人来说是不一样的，所以我们需要手动寻找到在自己的机器上这些包存在哪里。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">which ifort</span><br></pre></td></tr></table></figure>
+<p>寻找到自己目前环境里正在使用的intel安装在哪里，进去寻找这些文件存在的文件夹地址AAA，然后把这个地址加入到包环境路径中，这样在编译的时候，就不会存在这些文件找不到的现象，也就可以成功运行出exe文件了。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export LD_LIBRARY_PATH=AAA:$LD_LIBRARY_PATH</span><br></pre></td></tr></table></figure>
+<p>还可以使用</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo $LD_LIBRARY_PATH</span><br></pre></td></tr></table></figure>
+<p>命令输出当前的路径有哪里，检查这一条路径是否顺利加进去。</p>
+<p>有的时候有的文件找不到，也可以echo检查自己是不是写错了什么字母。我有一次把grib2写成了gribs，哈哈哈。</p>
+<h2 id="安装WPS"><a href="#安装WPS" class="headerlink" title="安装WPS"></a>安装WPS</h2><ol>
+<li>安装WPS</li>
+</ol>
+<p>先确定WRF_DIR:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export WRF_DIR=/public/home/Build_WRF/WRFV4.5.1</span><br></pre></td></tr></table></figure>
+<p>注意编译WPS之前要设置好jasper库的地址：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export JASPERLIB=$DIR/grib2/lib</span><br><span class="line">export JASPERINC=$DIR/grib2/include</span><br></pre></td></tr></table></figure>
+<p>实际编译的命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">./clean</span><br><span class="line">./configure</span><br><span class="line">./compile &gt;&amp; log.compile</span><br><span class="line">或者nohup ./compile &gt; log.compile 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+<h1 id="运行模式"><a href="#运行模式" class="headerlink" title="运行模式"></a>运行模式</h1><h3 id="ERA5"><a href="#ERA5" class="headerlink" title="ERA5"></a>ERA5</h3><ol>
+<li>使用ERA5数据驱动WRF</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43750300/article/details/115320311?spm=1001.2014.3001.5502">毕业实习笔记——WRF模式入门(Cygwin版）</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.heywhale.com/mw/project/634388b59778356ddcd0ac66">下载ERA5等压面和地表数据，驱动WRF模式</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43750300/article/details/126544394?spm=1001.2014.3001.5502">WRF学习笔记之三：使用ERA5数据驱动并运行WRFV4.4（一层嵌套）</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jiangleads/articles/14211982.html">WRF学习之 ch3 WPS（三）WPS并行，检查WPS输出，WPS工具，输出到中间文件，运行WRF所需要的气象场，使用MPAS输出作为WRF初边界条件 - chinagod - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://xg1990.com/blog/archives/206">用WRF模型进行气象模拟入门(2)——WPS的配置与使用 - xg1990</a></p>
+<h3 id="GFS"><a href="#GFS" class="headerlink" title="GFS"></a>GFS</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44237337/article/details/123152177">使用GFS数据驱动WRF模式场—2层嵌套 全过程学习记录_gfs资料驱动wrf-CSDN博客</a></p>
+<h2 id="运行WPS"><a href="#运行WPS" class="headerlink" title="运行WPS"></a>运行WPS</h2><p>修改WPS目录下的namelist.wps文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">&amp;share</span><br><span class="line"> wrf_core = &#x27;ARW&#x27;,#运行核心模块</span><br><span class="line"> max_dom = 1,#最大网格嵌套层数</span><br><span class="line"> start_date = &#x27;2000-01-24_12:00:00&#x27;,&#x27;2000-01-24_12:00:00&#x27;,</span><br><span class="line"> end_date   = &#x27;2000-01-25_00:00:00&#x27;,&#x27;2000-01-25_00:00:00&#x27;,</span><br><span class="line"> interval_seconds = 21600 #前处理的两次分析时间之间的时间间隔，以s为单位，对于6小时在分析文件设为21600</span><br><span class="line"> io_form_geogrid = 2,#geogrid输出格式，一般为2，输入1时为binary，后缀是.int文件，当输入2时为NetCDF，后缀为.nc文件，当输入3时为GRIB1，后缀为.gr1文件</span><br><span class="line">/</span><br><span class="line"></span><br><span class="line">&amp;geogrid</span><br><span class="line"> parent_id         =   1,   1,#嵌套区域的母区域的标号。注意MOAD 本身没有母区域，因此PARENT_ID </span><br><span class="line">的第一列总是设为1。第二列必须等于1。总列数必须等于NUM_DOMAINS</span><br><span class="line"> parent_grid_ratio =   1,   3,#嵌套时母网格与子网格之间的比例</span><br><span class="line"> i_parent_start    =   1,  31,#嵌套网格的左下角（LLC）在上一级网格（母网格）中x方向的起始位置</span><br><span class="line"> j_parent_start    =   1,  17,#嵌套网格的左下角（LLC）在上一级网格（母网格）中y方向的起始位置</span><br><span class="line"> e_we              =  74, 112,#不同层网格x方向格点数</span><br><span class="line"> e_sn              =  61,  97,#不同层网格y方向格点数</span><br><span class="line"> geog_data_res     = &#x27;10m&#x27;,&#x27;2m&#x27;,#区域所对应选择的地表面静态数据</span><br><span class="line"> dx = 30000,</span><br><span class="line"> dy = 30000,#x/y方向格距，单位m，</span><br><span class="line"> map_proj = &#x27;lambert&#x27;,#选择的投影方式&#x27;lambert&#x27;, &#x27;polar&#x27;, &#x27;mercator&#x27;, and &#x27;lat-lon&#x27;</span><br><span class="line"> ref_lat   =  34.83,#中心纬度，即模式最外层中心位置纬度</span><br><span class="line"> ref_lon   = -81.03,#中心经度，即模式最外层中心位置经度</span><br><span class="line"> truelat1  =  30.0,</span><br><span class="line"> truelat2  =  60.0,#标准经纬度，根据投影确定</span><br><span class="line"> stand_lon = -98.0,#标准经度，与中心经度保持一致</span><br><span class="line"> geog_data_path = &#x27;/opt/GEOG&#x27;#地表静态数据的路径</span><br><span class="line">/</span><br><span class="line"></span><br><span class="line">&amp;ungrib</span><br><span class="line"> out_format = &#x27;WPS&#x27;,#输出文件的形式，有MM5，WPS和SI三种形式</span><br><span class="line"> prefix = &#x27;FILE&#x27;,#输出文件的前缀，默认为FILE形式</span><br><span class="line">/</span><br><span class="line"></span><br><span class="line">&amp;metgrid</span><br><span class="line"> fg_name = &#x27;FILE&#x27;</span><br><span class="line"> io_form_metgrid = 2, </span><br><span class="line">/</span><br></pre></td></tr></table></figure>
+<p>运行WPS：</p>
+<ul>
+<li><p><strong>geogrid</strong> defines model domains and interpolates static geographical data to the grids; </p>
+</li>
+<li><p><strong>ungrib</strong> extracts meteorological fields from GRIB-formatted files; </p>
+</li>
+<li><p><strong>metgrid</strong> horizontally interpolates the meteorological fields extracted by ungrib to the model grids defined by geogrid. </p>
+</li>
+<li><p>The work of vertically interpolating meteorological fields to WRF eta levels is performed within the <strong>real</strong> program</p>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">./geogrid.exe &gt;&amp; log.geogrid</span><br><span class="line">ln -sf ungrib/Variable_Tables/Vtable.ECMWF Vtable</span><br><span class="line">./link_grib.csh /public/home/..../Build_WRF/DATA/era5/2013/*.grib</span><br><span class="line">在另一个服务器上：</span><br><span class="line">./link_grib.csh /public1/home/..../Build_WRF/DATA/2013/*.grib</span><br><span class="line">./ungrib.exe &gt;&amp; log.ungrib</span><br><span class="line">./metgrid.exe &gt;&amp; log.metgrid</span><br></pre></td></tr></table></figure>
+<p><strong>sst_update=1:</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">./geogrid.exe &gt;&amp; log.geogrid</span><br><span class="line">ln -sf ungrib/Variable_Tables/Vtable.ECMWF Vtable</span><br><span class="line"></span><br><span class="line">ln -sf  ungrib/Variable_Tables/Vtable.SST Vtable</span><br><span class="line"></span><br><span class="line">./link_grib.csh /public/home/..../Build_WRF/DATA/era5/2013/*.grib</span><br><span class="line">在另一个服务器上：</span><br><span class="line">./link_grib.csh /public1/home/..../Build_WRF/DATA/2013/*.grib</span><br><span class="line"></span><br><span class="line">/public1/home/sunguodong/liuhui/Build_WRF/DATA/2013</span><br><span class="line"></span><br><span class="line">./ungrib.exe &gt;&amp; log.ungrib</span><br><span class="line">./metgrid.exe &gt;&amp; log.metgrid</span><br></pre></td></tr></table></figure>
+<p>把以上内容写进一个shell文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup sh run_wps.sh &gt; log.runwps 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+<p>查看嵌套区域：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">先打开plotgrids_new.ncl文件，将type=x11注释，改为type=pdf</span><br><span class="line">ncl util/plotgrids_new.ncl</span><br></pre></td></tr></table></figure>
+<p>会在WPS路径下生成：wps_show_dom.pdf文件。</p>
+<h2 id="运行WRF"><a href="#运行WRF" class="headerlink" title="运行WRF"></a>运行WRF</h2><p>先在WPS路径下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ncdump -h met_em.d01.2016-07-03_00\:00\:00.nc &gt;&amp; ncinfo.log</span><br></pre></td></tr></table></figure>
+<p>查看预处理后的文件的信息，保证前后的设置一致。</p>
+<p>修改WRF/run或者WRF/test/em_real（或者复制一下这两个文件夹）下namelist.imput文件。记得把namelist.input里num_metgrid_levels的值改为38。<br><a target="_blank" rel="noopener" href="https://esrl.noaa.gov/gsd/wrfportal/namelist_input_options.html#:~:text=WRF%20NAMELIST.INPUT%20FILE%20DESCRIPTION%20%20%20Name%20,time%20in%20minutes%20%2030%20more%20rows%20">WRF NAMELIST.INPUT FILE DESCRIPTION</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/517245805">WRF中namelist.wps与namelist.input参数详解</a></p>
+<p><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/physics/phys_references.html">WRF Model Physics References</a></p>
+<p>初始化的操作：an initialization program for either real-data (real.exe) or idealized data (ideal.exe), </p>
+<p>数值积分迭代：a numerical integration program (wrf.exe), </p>
+<p>其他：a program allowing one-way nesting for domains run separately (ndown.exe), and a program for tropical storm bogussing (tc.exe)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd WRF/test/em_real2</span><br><span class="line">ln -sf ../../../WPS-4.5/met_em* .</span><br><span class="line">ln -sf ../../../WPS-4.4/met_em* .</span><br><span class="line">./real.exe &gt;&amp; log.real</span><br><span class="line">或者nohup ./real.exe &gt;&amp; log.real 2&gt;&amp;1 &amp;</span><br><span class="line">./wrf.exe &gt;&amp; log.wrfexe</span><br><span class="line">或者nohup ./wrf.exe &gt;&amp; log.wrfexe 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+<p>生成wrfout文件即为运行成功！</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ncdump -h wrfout_d01_2016-07-03_00\:00\:00 &gt;&amp; wrfout_info.log</span><br></pre></td></tr></table></figure>
+<h2 id="设置sst-update-1"><a href="#设置sst-update-1" class="headerlink" title="设置sst_update=1"></a>设置sst_update=1</h2><p><a target="_blank" rel="noopener" href="https://bbs.06climate.com/forum.php?mod=viewthread&amp;tid=44703">气象家园 毕业大甩卖 之 WRF 进行 SST update 的简要步骤</a></p>
+<p><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/SST/index.php">ARW OnLine Tutorial:  Input SST Data into the Model</a></p>
+<p>实践，不需要特别处理SST，原来处理的文件里就有</p>
+<h1 id="超算运行"><a href="#超算运行" class="headerlink" title="超算运行"></a>超算运行</h1><p>查看机器配置情况——lscpu</p>
+<h2 id="qsub"><a href="#qsub" class="headerlink" title="qsub"></a>qsub</h2><p>呜呜呜好搞笑。</p>
+<p>我和师姐说我模拟的一个月，已经跑了一天了，师姐说你肯定有问题，她只要算2-3小时。我就懵了哈哈哈。</p>
+<p>原来是因为我是单核在算，师姐说要提交多核运算。</p>
+<p>这里补充一些在超算上提交任务查看任务的学习。</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yqsun/p/5433070.html">PBS命令和使用 - yqsun - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/682f1f64e53c">qsub任务提交系统 - 简书</a></p>
+<p>创建一个wrfpbs.pbs文件，将qsub命令需要的选项都存储在一个脚本里提交。只要输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qsub wrfpbs.pbs</span><br></pre></td></tr></table></figure>
+<p>输入以上命令就可以提交任务了。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">PBS -V</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">PBS -q normal</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">PBS -N wrf01</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">PBS -j oe</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">PBS -l nodes=4:ppn=20</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">PBS -l walltime=500:00:00</span></span><br><span class="line"></span><br><span class="line">cd $PBS_O_WORKDIR</span><br><span class="line">mpirun -np 80 -machinefile $PBS_NODEFILE  /public/home/../Build_WRF/WRFV4.5.1/test/em_real2/wrf.exe</span><br></pre></td></tr></table></figure>
+<p>-V ： 表明qsub命令的所有环境变量都export到此作业。</p>
+<p>-q  destination</p>
+<p>-N  name： 作业名，限15个字符，首字符为字母，无空格。</p>
+<p>nodes=N:ppn=M     ：请求N个结点，每个结点M个处理器。</p>
+<p>以上设置4个结点，每个结点20个处理器，所以一共80个进程。</p>
+<p>ppn：Processors Per Node</p>
+<p>-j  oe  ：输出标准输出信息与标准错误信息。</p>
+<p>PBS -l walltime=500:00:00设置程序最大运行时间为500小时</p>
+<p>其他的一些命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Job id 是给你提交的任务分配的任务号</span><br><span class="line">S是任务状态，R表示正在运行，Q表示正在排队，E表示正在退出，</span><br><span class="line">H表示挂起，C表示运行完毕</span><br><span class="line">qstat -a   （查看作业的状态）</span><br><span class="line">qstat -n   （查看作业使用的节点）</span><br><span class="line">qstat -f  211   （查看有关作业运行具体信息）</span><br><span class="line">qdel 作业号 （删除作业）</span><br></pre></td></tr></table></figure>
+<h2 id="sbatch"><a href="#sbatch" class="headerlink" title="sbatch"></a>sbatch</h2><p><a target="_blank" rel="noopener" href="https://ac.sugon.com/doc/1.0.6/11276/general-handbook/scheduler/sinfo.html">分区信息查询-sinfo · 计算服务</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">SBATCH -J 12h-maria  <span class="comment"># job name</span></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">SBATCH -p i01203share             <span class="comment"># queue (partition) -- normal, development,ect.</span></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">SBATCH -n 64       <span class="comment"># total number of mpi tasks requested</span></span> </span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">SBATCH -N 3           <span class="comment">### 1           # number of nodes requested</span></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">SBATCH -t 12:00:00           <span class="comment"># run time (hh:mm:ss)  - 1.5 hours</span></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">SBATCH -o maria10        <span class="comment"># out and error file name (%j expands to jobid)</span></span></span><br><span class="line"></span><br><span class="line">mpirun -np  64 ./wrf.exe</span><br></pre></td></tr></table></figure>
+<p><strong>sinfo-查看分区信息</strong></p>
+<p>PARTITION表示分区、NODES表示节点数、STATE表示节点运行状态、NODELIST表示节点列表。</p>
+<p>状态一列中idle表示节点处于空闲状态，可接收新的作业；allocated表示节点已经分配了一个或者多个作业且所有核心用满，在作业释放前不能再被分配作业；mix状态为使用部分核心，仍可以被分配作业；drain状态表示对应节点已经下线；drng表示已下线但仍有作业在运行。</p>
+<p><strong>squeue-查看作业信息</strong></p>
+<p>其中JOBID表示任务ID编号，PARTITION表示作业所在队列（分区），NAME表示任务名称，USER为用户，ST为作业状态，TIME为已运行时间，NODES表示占用节点数，NODELIST(REASON)为任务运行的节点列表或者原因说明。</p>
+<p>另外，状态列中R-Runing（正在运行），PD-PenDing（资源不足，排队中），CG-COMPLETING(作业正在完成中)，CA-CANCELLED（作业被人为取消），CD-COMPLETED（作业运行完成），F-FAILED 作业运行失败，NF-NODE_FAIL节点问题导致作业运行失败，PR 作业被抢占，S 作业被挂起，TO 作业超时被杀。</p>
+<p><strong>scancel-删除作业</strong></p>
+<p>scancel &lt;作业号&gt;</p>
+<p>如果需要删除当前用户下所有的任务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scancel -u 用户名</span><br></pre></td></tr></table></figure>
+<h1 id="其它问题"><a href="#其它问题" class="headerlink" title="其它问题"></a>其它问题</h1><h2 id="自带的说明文件"><a href="#自带的说明文件" class="headerlink" title="自带的说明文件"></a>自带的说明文件</h2><p>在/WRF/run目录下，有几个README.*文件。</p>
+<p>README.namelist 对namelist.input中的变量进行介绍。</p>
+<p>README.tslist 对输出wrfout的一些变量进行介绍。</p>
+<h2 id="查找rsl中的问题"><a href="#查找rsl中的问题" class="headerlink" title="查找rsl中的问题"></a>查找rsl中的问题</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">grep -i error rsl*</span><br><span class="line">grep cfl rsl.*</span><br></pre></td></tr></table></figure>
+<h2 id="forrtl-severe-174"><a href="#forrtl-severe-174" class="headerlink" title="forrtl: severe (174)"></a>forrtl: severe (174)</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42487488/article/details/119703861">WRF运行wrf.exe出现forrtl: severe (174): SIGSEGV, segmentation fault occurred问题原因与解决合集_陆詟水栗的博客-CSDN博客</a></p>
+<h2 id="算得慢（血泪）"><a href="#算得慢（血泪）" class="headerlink" title="算得慢（血泪）"></a>算得慢（血泪）</h2><p>要注意，之前按照教程configure WRF的时候，选择的编译器选项都是13，如果要并行，要重新configure和compile，选择编译器15。</p>
+<p>注意WPS也要重新configure，选择19.</p>
+<p>还是算得很慢</p>
+<p>把模式版本降低从4.5.1降低到4.2.1，计算时间从1h/天降低到30min/天。</p>
+<p>但是还是很慢</p>
+<p>把使用的结点和线程从4结点，80线程降低到2结点，40线程，计算速度大幅提高，达到6min/天。</p>
+<p>老天爷，谁想到，用的结点和线程多了，反而会影响计算效率。</p>
+<h2 id="关于继续计算"><a href="#关于继续计算" class="headerlink" title="关于继续计算"></a>关于继续计算</h2><p>可以打开namelist.input中restart按钮，就会使用保存到wrfrst开头文件进行继续计算。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">restart   = .true.,</span><br></pre></td></tr></table></figure>
+<h2 id="关于计算时长"><a href="#关于计算时长" class="headerlink" title="关于计算时长"></a>关于计算时长</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;Job start time =&quot; `date`</span><br><span class="line">mpirun -machinefile $PBS_NODEFILE -np $NSLOTS  ./wrf.exe</span><br><span class="line">echo &quot;Job end time =&quot; `date`</span><br></pre></td></tr></table></figure>
+<h2 id="补充安装hdf5"><a href="#补充安装hdf5" class="headerlink" title="补充安装hdf5"></a>补充安装hdf5</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/sdlyx2017/article/details/125201378">使用intel编译器编译WRF4.4_wrf编译不同intel编译器的区别_sdlyx2017的博客-CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av585824580/?vd_source=85d54fc11dd93b84e21426000c453a3e">【WRF×HDF5】关于WRF利用netCDF4/HDF5特性以节省磁盘空间的讨论</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">./configure --prefix=$DIR/hdf5 </span><br><span class="line">--with-zlib=/public1/home/..../Build_WRF/LIBRARIES/grib2</span><br><span class="line">--enable-fortran</span><br><span class="line">./configure --prefix=$DIR --with-zlib=$DIR --enable-fortran</span><br><span class="line"></span><br><span class="line">make -j8</span><br><span class="line">make test</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<p>安装完hdf5之后，需要重新安装netcdf</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export LDFLAGS=-L$DIR/hdf5/lib</span><br><span class="line">export CPPFLAGS=-I$DIT/hdf5/include</span><br><span class="line">./configure --prefix=$DIR/netcdf  </span><br></pre></td></tr></table></figure>
+<p>如果想要使用python的wrf-python包对wrfout文件进行处理，还是不要安装hdf5模块了，虽然文件会压缩变小，但是格式会从nc变成hdf5，相应的wrf-python中那些方便的命令都无法使用了。</p>
+<h2 id="清理空间"><a href="#清理空间" class="headerlink" title="清理空间"></a>清理空间</h2><p>查看当前用户空间</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mmlsquota -u 用户名 --block-size G</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -f rsl* wrfout* wrfrst* wrfbdy* met_em* wrflowinp*</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -f FILE* GRIBFILE* met_em* PFILE*</span><br></pre></td></tr></table></figure>
+<h2 id="修改文件名"><a href="#修改文件名" class="headerlink" title="修改文件名"></a>修改文件名</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv a.txt a1.txt</span><br></pre></td></tr></table></figure>
+<h2 id="远程传输文件"><a href="#远程传输文件" class="headerlink" title="远程传输文件"></a>远程传输文件</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -rp 172.24.5.12:/home/wsupport /home/wsupport/</span><br></pre></td></tr></table></figure>
+<h2 id="查看当前目录空间大小"><a href="#查看当前目录空间大小" class="headerlink" title="查看当前目录空间大小"></a>查看当前目录空间大小</h2><p>查看当前目录总共占的容量，而不单独列出各子项占用的容量:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">du -sh</span><br></pre></td></tr></table></figure>
+<p>单独列出各子项占用的容量，并且从大到小排序:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">du -sh ./* .|sort -hr</span><br></pre></td></tr></table></figure>
+<h2 id="wrf中的地形数据"><a href="#wrf中的地形数据" class="headerlink" title="wrf中的地形数据"></a>wrf中的地形数据</h2><p>存储在geo_em.文件/met_em.文件和wrfout文件中的<strong>HGT/HGT_M</strong>变量中。</p>
+<h1 id="拆解WRF源码"><a href="#拆解WRF源码" class="headerlink" title="拆解WRF源码"></a>拆解WRF源码</h1><ol>
+<li><p><strong>主目录结构</strong>：</p>
+<ul>
+<li><strong>arch</strong>：包含不同计算平台的配置文件。</li>
+<li><strong>chem</strong>：化学模块，用于大气化学模拟。</li>
+<li><strong>dyn_em</strong>：ARW（Advanced Research WRF）动力核心。</li>
+<li><strong>dyn_nmm</strong>：NMM（Nonhydrostatic Mesoscale Model）动力核心。</li>
+<li><strong>external</strong>：外部库和工具。</li>
+<li><strong>frame</strong>：框架代码，包括时间步进和网格处理。</li>
+<li><strong>inc</strong>：包含头文件。</li>
+<li><strong>main</strong>：主程序和初始化代码。</li>
+<li><strong>phys</strong>：物理过程模块，包括辐射、微物理、边界层等。</li>
+<li><strong>run</strong>：运行时所需的配置文件和脚本。</li>
+<li><strong>share</strong>：共享代码和工具。</li>
+<li><strong>test</strong>：测试用例和验证代码。</li>
+<li><strong>tools</strong>：工具和实用程序。</li>
+</ul>
+</li>
+<li><p><strong>主要文件</strong>：</p>
+<ul>
+<li><strong>configure</strong>：配置脚本，用于设置编译选项。</li>
+<li><strong>Makefile</strong>：编译和链接的控制文件。</li>
+<li><strong>README</strong>：包含基本信息和使用说明。</li>
+</ul>
+</li>
+<li><p><strong>动力核心</strong>：</p>
+<ul>
+<li><strong>ARW（Advanced Research WRF）</strong>：适用于研究和高分辨率模拟。</li>
+<li><strong>NMM（Nonhydrostatic Mesoscale Model）</strong>：适用于操作性预报和较大尺度模拟。</li>
+</ul>
+</li>
+<li><p><strong>物理过程模块</strong>：</p>
+<ul>
+<li><strong>微物理（Microphysics）</strong>：模拟云和降水过程。</li>
+<li><strong>辐射（Radiation）</strong>：模拟大气中的辐射传输。</li>
+<li><strong>边界层（Boundary Layer）</strong>：模拟大气边界层过程。</li>
+<li><strong>地表过程（Surface Processes）</strong>：模拟地表与大气之间的能量和水分交换。</li>
+</ul>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/WRF/" rel="tag"># WRF</a>
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/08/10/CNOP-for-Lorenz63/" rel="prev" title="CNOP for Lorenz63">
+                  <i class="fa fa-angle-left"></i> CNOP for Lorenz63
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/08/24/Academic-Writing-English/" rel="next" title="Academic Writing English">
+                  Academic Writing English <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">MissLH88</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

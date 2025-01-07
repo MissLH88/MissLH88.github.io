@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"misslh88.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="因为要进行一些关于陆面过程的研究，所以希望可以系统地学习一下陆面模式。通过啃NoahMP的手册进行学习。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于陆面模式NoahMP的学习">
+<meta property="og:url" content="https://misslh88.github.io/2023/10/24/%E5%85%B3%E4%BA%8E%E9%99%86%E9%9D%A2%E6%A8%A1%E5%BC%8FNoahMP%E7%9A%84%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="LH&#39;s blog">
+<meta property="og:description" content="因为要进行一些关于陆面过程的研究，所以希望可以系统地学习一下陆面模式。通过啃NoahMP的手册进行学习。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-10-24T14:21:19.000Z">
+<meta property="article:modified_time" content="2024-10-04T01:42:28.139Z">
+<meta property="article:author" content="MissLH88">
+<meta property="article:tag" content="模式">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://misslh88.github.io/2023/10/24/%E5%85%B3%E4%BA%8E%E9%99%86%E9%9D%A2%E6%A8%A1%E5%BC%8FNoahMP%E7%9A%84%E5%AD%A6%E4%B9%A0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://misslh88.github.io/2023/10/24/%E5%85%B3%E4%BA%8E%E9%99%86%E9%9D%A2%E6%A8%A1%E5%BC%8FNoahMP%E7%9A%84%E5%AD%A6%E4%B9%A0/","path":"2023/10/24/关于陆面模式NoahMP的学习/","title":"关于陆面模式NoahMP的学习"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>关于陆面模式NoahMP的学习 | LH's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">LH's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Research in atmospheric sciences, IAP, Beijing, China</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%98%E9%87%8F"><span class="nav-number">2.</span> <span class="nav-text">变量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">过程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">4.</span> <span class="nav-text">代码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#module-sf-noahmpdrv-F"><span class="nav-number">4.1.</span> <span class="nav-text">module_sf_noahmpdrv.F</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#module-sf-noahmplsm-F"><span class="nav-number">4.2.</span> <span class="nav-text">module_sf_noahmplsm.F</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SUBROUTINE-NOAHMP-SFLX"><span class="nav-number">4.2.1.</span> <span class="nav-text">SUBROUTINE NOAHMP_SFLX</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SUBROUTINE-ENERGY"><span class="nav-number">4.2.2.</span> <span class="nav-text">SUBROUTINE ENERGY</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E7%9A%84"><span class="nav-number">4.2.2.1.</span> <span class="nav-text">目的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%93%E5%85%A5"><span class="nav-number">4.2.2.2.</span> <span class="nav-text">输入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%93%E5%87%BA"><span class="nav-number">4.2.2.3.</span> <span class="nav-text">输出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E8%BF%87%E7%A8%8B"><span class="nav-number">4.2.2.4.</span> <span class="nav-text">计算过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">4.2.2.5.</span> <span class="nav-text">应用</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">MissLH88</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://misslh88.github.io/2023/10/24/%E5%85%B3%E4%BA%8E%E9%99%86%E9%9D%A2%E6%A8%A1%E5%BC%8FNoahMP%E7%9A%84%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="MissLH88">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LH's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="关于陆面模式NoahMP的学习 | LH's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          关于陆面模式NoahMP的学习
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-10-24 22:21:19" itemprop="dateCreated datePublished" datetime="2023-10-24T22:21:19+08:00">2023-10-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-10-04 09:42:28" itemprop="dateModified" datetime="2024-10-04T09:42:28+08:00">2024-10-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>因为要进行一些关于陆面过程的研究，所以希望可以系统地学习一下陆面模式。通过啃NoahMP的手册进行学习。</p>
+<span id="more"></span>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>首先介绍Noah-MP的基本情况：</p>
+<p>NOAH代表：NCEP/EMC、OSU、AFWA、HL</p>
+<p>Noah land surface model with Multiple-Physics</p>
+<p>镶嵌在主模式（如WRF）下，主模式提供Noah-MP需要的输入数据，驱动每个格点上的Noah-MP一维柱模式。每个格点上又区分为植物和纯土壤的部分进行分别的计算。</p>
+<p>目前NoahMP只在自然作物和农作物中考虑生物化学过程（目前只有碳循环）。</p>
+<h1 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h1><p>主要是能量、水和生物质过程，包括三类变量：通量、状态变量、参数。</p>
+<p>$\theta_{sfc},[K]$ : Surface potential temperature 表面位温</p>
+<h1 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h1><p>大气模式为陆面模式提供大气强迫场，包括地面气温、地面气压、降水、风场、比湿和向下的长波和短波辐射。</p>
+<p>而陆面模式则至少为大气提供潜热通量、感热通量和向上的长波和短波辐射。</p>
+<p>在陆气模式的边界上，这些交换量由大气和陆面模式互相提供的情况，称之为陆气耦合。</p>
+<p>如果在边界上，这些外界强迫场是通过再分析、观测等给出，结合经验公式计算得到的话，这就是非耦合的情况。</p>
+<p>很明显，WRF中如果使用了陆面模式的话，就是陆气耦合的了。</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p><code>module_sf_noahmpdrv.F</code> 和 <code>module_sf_noahmplsm.F</code> 是 WRF (Weather Research and Forecasting) 模型中与 Noah-MP 土壤模型相关的两个不同模块。它们的主要区别在于它们的功能和用途：</p>
+<ol>
+<li><p><strong><code>module_sf_noahmpdrv.F</code></strong>：</p>
+<ul>
+<li><strong>功能</strong>：这个模块主要负责驱动 Noah-MP 土壤模型的整体运行。它包含了调用和管理 Noah-MP 模型各个部分的逻辑。</li>
+<li><strong>用途</strong>：用于初始化和调用 Noah-MP 模型的各个子模块，确保模型的各个部分能够协调工作。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/blob/master/phys/module_sf_noahdrv.F"><strong>示例</strong>：在这个模块中，你会看到对 <code>module_sf_noahmplsm</code> 中子程序的调用，以及其他与模型驱动相关的逻辑</a><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/blob/master/phys/module_sf_noahdrv.F">1</a><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/floating-point-exception-phys-module_sf_noahmplsm-f-at-noahmp_sflx-subroutine.15638/">2</a>。</li>
+</ul>
+</li>
+<li><p><strong><code>module_sf_noahmplsm.F</code></strong>：</p>
+<ul>
+<li><strong>功能</strong>：这个模块包含了 Noah-MP 土壤模型的具体物理过程和计算。它实现了土壤水分、能量平衡、植被过程等具体的物理计算。</li>
+<li><strong>用途</strong>：用于执行具体的物理过程计算，是 Noah-MP 模型的核心部分。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/blob/master/phys/module_sf_noahdrv.F"><strong>示例</strong>：在这个模块中，你会看到具体的物理过程计算，如土壤水分传输、蒸散发计算等</a><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/floating-point-exception-phys-module_sf_noahmplsm-f-at-noahmp_sflx-subroutine.15638/">2</a><a target="_blank" rel="noopener" href="https://bbs.06climate.com/forum.php?mod=viewthread&amp;tid=99021">3</a>。</li>
+</ul>
+</li>
+</ol>
+<p>总结来说，<code>module_sf_noahmpdrv.F</code> 是驱动模块，负责管理和调用 Noah-MP 模型的各个部分，而 <code>module_sf_noahmplsm.F</code> 则是实现具体物理过程的模块，负责执行土壤和植被的物理计算。</p>
+<h2 id="module-sf-noahmpdrv-F"><a href="#module-sf-noahmpdrv-F" class="headerlink" title="module_sf_noahmpdrv.F"></a>module_sf_noahmpdrv.F</h2><ol>
+<li><p><code>noahmplsm</code> SUBROUTINE:</p>
+<ul>
+<li>这是 Noah-MP 模型的主要子程序，它驱动地表通量和土壤、植被状态的计算。它使用输入的气象数据、土壤和植被参数来计算感热通量、潜热通量、土壤湿度、温度等。</li>
+</ul>
+</li>
+<li><p><code>TRANSFER_MP_PARAMETERS</code> SUBROUTINE:</p>
+<ul>
+<li>这个子程序用于传输和设置 Noah-MP 模型所需的参数，包括植被、土壤和城市参数。</li>
+</ul>
+</li>
+<li><p><code>GROUNDWATER_INIT</code> SUBROUTINE:</p>
+<ul>
+<li>该子程序初始化与地下水动力学相关的变量。它考虑了地下水流动和河流与地下水之间的交换。</li>
+</ul>
+</li>
+<li><p><code>GECR_OS_INIT</code> 和 <code>GECR_OS_REINIT</code> SUBROUTINES:</p>
+<ul>
+<li>这些子程序用于初始化和重置 GECROS 作物模型的变量。GECROS 是一个作物生长模型，用于模拟作物生长和产量。</li>
+</ul>
+</li>
+<li><p><code>SNOW_INIT</code> SUBROUTINE:</p>
+<ul>
+<li>用于初始化与降雪相关的变量，如积雪深度、温度和液态水含量。</li>
+</ul>
+</li>
+<li><p><code>NOAHMP_URBAN</code> SUBROUTINE:</p>
+<ul>
+<li>处理城市地区的特殊过程，如城市冠层模型和城市地下水模型。</li>
+</ul>
+</li>
+<li><p><code>EQSMOISTURE</code> SUBROUTINE:</p>
+<ul>
+<li><p>计算土壤水分的平衡状态。它使用土壤物理参数和地下水位来估算土壤水分。</p>
+</li>
+<li><ol>
+<li><p><code>SUBROUTINE EQSMOISTURE(NSOIL, ZSOIL, SMCMAX, SMCWLT, DWSAT, DKSAT, BEXP, SMCEQ)</code>：定义了一个子程序，接受多个参数，其中 <code>NSOIL</code> 是土壤层数，<code>ZSOIL</code> 是各层土壤的深度，<code>SMCMAX</code> 是最大土壤含水量，<code>SMCWLT</code> 是萎凋点土壤含水量，<code>DWSAT</code> 是饱和土壤的干密度，<code>DKSAT</code> 是饱和导水率，<code>BEXP</code> 是与土壤水分特征曲线有关的指数，<code>SMCEQ</code> 是计算出的平衡含水量。</p>
+</li>
+<li><p><code>IMPLICIT NONE</code>：声明所有变量在使用前必须显式定义。</p>
+</li>
+<li><p><code>INTEGER, INTENT(IN) :: NSOIL</code>：定义一个输入参数 <code>NSOIL</code>，表示土壤层数。</p>
+</li>
+<li><p><code>REAL, DIMENSION(1:NSOIL), INTENT(IN) :: ZSOIL</code>：定义一个输入数组 <code>ZSOIL</code>，表示每层土壤的深度。</p>
+</li>
+<li><p><code>REAL, INTENT(IN) :: SMCMAX, SMCWLT, BEXP, DWSAT, DKSAT</code>：定义几个输入参数，分别表示最大土壤含水量、萎凋点土壤含水量、土壤水分特征曲线指数、饱和土壤的干密度和饱和导水率。</p>
+</li>
+<li><p><code>REAL, DIMENSION(1:NSOIL), INTENT(OUT) :: SMCEQ</code>：定义一个输出数组 <code>SMCEQ</code>，用于存储每层土壤的平衡含水量。</p>
+</li>
+<li><p><code>INTEGER :: K, ITER</code>：定义两个局部变量 <code>K</code> 和 <code>ITER</code>，分别用于循环索引和迭代计数。</p>
+</li>
+<li><p><code>REAL :: DDZ, SMC, FUNC, DFUNC, AA, BB, EXPON, DX</code>：定义了几个局部变量，用于计算过程中的中间值。</p>
+</li>
+<li><p><code>DO K=1,NSOIL</code>：开始一个循环，遍历所有土壤层。</p>
+</li>
+<li><p><code>IF</code> 语句：根据土壤层的位置计算土壤层厚度的一半 <code>DDZ</code>。</p>
+</li>
+<li><p><code>EXPON = BEXP + 1.</code>：计算指数。</p>
+</li>
+<li><p><code>AA = DWSAT/DDZ</code> 和 <code>BB = DKSAT / SMCMAX ** EXPON</code>：计算两个系数 <code>AA</code> 和 <code>BB</code>。</p>
+</li>
+<li><p><code>SMC = 0.5 * SMCMAX</code>：初始化土壤含水量 <code>SMC</code> 为最大土壤含水量的一半。</p>
+</li>
+<li><p><code>DO ITER = 1, 100</code>：开始一个迭代循环，使用牛顿-拉弗森方法求解平衡含水量。</p>
+</li>
+<li><p><code>FUNC</code> 和 <code>DFUNC</code>：计算函数值和导数。</p>
+</li>
+<li><p><code>DX = FUNC/DFUNC</code>：计算牛顿-拉弗森方法中的增量。</p>
+</li>
+<li><p><code>SMC = SMC - DX</code>：更新土壤含水量。</p>
+</li>
+<li><p><code>IF (ABS(DX) &lt; 1.E-6) EXIT</code>：如果增量足够小，则退出循环。</p>
+</li>
+<li><p><code>SMCEQ(K) = MIN(MAX(SMC,1.E-4),SMCMAX*0.99)</code>：计算平衡含水量，并确保它在合理范围内。</p>
+</li>
+<li><p><code>ENDDO</code>：结束循环。</p>
+</li>
+<li><p><code>END SUBROUTINE EQSMOISTURE</code>：结束子程序。</p>
+</li>
+</ol>
+<p>这个子程序的目的是计算在给定土壤深度、最大含水量、萎凋点含水量、土壤水分特征曲线指数等参数的情况下，每层土壤的平衡含水量。它使用了牛顿-拉弗森方法来迭代求解，确保计算结果的准确性。</p>
+</li>
+</ul>
+</li>
+<li><p><code>checkIfHarvest</code> FUNCTION:</p>
+<ul>
+<li>确定是否达到收获条件。如果是，返回值为 1，表示可以收获；否则返回 0。</li>
+</ul>
+</li>
+<li><p><code>noahmp_urban</code> SUBROUTINE:</p>
+<ul>
+<li>处理 Noah-MP 模型中的城市物理方案，包括城市冠层模型（UCM）和城市建筑效应参数化（BEP）。</li>
+</ul>
+</li>
+<li><p><code>PECOTRANSFER_SR2006</code> SUBROUTINE:</p>
+<ul>
+<li>执行基于输入的沙子、粘土和有机质含量的土壤水分特征曲线的 pedotransfer 函数。</li>
+</ul>
+</li>
+<li><p><code>noahmplsm</code> SUBROUTINE:</p>
+<ul>
+<li><strong>输入</strong>: 模型配置、初始条件、气象强迫数据、土壤和植被特性等。</li>
+<li><strong>输出</strong>: 地表通量、土壤和植被状态变量的更新。</li>
+</ul>
+</li>
+<li><p><code>TRANSFER_MP_PARAMETERS</code> SUBROUTINE:</p>
+<ul>
+<li><strong>输入</strong>: 土壤类型、植被类型、作物类型等。</li>
+<li><strong>输出</strong>: Noah-MP 模型参数的设置。</li>
+</ul>
+</li>
+<li><p><code>GROUNDWATER_INIT</code> SUBROUTINE:</p>
+<ul>
+<li><strong>输入</strong>: 土壤层厚度、土壤类型、初始地下水位等。</li>
+<li><strong>输出</strong>: 地下水相关变量的初始化。</li>
+</ul>
+</li>
+<li><p><code>GECR_OS_INIT</code> SUBROUTINE:</p>
+<ul>
+<li><strong>输入</strong>: 地理和作物生长参数。</li>
+<li><strong>输出</strong>: GECROS 作物模型初始化状态。</li>
+</ul>
+</li>
+<li><p><code>GECR_OS_REINIT</code> SUBROUTINE:</p>
+<ul>
+<li><strong>输入</strong>: GECROS 作物模型当前状态。</li>
+<li><strong>输出</strong>: GECROS 作物模型重置状态。</li>
+</ul>
+</li>
+<li><p><code>SNOW_INIT</code> SUBROUTINE:</p>
+<ul>
+<li><strong>输入</strong>: 积雪深度、温度等。</li>
+<li><strong>输出</strong>: 积雪相关的变量初始化。</li>
+</ul>
+</li>
+<li><p><code>EQSMOISTURE</code> SUBROUTINE:</p>
+<ul>
+<li><strong>输入</strong>: 土壤物理特性参数。</li>
+<li><strong>输出</strong>: 平衡状态下的土壤含水量。</li>
+</ul>
+</li>
+<li><p><code>checkIfHarvest</code> FUNCTION:</p>
+<ul>
+<li><strong>输入</strong>: GECROS 作物模型状态、时间步长等。</li>
+<li><strong>输出</strong>: 是否达到收获条件的判断。</li>
+</ul>
+</li>
+<li><p><code>noahmp_urban</code> SUBROUTINE:</p>
+<ul>
+<li><strong>输入</strong>: 城市物理参数、建筑物特性、初始条件等。</li>
+<li><strong>输出</strong>: 城市地区的能量和水分通量。</li>
+</ul>
+</li>
+<li><p><code>PECOTRANSFER_SR2006</code> SUBROUTINE:</p>
+<ul>
+<li><strong>输入</strong>: 土壤沙子、粘土和有机质含量。</li>
+<li><strong>输出</strong>: 土壤水分特征曲线参数。</li>
+</ul>
+</li>
+</ol>
+<p>这些子程序共同构成了 Noah-MP 模型的核心部分，负责处理从地表能量和水分平衡到作物生长和城市物理过程的模拟。每个子程序都通过输入参数接收必要的数据，并输出计算结果，以供其他子程序或主程序使用。</p>
+<h2 id="module-sf-noahmplsm-F"><a href="#module-sf-noahmplsm-F" class="headerlink" title="module_sf_noahmplsm.F"></a>module_sf_noahmplsm.F</h2><h3 id="SUBROUTINE-NOAHMP-SFLX"><a href="#SUBROUTINE-NOAHMP-SFLX" class="headerlink" title="SUBROUTINE NOAHMP_SFLX"></a>SUBROUTINE NOAHMP_SFLX</h3><p>这个子程序名为 <code>NOAHMP_SFLX</code>，是Fortran模块的一部分，它是Noah陆面过程模型（MP LSM）的一部分。该子程序旨在计算能量和水的表面通量，并与大气模型接口，提供必要的表面反馈。以下是其结构和关键组件的详细分解：</p>
+<p><strong>目的</strong></p>
+<p>子程序 <code>NOAHMP_SFLX</code> 用于计算各种表面通量，包括能量平衡组分（感热和潜热通量、辐射等）、水平衡组分（降水、蒸发、径流等）以及碳平衡组分（光合作用、呼吸作用等）。它适用于气候模型或天气研究预测（WRF）模型。</p>
+<p><strong>关键输入和输出</strong></p>
+<ul>
+<li><strong>输入</strong> 包括气象变量（如温度、湿度、风速）、地表特征（植被类型、土壤属性）和初始条件（积雪深度、土壤湿度）。</li>
+<li><strong>输出</strong> 包括更新的表面状态（新的土壤湿度、温度剖面等）、通量（感热和潜热、蒸发、径流）以及碳循环变量。</li>
+</ul>
+<p><strong>详细分解</strong></p>
+<ol>
+<li><p><strong>输入</strong>：</p>
+<ul>
+<li><strong>气象强迫</strong>：温度、湿度、风速、入射太阳辐射、降水。</li>
+<li><strong>地表特征</strong>：植被类型、土壤属性、初始土壤湿度和温度。</li>
+<li><strong>初始条件</strong>：积雪深度、土壤湿度等。</li>
+</ul>
+</li>
+<li><p><strong>输出</strong>：</p>
+<ul>
+<li><strong>通量</strong>：感热通量、潜热通量、地热通量、蒸发、蒸腾。</li>
+<li><strong>更新的状态</strong>：更新的土壤湿度、土壤温度、积雪深度、植被含水量。</li>
+<li><strong>碳平衡</strong>：光合作用、呼吸作用。</li>
+</ul>
+</li>
+<li><p><strong>调用的子程序</strong>：</p>
+<ul>
+<li><code>ATM</code>：处理大气强迫。</li>
+<li><code>PHENOLOGY</code>：处理植被物候。</li>
+<li><code>PRECIP_HEAT</code>：管理由于降水引起的热和水平衡。</li>
+<li><code>ENERGY</code>：计算地表的能量平衡。</li>
+<li><code>WATER</code>：管理水平衡。</li>
+<li><code>CARBON</code>：如果动态植被活跃，计算碳通量。</li>
+<li><code>ERROR</code>：执行水和能量平衡的误差检查。</li>
+</ul>
+</li>
+<li><p><strong>局部变量</strong>：</p>
+<ul>
+<li>使用各种局部变量进行子程序内的中间计算。</li>
+</ul>
+</li>
+<li><p><strong>流程描述</strong>：</p>
+<ul>
+<li><strong>大气强迫处理</strong>：将原始气象输入转换为适合地表计算的形式。</li>
+<li><strong>植被物候</strong>：根据环境条件计算植被状态的变化。</li>
+<li><strong>降水和热通量</strong>：确定入降水如何影响地表热和水平衡。</li>
+<li><strong>能量平衡</strong>：计算地表与大气之间的各种热通量。</li>
+<li><strong>水平衡</strong>：管理所有水通量，包括蒸发、蒸腾、径流和土壤湿度变化。</li>
+<li><strong>碳平衡</strong>：如果动态植被活跃，计算光合作用和呼吸作用。</li>
+<li><strong>误差检查</strong>：确保水和能量平衡是守恒的。</li>
+</ul>
+</li>
+</ol>
+<p><strong>特别功能</strong></p>
+<ul>
+<li><strong>动态植被</strong>：可以切换不同的植被动态模型。</li>
+<li><strong>灌溉</strong>：包括灌溉农业的模型。</li>
+<li><strong>瓦片排水</strong>：包括在农业设置中模拟瓦片排水的选项。</li>
+</ul>
+<p><strong>使用方法</strong></p>
+<p>此子程序通常在较大的建模框架内调用，它为大气提供地表反馈。它设计得非常灵活，可以适应各种应用，包括气候研究、天气预报和水文建模。</p>
+<p>此子程序是数值模型中陆-气相互作用的关键组成部分，提供了地表如何处理能量、水和碳的详细表示。</p>
+<h3 id="SUBROUTINE-ENERGY"><a href="#SUBROUTINE-ENERGY" class="headerlink" title="SUBROUTINE ENERGY"></a>SUBROUTINE ENERGY</h3><p>这是名为 <code>ENERGY</code> 的子程序，属于Noah多参数化陆面模型（Noah MP LSM），主要负责模拟地表能量平衡和水热交换。这个子程序涵盖了从地表吸收和反射太阳辐射、计算地表和植被覆盖层之间的感热和潜热通量，到模拟土壤和雪层温度等多个方面。</p>
+<h4 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h4><p><code>ENERGY</code> 子程序用于计算地表能量平衡，包括辐射、感热、潜热通量，以及土壤和雪层的温度变化。</p>
+<h4 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h4><ul>
+<li><strong>基础信息</strong>：位置索引（ILOC, JLOC）、植被类型（VEGTYP）、地表类型（IST）、当前时间步（DT）、风速（UU, VV）、空气密度（RHOAIR）、比湿（QAIR）、地表温度（SFCTMP）、势温（THAIR）、降水（RAIN, SNOW）、植被水含量（CANLIQ, CANICE）等。</li>
+<li><strong>气象数据</strong>：包括向下长波辐射（LWDN）、太阳辐射（SOLAD, SOLAI）、地表压力（SFCPRS）、二氧化碳和氧气浓度（CO2AIR, O2AIR）等。</li>
+<li><strong>土壤和雪层信息</strong>：土壤层数（NSOIL）、雪层数（NSNOW）、实际雪层数（ISNOW）、土壤和雪层的深度（ZSNSO, ZSOIL）、土壤湿度（SMC, SH2O）、雪冰和雪水含量（SNICE, SNLIQ）等。</li>
+</ul>
+<h4 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h4><ul>
+<li><strong>能量通量</strong>：包括地表吸收的太阳辐射（FSA）、反射的太阳辐射（FSR）、感热通量（FSH）、潜热通量（FGEV）、土壤热通量（SSOIL）等。</li>
+<li><strong>温度和状态变量</strong>：包括植被温度（TV）、地表温度（TG）、土壤和雪层温度（STC）、积雪深度（SNOWH）、积雪当量水深（SNEQV）等。</li>
+<li><strong>其他</strong>：包括地表湿度（FWET）、植被覆盖分数（FVEG）、土壤水分蒸发因子（BTRAN）、地表阻力（RSURF）等。</li>
+</ul>
+<h4 id="计算过程"><a href="#计算过程" class="headerlink" title="计算过程"></a>计算过程</h4><ol>
+<li><strong>初始化</strong>：设置一些局部变量和输出变量的初始值。</li>
+<li><strong>地表反照率计算</strong>：根据地表覆盖情况（植被、雪等）计算地表反照率。</li>
+<li><strong>植被和地表感热、潜热通量计算</strong>：通过植被和裸土的通量计算子程序（<code>VEGE_FLUX</code> 和 <code>BARE_FLUX</code>），分别计算植被覆盖部分和裸土部分的能量通量。</li>
+<li><strong>地表温度和能量平衡</strong>：计算地表温度、感热通量、潜热通量和土壤热通量。</li>
+<li><strong>土壤和雪层温度计算</strong>：通过<code>TSNOSOI</code>子程序，计算土壤和雪层的温度变化。</li>
+<li><strong>相变过程计算</strong>：通过<code>PHASECHANGE</code>子程序，计算积雪的融化和土壤的冻结/融化过程。</li>
+</ol>
+<h4 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h4><p>这个子程序是陆面模型中的关键部分，它确保了模型能够模拟地表能量平衡和水热交换，这对于理解地表水文过程和能量平衡至关重要。</p>
+<p>这个子程序的设计使其能够适应不同的气象条件和地表类型，为陆面模型提供了必要的灵活性和准确性。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%A8%A1%E5%BC%8F/" rel="tag"># 模式</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/09/21/S2S%E6%95%B0%E6%8D%AE%E9%9B%86%E5%AD%A6%E4%B9%A0/" rel="prev" title="S2S数据集学习">
+                  <i class="fa fa-angle-left"></i> S2S数据集学习
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/11/09/%E5%9C%9F%E5%A3%A4%E6%B9%BF%E5%BA%A6%E8%B5%84%E6%96%99%E5%90%88%E9%9B%86/" rel="next" title="土壤湿度资料合集">
+                  土壤湿度资料合集 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">MissLH88</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

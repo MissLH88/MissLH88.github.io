@@ -1,0 +1,3296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"misslh88.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="使用WRF做模拟的时候，不可避免需要调参，这里的“参”主要是各种参数化方案和domain的选择等。为了不乱调，有必要知道自己每次都变动了什么，也可以更高效一点。所以需要对namelist.input文件进行认真学习。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对WRF参数化选择和namelist.input文件的学习">
+<meta property="og:url" content="https://misslh88.github.io/2023/09/21/%E5%AF%B9WRF%E5%8F%82%E6%95%B0%E5%8C%96%E9%80%89%E6%8B%A9%E5%92%8Cnamelist-input%E6%96%87%E4%BB%B6%E7%9A%84%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="LH&#39;s blog">
+<meta property="og:description" content="使用WRF做模拟的时候，不可避免需要调参，这里的“参”主要是各种参数化方案和domain的选择等。为了不乱调，有必要知道自己每次都变动了什么，也可以更高效一点。所以需要对namelist.input文件进行认真学习。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-09-21T00:49:39.000Z">
+<meta property="article:modified_time" content="2023-09-22T06:05:06.239Z">
+<meta property="article:author" content="MissLH88">
+<meta property="article:tag" content="WRF">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://misslh88.github.io/2023/09/21/%E5%AF%B9WRF%E5%8F%82%E6%95%B0%E5%8C%96%E9%80%89%E6%8B%A9%E5%92%8Cnamelist-input%E6%96%87%E4%BB%B6%E7%9A%84%E5%AD%A6%E4%B9%A0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://misslh88.github.io/2023/09/21/%E5%AF%B9WRF%E5%8F%82%E6%95%B0%E5%8C%96%E9%80%89%E6%8B%A9%E5%92%8Cnamelist-input%E6%96%87%E4%BB%B6%E7%9A%84%E5%AD%A6%E4%B9%A0/","path":"2023/09/21/对WRF参数化选择和namelist-input文件的学习/","title":"对WRF参数化选择和namelist.input文件的学习"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>对WRF参数化选择和namelist.input文件的学习 | LH's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">LH's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Research in atmospheric sciences, IAP, Beijing, China</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E4%BD%93"><span class="nav-number">1.</span> <span class="nav-text">总体</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">MissLH88</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://misslh88.github.io/2023/09/21/%E5%AF%B9WRF%E5%8F%82%E6%95%B0%E5%8C%96%E9%80%89%E6%8B%A9%E5%92%8Cnamelist-input%E6%96%87%E4%BB%B6%E7%9A%84%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="MissLH88">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LH's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="对WRF参数化选择和namelist.input文件的学习 | LH's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          对WRF参数化选择和namelist.input文件的学习
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-09-21 08:49:39" itemprop="dateCreated datePublished" datetime="2023-09-21T08:49:39+08:00">2023-09-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-09-22 14:05:06" itemprop="dateModified" datetime="2023-09-22T14:05:06+08:00">2023-09-22</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>使用WRF做模拟的时候，不可避免需要调参，这里的“参”主要是各种参数化方案和domain的选择等。为了不乱调，有必要知道自己每次都变动了什么，也可以更高效一点。所以需要对namelist.input文件进行认真学习。</p>
+<span id="more"></span>
+<p><strong>参考网址：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/docs/user_guide_v4/v4.3/users_guide_chap5.html#Namelist">wrf4.3用户手册中第五章</a></p>
+<p><a target="_blank" rel="noopener" href="https://esrl.noaa.gov/gsd/wrfportal/namelist_input_options.html#:~:text=WRF%20NAMELIST.INPUT%20FILE%20DESCRIPTION%20%20%20Name%20,time%20in%20minutes%20%2030%20more%20rows%20">https://esrl.noaa.gov/gsd/wrfportal/namelist_input_options.html#:~:text=WRF%20NAMELIST.INPUT%20FILE%20DESCRIPTION%20%20%20Name%20,time%20in%20minutes%20%2030%20more%20rows%20</a></p>
+<p><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/namelist_best_prac_wrf.html#run_days">官网简单示例</a></p>
+<h1 id="总体"><a href="#总体" class="headerlink" title="总体"></a>总体</h1><p><strong>time_control:</strong> 各种时间相关的设置</p>
+<p><strong>domains:</strong> 关于区域中心、网格和网格数量等</p>
+<p><strong>physics:</strong> 物理过程方案的选择，是设置的重点</p>
+<p><strong>fdda:</strong> 主要关于nudging</p>
+<p><strong>dynamics:</strong></p>
+<p><strong>bdy_control:</strong> 边界情况</p>
+<p><strong>grib2:</strong></p>
+<p><strong>namelist_quilt:</strong></p>
+<style>
+</style>
+
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>Variable Names</strong></th>
+<th>Input Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>&amp;time_control</strong></td>
+<td></td>
+<td><strong><em>options for time control</em></strong></td>
+</tr>
+<tr>
+<td>run_days</td>
+<td>0</td>
+<td>Simulation run time, in<br> days</td>
+</tr>
+<tr>
+<td>run_hours</td>
+<td>0</td>
+<td>Simulation run time in<br> hours <em>note: if it is more than 1 day, you may use both run_days and<br> run_hours or just run_hours. (e.g., if total run time is 36 hrs, you may set </em>run_days=1<em> and </em>run_hours=12<em>, OR </em>run_days=0<em> and </em>run_hours=36*</td>
+</tr>
+<tr>
+<td>run_minutes</td>
+<td>0</td>
+<td>Simulation run time in<br> minutes</td>
+</tr>
+<tr>
+<td>run_seconds</td>
+<td>0</td>
+<td>Simulation run time in<br> seconds</td>
+</tr>
+<tr>
+<td><em>*Note:  the start time is used to name the first<br> wrfout file. It also controls the start time for nest domains, and the time to<br> restart.</em></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>start_year (max_dom)</td>
+<td>2019</td>
+<td>4 digit year of<br> starting time</td>
+</tr>
+<tr>
+<td>start_month (max_dom)</td>
+<td>09</td>
+<td>2 digit month of<br> starting time</td>
+</tr>
+<tr>
+<td>start_day (max_dom)</td>
+<td>04</td>
+<td>2 digit day of starting<br> time</td>
+</tr>
+<tr>
+<td>start_hour (max_dom)</td>
+<td>12</td>
+<td>2 digit hour of<br> starting time</td>
+</tr>
+<tr>
+<td>start_minute (max_dom)</td>
+<td>00</td>
+<td>2 digit minute of starting<br> time</td>
+</tr>
+<tr>
+<td>start_second (max_dom)</td>
+<td>00</td>
+<td>2 digit second of<br> starting time</td>
+</tr>
+<tr>
+<td><em>*Note:  all end times also control when the nest<br> domain integrations end. All start and end times are used by real.exe. You<br> may use either run_days/run_hours/etc. or end_year/month/day/hour/etc. to<br> control the length of model integration; but run_days/run_hours takes<br> precedence over the end times. real.exe uses start and end times only</em></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>end_year (max_dom)</td>
+<td>2019</td>
+<td>4 digit year of ending<br> time</td>
+</tr>
+<tr>
+<td>end_month (max_dom)</td>
+<td>09</td>
+<td>2 digit month of ending<br> time</td>
+</tr>
+<tr>
+<td>end_day (max_dom)</td>
+<td>06</td>
+<td>2 digit day of ending<br> time</td>
+</tr>
+<tr>
+<td>end_hour (max_dom)</td>
+<td>00</td>
+<td>2 digit hour of ending<br> time</td>
+</tr>
+<tr>
+<td>end_minute (max_dom)</td>
+<td>00</td>
+<td>2 digit minute of<br> ending time</td>
+</tr>
+<tr>
+<td>end_second (max_dom_</td>
+<td>00</td>
+<td>2 digit second of<br> ending time</td>
+</tr>
+<tr>
+<td>interval_seconds</td>
+<td>10800</td>
+<td>time interval between incoming<br> real data, which is the interval between times in the lateral boundary<br> condition file (in seconds) (for <em>real</em> only)</td>
+</tr>
+<tr>
+<td>input_from_file<br> (max_dom)</td>
+<td>.true.</td>
+<td>(logical); whether the<br> nested run will use input files for domains other than domain 1</td>
+</tr>
+<tr>
+<td>fine_input_stream<br> (max_dom)</td>
+<td></td>
+<td>Option to select fields<br> to use from nest input for initialization</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>all fields from nest<br> input are used (default)</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>only nest input<br> specified from input stream 2 (defined in the Registry) are used. This requires<br> setting <em>io_form_auxinput2</em></td>
+</tr>
+<tr>
+<td>history_interval<br> (max_dom)</td>
+<td>60</td>
+<td>Frequency (in simulation<br> minutes) that data is written/recorded to history output file(s) (<em>wrfout_d0*</em>)<br> (integer only)</td>
+</tr>
+<tr>
+<td>history_interval_d<br> history_interval_h history_interval_m history_interval_s (max_dom)</td>
+<td>1</td>
+<td>Same as above, but the<br> frequency is in days, hours, minutes, and seconds, respectively. Used as an<br> alternative to <em>history_interval</em></td>
+</tr>
+<tr>
+<td>history_begin (max_dom)</td>
+<td>0</td>
+<td>Number of minutes from<br> the start of the run in which the history output file is written</td>
+</tr>
+<tr>
+<td>history_begin_y  history_begin_d history_begin_h history_begin_m<br> history_begin_s (max_dom)</td>
+<td>0</td>
+<td>Same as above, but<br> number of years, days, hours, minutes, and seconds, respectively. Used as an<br> alternative to <em>history_begin</em></td>
+</tr>
+<tr>
+<td>frames_per_outfile<br> (max_dom)</td>
+<td>1</td>
+<td>number of history output<br> times bulked into each history file; used to split output files into smaller<br> pieces</td>
+</tr>
+<tr>
+<td>restart</td>
+<td>.false.</td>
+<td>whether this run is a<br> restart</td>
+</tr>
+<tr>
+<td>restart_interval</td>
+<td>1440</td>
+<td>restart output file interval<br> in minutes</td>
+</tr>
+<tr>
+<td>override_restart_timers</td>
+<td>.false.</td>
+<td>uses all output<br> intervals (including history) given by the wrfrst files</td>
+</tr>
+<tr>
+<td></td>
+<td>.true.</td>
+<td>uses restart output intervals<br> given by the namelist</td>
+</tr>
+<tr>
+<td>write_hist_at_0h_rst</td>
+<td>.false.</td>
+<td>does not give a history<br> file at the initial time of restart (prevents overwriting original history file<br> at this time)</td>
+</tr>
+<tr>
+<td></td>
+<td>.true.</td>
+<td>gives a history file at<br> the initial time of restart</td>
+</tr>
+<tr>
+<td>output_ready_flag</td>
+<td>.true.</td>
+<td>asks the model to<br> write-out an empty file with the name <em>‘wrfoutReady_d<domain>_<date>;</em> Useful in production runs so that post-processing code can check on the<br> completeness of this file.</td>
+</tr>
+<tr>
+<td>force_use_old_data</td>
+<td>.false.</td>
+<td>(default) stop when WRF<br> model detects Version 3 input data</td>
+</tr>
+<tr>
+<td></td>
+<td>.true.</td>
+<td>Allow WRF version 3<br> input data</td>
+</tr>
+<tr>
+<td>reset_simulation_start</td>
+<td>.false.</td>
+<td>whether to overwrite<br> the simulation start date with the forecast start time</td>
+</tr>
+<tr>
+<td>auxinput1_inname</td>
+<td>“met_em.d<domain><date>“</td>
+<td>name of input file from<br> WPS; only needs to be added if not using the default file names</td>
+</tr>
+<tr>
+<td>auxinput4_inname</td>
+<td>“wrflowinp_d<domain>“</td>
+<td>name of input file for<br> lower boundary file; works with <em>sst_update = 1</em></td>
+</tr>
+<tr>
+<td>auxinput4_interval<br> (max_dom)</td>
+<td>360</td>
+<td>file interval in<br> minutes for lower boundary file; works with <em>sst_update<br> = 1</em></td>
+</tr>
+<tr>
+<td>io_form_auxinput4</td>
+<td>2</td>
+<td>IO format for wrflowinp<br> files; works with <em>sst_update = 1</em></td>
+</tr>
+<tr>
+<td>io_form_history</td>
+<td></td>
+<td>the format for the<br> history output file(s)</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>netCDF</td>
+</tr>
+<tr>
+<td></td>
+<td>102</td>
+<td>split netCDF files, one<br> per processor  <em>*NOTE:  no supported post-processing software for<br> split files</em></td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>binary format <em>*NOTE:  no supported post-processing software<br> available</em></td>
+</tr>
+<tr>
+<td></td>
+<td>4</td>
+<td>PHDF5 format <em>*NOTE:  no supported post-processing software<br> available</em></td>
+</tr>
+<tr>
+<td></td>
+<td>5</td>
+<td>GRIB1</td>
+</tr>
+<tr>
+<td></td>
+<td>10</td>
+<td>GRIB2</td>
+</tr>
+<tr>
+<td></td>
+<td>11</td>
+<td>parallel netCDF</td>
+</tr>
+<tr>
+<td>io_form_restart</td>
+<td></td>
+<td>the format for restart<br> output file(s) (<em>wrfrst*</em>)</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>nedCDF</td>
+</tr>
+<tr>
+<td></td>
+<td>102</td>
+<td>split netCDF files, one<br> per processor (must restart with the same number of processors)</td>
+</tr>
+<tr>
+<td>io_form_input</td>
+<td></td>
+<td>the format of the input<br> files</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>netCDF</td>
+</tr>
+<tr>
+<td></td>
+<td>102</td>
+<td>allows the program <em>real.exe</em> to read in split <em>met_em** files, and write split </em>wrfinput<em> files. There is no split file for the </em>wrfbdy* file.</td>
+</tr>
+<tr>
+<td>io_form_boundary</td>
+<td></td>
+<td>the format for the <em>wrfbdy</em> file</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>netCDF format</td>
+</tr>
+<tr>
+<td></td>
+<td>4</td>
+<td>PHD5 format</td>
+</tr>
+<tr>
+<td></td>
+<td>5</td>
+<td>GRIB1 format</td>
+</tr>
+<tr>
+<td></td>
+<td>10</td>
+<td>GRIB2 format</td>
+</tr>
+<tr>
+<td></td>
+<td>11</td>
+<td>pnetCDF format</td>
+</tr>
+<tr>
+<td>ncd_nofill</td>
+<td>.true.</td>
+<td>Option for handling of<br> netcdf writes. If set to .true., it could potentially improve IO speed. (default)<br> only a single write, not the write/read/write sequence</td>
+</tr>
+<tr>
+<td>io_form_auxinput2</td>
+<td></td>
+<td>IO format for input<br> stream 2 data</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>netCDF format</td>
+</tr>
+<tr>
+<td></td>
+<td>4</td>
+<td>PHD5 format</td>
+</tr>
+<tr>
+<td></td>
+<td>5</td>
+<td>GRIB1 format</td>
+</tr>
+<tr>
+<td></td>
+<td>10</td>
+<td>GRIB2 format</td>
+</tr>
+<tr>
+<td></td>
+<td>11</td>
+<td>pnetCDF format</td>
+</tr>
+<tr>
+<td>diag_print</td>
+<td>1</td>
+<td>Allows output of domain-averaged<br> 3-hourly hydrostatic surface pressure tendency (Dpsfc/Dt), and dry-hydrostatic<br> column pressure tendency (Dmu/Dt). This is in stdout file.</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>in addition to those<br> listed above, domain-averaged rainfall, surface evaporation, and sensible and<br> latent heat fluxes are output in stdout file.</td>
+</tr>
+<tr>
+<td>debug_level</td>
+<td>0</td>
+<td>giving this a larger value<br> (50, 100, 200, etc.) increases the debugging print-outs when running WRF. <em>NOTE:<br> this option was removed from default namelists because it rarely provides any<br> useful information and adds a lot of junk to the standard error/output files,<br> making them difficult to read and sometimes too large to write – causing runtime<br> crashes.</em></td>
+</tr>
+<tr>
+<td>auxhist2_outname</td>
+<td>“rainfall_d<domain>“</td>
+<td>file name to write<br> additional output to a different unit or output stream.. If not specified, “auxhist2_d<domain>_<date>”<br> is used. <em>NOTE</em>: to write variables in output other than the history<br> file requires either a change in the <em>Registry.EM_COMMON</em> file, or the<br> use of the option <em>iofields_filename</em> option.</td>
+</tr>
+<tr>
+<td>auxhist2_interval<br> (max_dom)</td>
+<td>10</td>
+<td>the interval in minutes<br> for the output when using auxhist2</td>
+</tr>
+<tr>
+<td>io_form_auxhist2</td>
+<td></td>
+<td>output format for using<br> auxhist2</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>netCDF format</td>
+</tr>
+<tr>
+<td></td>
+<td>4</td>
+<td>PHD5 format</td>
+</tr>
+<tr>
+<td></td>
+<td>5</td>
+<td>GRIB1 format</td>
+</tr>
+<tr>
+<td></td>
+<td>10</td>
+<td>GRIB2 format</td>
+</tr>
+<tr>
+<td></td>
+<td>11</td>
+<td>pnetCDF format</td>
+</tr>
+<tr>
+<td>frames_per_auxhist2 (max_dom)</td>
+<td>1000</td>
+<td>how many output times are in each output file</td>
+</tr>
+<tr>
+<td>auxinput11_interval (max_dom)</td>
+<td>10</td>
+<td>interval in minutes for obs nudging input. It should be<br> set as the same (or greater) frequency as <em>obs_ionf</em> (with the unit of<br> the coarse domain time step)</td>
+</tr>
+<tr>
+<td>auxinput11_end_h (max_dom)</td>
+<td>6</td>
+<td>end of the observation time (in hours), when using the<br> obs nudging option</td>
+</tr>
+<tr>
+<td>nocolons</td>
+<td>.false.</td>
+<td>when set to .true. this replaces the colons with<br> underscores in the output file names</td>
+</tr>
+<tr>
+<td>write_input</td>
+<td>.true.</td>
+<td>write input-formatted<br> data as output for 3DVAR application</td>
+</tr>
+<tr>
+<td>inputout_interval<br> (max_dom)</td>
+<td>180</td>
+<td>interval in minutes<br> when using the <em>write_input</em> option</td>
+</tr>
+<tr>
+<td>input_outname</td>
+<td>“wrf_3dvar_input_d<domain>_<date>“</td>
+<td>Output file name from<br> 3DVAR</td>
+</tr>
+<tr>
+<td>inputout_begin_y inputout_begin_d<br> inputout_begin_h inputout_begin_m inputout_begin_s (max_dom)</td>
+<td>0</td>
+<td>beginning year, day,<br> hour, minute, and second (respectively) to write 3DVAR data</td>
+</tr>
+<tr>
+<td>inputout_end_y inputout_end_d<br> inputout_end_h inputout_end_m inputout_end_s (max_dom)</td>
+<td>0</td>
+<td>ending year, day, hour,<br> minute, second (respectively) to write 3DVAR data</td>
+</tr>
+<tr>
+<td>all_ic_times</td>
+<td>.true.</td>
+<td>when set to .true.,<br> allows you to output a <em>wrfinput</em> file for all time periods</td>
+</tr>
+<tr>
+<td>adjust_output_times</td>
+<td>.true.</td>
+<td>adjust output times to<br> the nearest hour</td>
+</tr>
+<tr>
+<td>output_ready_flag</td>
+<td>.true.</td>
+<td>(default = .false.);<br> when turned on, the model will write out an empty file with the name <em>wrfoutReady_d<domain>_<date>.</em> Useful in production runs so<br> post-processing code can check on the existence of this file to start doing<br> processing.</td>
+</tr>
+<tr>
+<td>output_diagnostics</td>
+<td>1</td>
+<td>set to =1 to add 48 surface<br> diagnostic arrays (max/min/mean/std) in the time interval specified.  See details in section “p” earlier in this<br> chapter.</td>
+</tr>
+<tr>
+<td>nwp_diagnostics</td>
+<td>1</td>
+<td>set to =1 to add <em>history_interval</em> max diagnostic fields  (10m wind speed, max helicity in 2-5km layer,<br> max vertical velocity in updraft and downdraft below 400mb, mean vertical<br> velocity in 2-5km layer, max column graupel) **also turn on do_radar_ref</td>
+</tr>
+<tr>
+<td><strong><em>Options for<br> automatic moving nests</em></strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>input_from_hires<br> (max_dom)</td>
+<td>.true.</td>
+<td>When set to .true.,<br> high-resolution terrain and landuse are used in the nests (requires special<br> input data), and environment variable TERRAIN_AND_LANDUSE set at compile<br> time). See section “f” earlier in this chapter for details.</td>
+</tr>
+<tr>
+<td>rsmas_data_path</td>
+<td>“<em>high-res-data-directory</em>”</td>
+<td>Path to directory where<br> the high-res data resides</td>
+</tr>
+<tr>
+<td>iofields_filename<br> (max_dom)</td>
+<td>“<em>my_iofields_list</em>.txt”</td>
+<td>option to output additional<br> variables, or to remove variables from output if you do not want them<br> to.  You must also create a text file (<em>my_iofields_list.</em>txt) in which you<br> will declare the variables to be output. See details earlier in this chapter.</td>
+</tr>
+<tr>
+<td>ignore_iofields_warning</td>
+<td>.true.</td>
+<td>tells the model to<br> continue if an error is encountered in the user-specified files, when using<br> the <em>iofields_filename</em> option. If set to .false., the model will abort<br> if an error is encountered in the files.</td>
+</tr>
+<tr>
+<td><strong>&amp;domains</strong></td>
+<td></td>
+<td><strong><em>dimensions, nesting, parameters</em></strong></td>
+</tr>
+<tr>
+<td>time_step</td>
+<td>60</td>
+<td>time step for<br> integration seconds (no more than 6*dx in km for a typical case)</td>
+</tr>
+<tr>
+<td>time_step_fract_num</td>
+<td>0</td>
+<td>numerator for<br> fractional time step</td>
+</tr>
+<tr>
+<td>time_step_fract_den</td>
+<td>1</td>
+<td>denominator for<br> fractional time step.  E.g., if you want to use 60.3 sec as your time step, set <em>time_step<br> = 60, time_step_fract_num = 3,</em> and <em>time_step_fract_den = 10</em>.</td>
+</tr>
+<tr>
+<td>time_step_dfi</td>
+<td>60</td>
+<td>time step when setting <em>dfi_opt = 1</em>, may be different from the regular time step</td>
+</tr>
+<tr>
+<td>max_dom</td>
+<td>1</td>
+<td>the number of domains you<br> are running</td>
+</tr>
+<tr>
+<td>s_we (max_dom)</td>
+<td>1</td>
+<td>start index in x<br> (west-east) direction (do not change this)</td>
+</tr>
+<tr>
+<td>e_we (max_dom)</td>
+<td>91</td>
+<td>end index in x<br> (west_east) direction (staggered dimension)</td>
+</tr>
+<tr>
+<td>s_sn (max_dom)</td>
+<td>1</td>
+<td>start index in y<br> (south-north) direction (do not change this)</td>
+</tr>
+<tr>
+<td>e_sn (max_dom)</td>
+<td>82</td>
+<td>end index in y<br> (south-north) direction (staggered dimension)</td>
+</tr>
+<tr>
+<td>s_vert (max_dom)</td>
+<td>1</td>
+<td>start index in z (vertical)<br> direction (do not change this)</td>
+</tr>
+<tr>
+<td>e_vert (max_dom)</td>
+<td>30</td>
+<td>end index in z<br> (vertical) direction (staggered dimension — this refers to full<br> levels).  Most variables are on<br> unstaggered levels. *Note:  vertical<br> dimensions must be the same for all nests</td>
+</tr>
+<tr>
+<td>dx (max_dom)</td>
+<td>30000</td>
+<td>grid length in<br> x-direction (in meters)</td>
+</tr>
+<tr>
+<td>dy (max_dom)</td>
+<td>30000</td>
+<td>grid length in<br> y-direction (in meters)</td>
+</tr>
+<tr>
+<td>ztop (max_dom)</td>
+<td>19000</td>
+<td>height in meters; used<br> to define model top for idealized cases</td>
+</tr>
+<tr>
+<td>grid_id (max_dom)</td>
+<td>1</td>
+<td>domain identifier</td>
+</tr>
+<tr>
+<td>parent_id (max_dom)</td>
+<td>1</td>
+<td>ID of the domain’s parent<br> domain</td>
+</tr>
+<tr>
+<td>i_parent_start<br> (max_dom)</td>
+<td>1</td>
+<td>the starting lower-left<br> corner i-indice from the parent domain</td>
+</tr>
+<tr>
+<td>j_parent_start<br> (max_dom)</td>
+<td>1</td>
+<td>the starting lower-left<br> corner j_indice from the parent domain</td>
+</tr>
+<tr>
+<td>parent_grid_ratio (max_dom)</td>
+<td>1</td>
+<td>parent-to-nest domain<br> grid size ratio. <em>Note:  recommend odd<br> ratios (3:1 or 5:1). Ratio can be even if </em>feedback=0*</td>
+</tr>
+<tr>
+<td>parent_time_step_ratio<br> (max_dom)</td>
+<td>1</td>
+<td>parent-to-nest time step<br> ratio; this can be different from the <em>parent_grid_ratio</em></td>
+</tr>
+<tr>
+<td>feedback</td>
+<td>1</td>
+<td>Set to 1 for feedback<br> from nest to its parent domain. Set to 0 for no feedback.</td>
+</tr>
+<tr>
+<td>smooth_option</td>
+<td></td>
+<td>smoothing option for<br> parent domain; used only with feedback</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>turned off</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>1-2-1 smoothing option<br> for parent domain; used only with <em>feedback=1</em></td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>(default) smoothing-desmoothing<br> option for parent domain; used only with <em>feedback=1</em></td>
+</tr>
+<tr>
+<td>hypsometric_opt</td>
+<td>2</td>
+<td>(default) computes<br> height in <em>real.exe</em> and pressure in<br> the model by using the hypsometric equation (less biased when compared<br> against input data)</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>original method – based on a form of the hydrostatic equation that<br> depends on air density</td>
+</tr>
+<tr>
+<td>max_ts_locs</td>
+<td>5</td>
+<td>maximum number of time series locations</td>
+</tr>
+<tr>
+<td>max_ts_level</td>
+<td>15</td>
+<td>highest model level for profile output when using time series option</td>
+</tr>
+<tr>
+<td>wif_input_opt</td>
+<td>1</td>
+<td>Option to process the Water Ice Friendly Aerosol input from metgrid used<br> for <em>mp_physics=28</em>; see <em>run/README.namelist</em> for additional<br> information (default is 0=off)</td>
+</tr>
+<tr>
+<td><em>(New since V4.4)</em></td>
+<td>2</td>
+<td>Option<br> to use black carbon aerosol category with <em>mp_physics=28</em>, as well as<br> its radiative effect. Must include file QNWFA_QNIFA_QNBCA_SIGMA_MONTHLY.dat during WPS <em><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/pull/1567">details</a></em></td>
+</tr>
+<tr>
+<td>num_wif_levels</td>
+<td>27</td>
+<td>number of levels in the Thompson Water Ice Friendly Aerosols <em>(mp_physics<br> = 28);</em> see <em>run/README.namelist</em> for additional information</td>
+</tr>
+<tr>
+<td><strong><em>Options for program real.exe</em></strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>num_metgrid_levels</td>
+<td>40</td>
+<td>number of vertical<br> levels in input data (type “ncdump -h” on one of the <em>met_em*</em> files to find out this number)</td>
+</tr>
+<tr>
+<td>num_metgrid_soil_levels</td>
+<td>4</td>
+<td>number of soil levels or layers in WPS output (type ncdump<br> -h on one of the met_em* files to find out this number)</td>
+</tr>
+<tr>
+<td>eta_levels</td>
+<td>1.0, 0.99, …0.0</td>
+<td>model <em>eta</em> levels from 1 to 0.  If not given, <em>real</em> will provide a set of levels</td>
+</tr>
+<tr>
+<td>auto_levels_opt</td>
+<td>2</td>
+<td>(default) set <em>dzstretch_s, dzstretch_u, dzbot,</em> and<br> <em>max_dz</em> to stretch levels according to logP up to where it reaches the<br> max thickness (<em>max_dz</em>) and starting from thickness dzbot</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>Old option  -<br> assumes a known first several layers, then generates equi-height spaced levels<br> up to the top of the model</td>
+</tr>
+<tr>
+<td>max_dz</td>
+<td>1000.</td>
+<td>max level thickness allowed (m)</td>
+</tr>
+<tr>
+<td>dzbot</td>
+<td>50.</td>
+<td>thickness of lowest layer (m) for <em>auto_levels_opt = 2</em></td>
+</tr>
+<tr>
+<td>dzstretch_s</td>
+<td>1.3</td>
+<td>surface stretch factor for <em>auto_levels_opt = 2</em></td>
+</tr>
+<tr>
+<td>dzstretch_u</td>
+<td>1.1</td>
+<td>upper stretch factor for <em>auto_levels_opt = 2</em></td>
+</tr>
+<tr>
+<td>ideal_init_method</td>
+<td></td>
+<td>method to compute albedo in idealized cases in “start_em”<br> file</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>(default) albedo from phb</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>albedo from t_init</td>
+</tr>
+<tr>
+<td><strong><em>Options for horizontal<br> interpolation, coarse grid to fine grid</em></strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>interp_method_type</td>
+<td></td>
+<td>The default is to use the Smolarkiewicz “SINT”<br> method; however, this is known to break with the implementation inside of WRF<br> for large refinement ratios (such as 15:1).  For those extreme and rare occurrences, other schemes ar<br> available.  For options 1, 3, 4, and<br> 12, the fine-grid lateral boundaries use the same horizontal scheme for the<br> lateral BC computations</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>bi-linear interpolation</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>(default) SINT</td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>nearest-neighbor - only to be used for testing purposes</td>
+</tr>
+<tr>
+<td></td>
+<td>4</td>
+<td>overlapping quadratic</td>
+</tr>
+<tr>
+<td></td>
+<td>12</td>
+<td>for testing only, uses SINT horizontal interpolation, and<br> same scheme for computation of fine-grid lateral boundaries</td>
+</tr>
+<tr>
+<td><strong><em>Options for<br> vertical interpolation</em></strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>force_sfc_in_vinterp</td>
+<td>1</td>
+<td>(default) use the surface level as the lower boundary<br> when interpolating through this many eta levels</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>perform traditional trapping interpolation</td>
+</tr>
+<tr>
+<td>maxw_horiz_pres_diff</td>
+<td>5000</td>
+<td>pressure threshold (Pa). For using the level of max winds<br> when the pressure difference between neighboring values exceeds this maximum,<br> the variable is NOT inserted into the column for vertical interpolation. real<br> only.</td>
+</tr>
+<tr>
+<td>trop_horiz_pres_diff</td>
+<td>5000</td>
+<td>pressure threshold (Pa). For using the tropopause level<br> when the pressure difference between neighboring values exceeds this maximum,<br> the variable is NOT inserted into the column for vertical interpolation. real<br> only.</td>
+</tr>
+<tr>
+<td>maxw_above_this_level</td>
+<td>30000</td>
+<td>minimum pressure level (Pa) to allow using the level of<br> max wind information in real. E.g, if setting this to 3000 (=300 hPa), a max<br> wind value at 500 hPa is ignored. real only.</td>
+</tr>
+<tr>
+<td>use_maxw_level</td>
+<td>1</td>
+<td>Set to 1 to use max wind speed level (<em>maxw_above_this_level)</em> in vertical interpolation inside of the real program</td>
+</tr>
+<tr>
+<td>use_trop_level</td>
+<td>1</td>
+<td>same as above, but with tropopause level data</td>
+</tr>
+<tr>
+<td>interp_theta</td>
+<td>.false.</td>
+<td>vertically interpolates temperature (which may reduce<br> bias when compared with input data)</td>
+</tr>
+<tr>
+<td></td>
+<td>.true.</td>
+<td>vertically interpolates potential temperature</td>
+</tr>
+<tr>
+<td>p_top_requested</td>
+<td>5000</td>
+<td>pressure top (in Pa) to use in the model; this pressure<br> level must be available in WPS data</td>
+</tr>
+<tr>
+<td>interp_type</td>
+<td>2</td>
+<td>(default) vertical interpolation that is linear in log(pressure)</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>vertical interpolation that is linear in pressure</td>
+</tr>
+<tr>
+<td>extrap_type</td>
+<td>2</td>
+<td>(default) vertical extrapolation of non-temperature<br> variables, using the lowest level as constant below ground</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>vertical extrapolation of non-temperature variables,<br> using the 2 lowest levels</td>
+</tr>
+<tr>
+<td>t_extrap_type</td>
+<td></td>
+<td>vertical extrapolation for potential temp:</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>(default) -6.5 K/km lapse rate for temperature</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>isothermal</td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>constant theta</td>
+</tr>
+<tr>
+<td>use_levels_below_ground</td>
+<td></td>
+<td>in vertical interpolation, whether to use levels below<br> input surface level</td>
+</tr>
+<tr>
+<td></td>
+<td>.true.</td>
+<td>(default) use input isobaric levels below input surface</td>
+</tr>
+<tr>
+<td></td>
+<td>.false.</td>
+<td>extrapolate when WRF location is below input surface<br> level</td>
+</tr>
+<tr>
+<td>use_surface</td>
+<td>.true.</td>
+<td>use input surface level data in vertical interpolation</td>
+</tr>
+<tr>
+<td>lagrange_order</td>
+<td>2</td>
+<td>(default) quadratic vertical interpolation order</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>linear vertical interpolation order</td>
+</tr>
+<tr>
+<td></td>
+<td>9</td>
+<td>Cubic spline</td>
+</tr>
+<tr>
+<td>zap_close_levels</td>
+<td>500</td>
+<td>ignore isobaric level above surface<br> if delta p (Pa) &lt; <em>zap_close_levels</em></td>
+</tr>
+<tr>
+<td>lowest_lev_from_sfc</td>
+<td>.false.</td>
+<td>(default) use traditional interpolation</td>
+</tr>
+<tr>
+<td></td>
+<td>.true.</td>
+<td>use surface values for the lowest <em>eta</em> (u,v,t,q)</td>
+</tr>
+<tr>
+<td>sfcp_to_sfcp</td>
+<td>.true</td>
+<td>computes model’s surface pressure when incoming data only<br> has surface pressure and terrain, but not sea-level pressure (default is<br> .false.)</td>
+</tr>
+<tr>
+<td>use_tavg_for_tsk</td>
+<td>.true.</td>
+<td>uses diurnally-averaged surface temp (which can be computed<br> using WPS utility avg_tsfc.exe) as skin temp. Can use this option when<br> SKINTEMP is not present (default is .false.)</td>
+</tr>
+<tr>
+<td>rh2qv_wrt_liquid</td>
+<td>.true.</td>
+<td>(default) computes qv with respect to liquid water</td>
+</tr>
+<tr>
+<td></td>
+<td>.false.</td>
+<td>computes qv with respect to ice</td>
+</tr>
+<tr>
+<td>rh2qv_method</td>
+<td>1</td>
+<td>(default)Use old MM5 method to compute mixing ratio from<br> RH</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>uses a WMO recommended method (WMO-No. 49, corrigendum,<br> August 2000)</td>
+</tr>
+<tr>
+<td>smooth_cg_topo</td>
+<td>.true.</td>
+<td>smooths the outer rows and columns of the domain 1<br> topography with respect to the input data</td>
+</tr>
+<tr>
+<td>vert_refine_fact</td>
+<td>1</td>
+<td>vertical refinement factor for <em>ndown</em> (1 = same number of vertical levels as the coarse domain, 2<br> = double the vertical resolution, and so on); not used for current vertical grid<br> refinement</td>
+</tr>
+<tr>
+<td>vert_refine_method (max_dom)</td>
+<td>0</td>
+<td>(default) no vertical refinement</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>integer vertical refinement</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>use specified or computed eta levels for vertical<br> refinement</td>
+</tr>
+<tr>
+<td><strong><em>Options for<br> Preset Moving Nest</em></strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>num_moves</td>
+<td>0</td>
+<td>total # of moves for all domains</td>
+</tr>
+<tr>
+<td>move_id (max_moves)</td>
+<td>2, 2,</td>
+<td>a list of nest domain ID’s, one per move</td>
+</tr>
+<tr>
+<td>move_interval (max_moves)</td>
+<td>60, 120,</td>
+<td>time in minutes since the nest simulation began (for each<br> domain)</td>
+</tr>
+<tr>
+<td>move_cd_x (max_moves)</td>
+<td>1, -1,</td>
+<td>the # of parent domain grid cells to move in the i-direction</td>
+</tr>
+<tr>
+<td>move_cd_y (max_moves)</td>
+<td>-1, 1,</td>
+<td>the # of parent domain grid cells to move in the<br> j-direction (positive in increasing i/j directions, and negative in<br> decreasing i/j directions). Only 1, 0, and -1 are permitted.</td>
+</tr>
+<tr>
+<td><strong><em>Options for<br> Automatic Moving Nest</em></strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>vortex_interval (max_dom)</td>
+<td>15</td>
+<td>how often the new vortex position is computed (in mins)</td>
+</tr>
+<tr>
+<td>max_vortex_speed (max_dom)</td>
+<td>40</td>
+<td>used to compute the search radius for the new vortex<br> position (in m/s)</td>
+</tr>
+<tr>
+<td>corral_dist (max_dom)</td>
+<td>8</td>
+<td>how close the moving nest is allowed to get to the coarse<br> grid boundary.  This # sets the minimum<br> limit of grid cells allowed between them.</td>
+</tr>
+<tr>
+<td>track_level</td>
+<td>50000</td>
+<td>pressure level value (Pa) at which the tropical storm<br> vortex is tracked</td>
+</tr>
+<tr>
+<td>time_to_move (max_dom)</td>
+<td>0.,</td>
+<td>time (in mins) to start moving nest</td>
+</tr>
+<tr>
+<td><strong><em>Options for<br> Adaptive Time Step</em></strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>use_adaptive_time_step</td>
+<td>.true.</td>
+<td>Turns on adaptive time step</td>
+</tr>
+<tr>
+<td>step_to_output_time</td>
+<td>.true.</td>
+<td>adjusts the time step so the exact history time is<br> reached</td>
+</tr>
+<tr>
+<td>target_cfl (max_dom)</td>
+<td>1.2., 1.2., 1.2.,</td>
+<td>if vertical CFL £ this<br> value, time step is increased</td>
+</tr>
+<tr>
+<td>target_hcfl (max_dom)</td>
+<td>0.84, 0.84, 0.84,</td>
+<td>if horizontal CFL £ this value, time step is increased</td>
+</tr>
+<tr>
+<td>max_step_increase_pct (max_dom)</td>
+<td>5, 51, 51,</td>
+<td>percentage of previous time step to increase if the max<br> CFL is £ target_cfl</td>
+</tr>
+<tr>
+<td>starting_time_step (max_dom)</td>
+<td>-1, -1, -1,</td>
+<td>flag -1 implies 4<em>dx is used to start the model. Any<br> positive integer specifies the time step the model will use to start (in<br> seconds).  </em>Note:  when <em>use_adapative_time_step=.true.,</em> the value specified for <em>time_step</em> is ignored.</td>
+</tr>
+<tr>
+<td>starting_time_step_den (max_dom)</td>
+<td>0</td>
+<td>denominator for <em>starting_time_step</em> (so that<br> fractional time step can be used)</td>
+</tr>
+<tr>
+<td>max_time_step (max_dom)</td>
+<td>-1, -1, -1,</td>
+<td>flag -1 implies the maximum time step is 8*dx. Any<br> positive integer specifies the maximum time step (in seconds).</td>
+</tr>
+<tr>
+<td>max_time_step_den (max_dom)</td>
+<td>0</td>
+<td>denominator for <em>max_time_step</em></td>
+</tr>
+<tr>
+<td>min_time_step (max_dom)</td>
+<td>-1, -1, -1,</td>
+<td>flag -1 implies the minimum time step is 3*dx. Any<br> positive integer specifies the minimum time step (in seconds).</td>
+</tr>
+<tr>
+<td>min_time_step_den (max_dom)</td>
+<td>0</td>
+<td>denominator for <em>min_time_step</em></td>
+</tr>
+<tr>
+<td>adaptation_domain</td>
+<td>1</td>
+<td>specifies which domain to use to drive adaptive time<br> stepping</td>
+</tr>
+<tr>
+<td><strong><em>Options to<br> Control Parallel Computing</em></strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>tile_sz_x                     tile_sz_y</td>
+<td>0</td>
+<td>number of points in tile x and y directions (open MP only)</td>
+</tr>
+<tr>
+<td>numtiles</td>
+<td>1</td>
+<td>number of tiles per patch (alternative to <em>tile_sz_x</em> and<br> <em>tile_sz_y</em>; open MP only)</td>
+</tr>
+<tr>
+<td>nproc_x                    nproc_y</td>
+<td>-1</td>
+<td>(default) turned off; code will do automatic<br> decomposition (MPI only)</td>
+</tr>
+<tr>
+<td></td>
+<td>&gt;1</td>
+<td>number of processors in x and y for decomposition (MPI<br> only)</td>
+</tr>
+<tr>
+<td><strong><em>Options for 3D Ocean<br> Model</em></strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>ocean_levels</td>
+<td>30</td>
+<td>number of ocean levels when using <em>sf_ocean_physics=2</em></td>
+</tr>
+<tr>
+<td>ocean_z</td>
+<td>values for # of <em>ocean_levels</em></td>
+<td>vertical profile of layer depths for for ocean (in<br> meters).  See <em>run/README.namelist</em> for details.</td>
+</tr>
+<tr>
+<td>ocean_t</td>
+<td>values for # of <em>ocean_levels</em></td>
+<td>vertical profile of ocean temps (K).  See <em>run/README.namelist</em> for details.</td>
+</tr>
+<tr>
+<td>ocean_s</td>
+<td>values for # of <em>ocean_levels</em></td>
+<td>vertical profile of salinity.  See <em>run/README.namelist</em> for details</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>&amp;physics</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>chem_opt (max_dom)</td>
+<td>0</td>
+<td>chemistry option - use WRF-Chem</td>
+</tr>
+<tr>
+<td>mp_physics (max_dom)</td>
+<td></td>
+<td>Microphysics setting. The same value should be used for<br> all domains.</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>no microphysics</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>Kessler scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>Purdue Lin scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>WSM 3-class simple ice scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>4</td>
+<td>WSM 5-class scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>5</td>
+<td>Ferrier (new Eta) microphysics, operational High-Resolution<br> Window</td>
+</tr>
+<tr>
+<td></td>
+<td>6</td>
+<td>WSM 6-class graupel scheme</td>
+</tr>
+<tr>
+<td><em>(updated V4.1)</em></td>
+<td>7</td>
+<td>Goddard 4-icescheme (also uses <em>gsfcgce_hail</em> and <em>gsfcgce_2ice</em>)</td>
+</tr>
+<tr>
+<td></td>
+<td>8</td>
+<td>Thompson graupel scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>9</td>
+<td>Milbrandt-Yau 2-moment scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>10</td>
+<td>Morrison 2-moment scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>11</td>
+<td>CAM 5.1 5-class scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>13</td>
+<td>SBU_YLin, 5-class scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>14</td>
+<td>WRF double moment, 5-class scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>15</td>
+<td>High-resolution Ferrier microphysics, with advection</td>
+</tr>
+<tr>
+<td></td>
+<td>16</td>
+<td>WRF double moment, 6-class scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>17</td>
+<td>NSSL 2-moment 4-ice scheme (steady background CCN)</td>
+</tr>
+<tr>
+<td></td>
+<td>18</td>
+<td>NSSL 2-moment 4-ice scheme with predicted CCN (better for<br> idealized than real cases); to set a global CCN value, use <em>nssl_cccn=0.7e9</em>.<br> Also sets same value to <em>ccn_conc</em></td>
+</tr>
+<tr>
+<td></td>
+<td>19</td>
+<td>NSSL 1-moment, 6-class scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>21</td>
+<td>NSSL-LFO 1-moment, 6-class (similar to Gilmore et al.<br> 2004); can set intercepts and particle densities in physics namelist for<br> snow, graupel, hail, and rain. See <em>run/README.namelist</em> for specifics.</td>
+</tr>
+<tr>
+<td></td>
+<td>22</td>
+<td>NSSL 2-moment 3-ice scheme, no hail.</td>
+</tr>
+<tr>
+<td><em>(new since V4.1)</em></td>
+<td>24</td>
+<td>WSM7, as WSM6, but with a hail category.</td>
+</tr>
+<tr>
+<td><em>(new since V4.1)</em></td>
+<td>26</td>
+<td>WDM7, as WDM6, but with a hail category.</td>
+</tr>
+<tr>
+<td></td>
+<td>28</td>
+<td>aerosol-aware Thompson scheme with water- and<br> ice-friendly aerosol climatology; this option has 2 climatological aerosol<br> input options: <em>use_aero_icbs=.F</em>. (use constant values), and <em>use_aero_icbc=.T</em>.<br> (use input from WPS)</td>
+</tr>
+<tr>
+<td></td>
+<td>30</td>
+<td>HUJI (Hebrew University of Jerusalem, Israel) spectral<br> bin microphysics, fast version</td>
+</tr>
+<tr>
+<td></td>
+<td>32</td>
+<td>HUJI spectral bin microphysics, full version</td>
+</tr>
+<tr>
+<td></td>
+<td>40</td>
+<td>Morrison<br> double-moment scheme with CESM aerosol; must be used  with MSKF cumulus scheme.</td>
+</tr>
+<tr>
+<td></td>
+<td>50</td>
+<td>P3 1-ice category, 1-moment cloud water</td>
+</tr>
+<tr>
+<td></td>
+<td>51</td>
+<td>P3 1-ice category, plus double moment cloud water</td>
+</tr>
+<tr>
+<td></td>
+<td>52</td>
+<td>P3 2-ice<br> categories, plus double-moment cloud water.</td>
+</tr>
+<tr>
+<td><em>(new since V4.3)</em></td>
+<td>53</td>
+<td>P3<br> 1-ice category, 3-moment ice, plus double moment cloud water</td>
+</tr>
+<tr>
+<td><em>(new since V4.1)</em></td>
+<td>55</td>
+<td>Jensen<br> ISHMAEL</td>
+</tr>
+<tr>
+<td><em>(new since V4.3)</em></td>
+<td>56</td>
+<td>NTU<br> multi-moment scheme</td>
+</tr>
+<tr>
+<td>ccnty</td>
+<td>2</td>
+<td>Aerosol options for NTU microphysics (56)<br><br> 1: marine aerosol background type <br><br> 2: (default) continental clean aerosol type <br><br> 3: continental average aerosol type <br><br> 4: continental urban aerosol type</td>
+</tr>
+<tr>
+<td>do_radar_ref <br><br> <br></td>
+<td>1</td>
+<td>allows radar reflectivity to be computed using mp-scheme-<br> specific parameters. Currently works for <em>mp_physics = 2,4,6,7,8,10,14,16,24,26</em></td>
+</tr>
+<tr>
+<td>mp_zero_out</td>
+<td></td>
+<td>for non-zero <em>mp_physics</em> options, keeps moisture<br> variables above a threshold value ³0. An<br> alternative (and better) way to keep moisture variables positive is to use<br> the <em>moist_adv_opt</em>.</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>(default) no action taken; no adjustment to any moisture<br> field</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>except for Qv, all other moisture arrays are set to zero<br> if they fall below a critical value</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>Qv ³ 0 and<br> all other moisture arrays are set to zero if they fall below a critical value</td>
+</tr>
+<tr>
+<td>mp_zero_out_thresh</td>
+<td>1.e-8</td>
+<td>critical value for moisture variable threshold, below<br> which moisture arrays (except for Qv) are set to zero (unit:  kg/kg)</td>
+</tr>
+<tr>
+<td>mp_tend_lim</td>
+<td>10.</td>
+<td>limit on temp tendency from microphysics latent heating<br> when radar data assimilation is used</td>
+</tr>
+<tr>
+<td>gsfcgce_hail</td>
+<td>0</td>
+<td>(default) running gsfcgce scheme with graupel</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>running gsfcgce scheme with hail</td>
+</tr>
+<tr>
+<td>gsfcgce_2ice</td>
+<td>0</td>
+<td>(default) running gsfcgce scheme with snow, ice, and<br> graupel/hail</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>running gsfcgce scheme with only ice and snow (<em>gsfcgce_hail</em> is ignored)</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>running gsfcgce scheme with only ice and graupel (used<br> only in very extreme situation; <em>gsfcgce_hail</em> is ignored)</td>
+</tr>
+<tr>
+<td>ccn_conc</td>
+<td>1.0E8</td>
+<td>CCN concentration; used by WDM schemes</td>
+</tr>
+<tr>
+<td>hail_opt</td>
+<td>1</td>
+<td>hail/graupel switch for WSM6, WDM6</td>
+</tr>
+<tr>
+<td>morr_rimed_ice</td>
+<td>1</td>
+<td>(default) Hail switch for Morrison Scheme (<em>mp_physics=10</em> or <em>40</em>)</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>Off – just graupel</td>
+</tr>
+<tr>
+<td>clean_atm_diag</td>
+<td>1</td>
+<td>Option to switch on clean sky diagnostics (for chem)</td>
+</tr>
+<tr>
+<td>acc_phy_tend <em>New since V4.4</em></td>
+<td>1</td>
+<td>Option to output 16 accumulated physics tendencies for<br> potential temp, water vapor mixing ratio, and u/v wind components. (default =0;<br> off)</td>
+</tr>
+<tr>
+<td><strong><em>Note: The following<br> 9 namelists are for the NSSL 1-moment scheme. For the 1- and 2-moment<br> schemes, the shape parameters for graupel and hail can also be set.</em></strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>nssl_alphah</td>
+<td>0</td>
+<td>shape parameter for graupel</td>
+</tr>
+<tr>
+<td>nssl_alphahl</td>
+<td>2</td>
+<td>shape parameter for hail</td>
+</tr>
+<tr>
+<td>nssl_cnoh</td>
+<td>4.e5</td>
+<td>graupel intercept</td>
+</tr>
+<tr>
+<td>nssl_cnohl</td>
+<td>4.e4</td>
+<td>hail intercept</td>
+</tr>
+<tr>
+<td>nssl_cnor</td>
+<td>8.e5</td>
+<td>rain intercept</td>
+</tr>
+<tr>
+<td>nssl_cnos</td>
+<td>3.e6</td>
+<td>snow intercept</td>
+</tr>
+<tr>
+<td>nssl_rho_qh</td>
+<td>500.</td>
+<td>graupel density</td>
+</tr>
+<tr>
+<td>nssl_rho_ghl</td>
+<td>900.</td>
+<td>hail density</td>
+</tr>
+<tr>
+<td>nssl_rho_qs</td>
+<td>100.</td>
+<td>snow density</td>
+</tr>
+<tr>
+<td>no_mp_heating</td>
+<td>1</td>
+<td>turn on latent heating from a microphysics scheme (0 is<br> off and is default)</td>
+</tr>
+<tr>
+<td>use_mp_re</td>
+<td>1</td>
+<td>use effective radii computed in mp schemes in RRTMG (only<br> for <em>mp_physics=3, 4, 6, 7, 8, 10, 14, 16, 17-2, 24, 26, 28, 50-53, 55</em>)</td>
+</tr>
+<tr>
+<td>ra_lw_physics (max_dom)</td>
+<td></td>
+<td>Longwave radiation option. The same value should be used<br> for all domains.</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>no longwave radiation</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>rrtm scheme. See /<em>run/README.namelist</em> for default<br> GHG values.</td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>CAM scheme <br><br> <em>Note: restart must be at 6-hourly interval; also requires levsiz, paerlev, </em>cam_abs_dim1*(2);<br> see below</td>
+</tr>
+<tr>
+<td></td>
+<td>4</td>
+<td>rrtmg scheme. See /<em>run/README.namelist</em> for default<br> GHG values.</td>
+</tr>
+<tr>
+<td><em>(updated V4.1)</em></td>
+<td>5</td>
+<td>Goddard scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>7</td>
+<td>FLG (UCLA) scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>24</td>
+<td>fast rrtmg scheme for GPU and MIC</td>
+</tr>
+<tr>
+<td></td>
+<td>31</td>
+<td>Earth Held-Suarez forcing</td>
+</tr>
+<tr>
+<td></td>
+<td>99</td>
+<td>GFDL (Eta) longwave (semi-supported); must use <em>co2tf=1</em></td>
+</tr>
+<tr>
+<td>ra_sw_physics (max_dom)</td>
+<td></td>
+<td>Shortwave radiation option. The same value should be used<br> for all domains.</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>no shortwave radiation</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>Dudhia scheme (must use a ptop &gt;= 50 mb)</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>(old) Goddard shortwave scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>CAM scheme (restart must be at 6-hourly interval); must set<br> <em>levsiz, paerlev, cam_abs_dim1/2</em></td>
+</tr>
+<tr>
+<td></td>
+<td>4</td>
+<td>rrtmg scheme. <br><br> (Default values for GHG: <em>co2vmr=379.e-6, n2ovmr=319.e-9, ch4vmr=1774.e-9</em>).<br> Starting v4.2, <em>co2vmr</em> becomes a function of year</td>
+</tr>
+<tr>
+<td><em>(updated V4.1)</em></td>
+<td>5</td>
+<td>Goddard scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>7</td>
+<td>FLG (UCLA) scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>14</td>
+<td>RRTMG-K scheme. <strong>Note:</strong> To use this option, WRF must<br> be built with the configuration setting -DBUILD_RRTMK = 1 (modify in<br> configure.wrf).</td>
+</tr>
+<tr>
+<td></td>
+<td>24</td>
+<td>fast rrtmg scheme for GPU and MIC</td>
+</tr>
+<tr>
+<td></td>
+<td>99</td>
+<td>GFDL (Eta) longwave (semi-supported); must use <em>co2tf=1</em></td>
+</tr>
+<tr>
+<td>radt (max_dom)</td>
+<td>30</td>
+<td>minutes between radiation physics calls.  Recommended 1 minute per km of dx (e.g. 10<br> for 10 km grid); use the same value for all nests</td>
+</tr>
+<tr>
+<td>swint_opt</td>
+<td>1</td>
+<td>Turn on interpolation of shortwave radiation based on the<br> updated solar zenith angle between radiation calls</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>Activates FARMS to allow simulation of the broadband<br> solar radiation model every time step.</td>
+</tr>
+<tr>
+<td>couple_farms</td>
+<td>.true.</td>
+<td>Use FARMS SW radiation to drive the LSM (default is<br> .false. = use SW radiation from <em>rad_sw_physics</em>)</td>
+</tr>
+<tr>
+<td>ra_call_offset</td>
+<td>-1</td>
+<td>Turn on radiation offset, to call radiation just before<br> output time, instead of after output time</td>
+</tr>
+<tr>
+<td>co2tf</td>
+<td>1</td>
+<td>CO2 transmission function flag for GFDL radiation only,<br> which allows generation of CO2 function internally</td>
+</tr>
+<tr>
+<td>cldovrlp</td>
+<td></td>
+<td>Cloud overlapping option for RRTMG (<em>ra_lw/sw_physics=4)</em></td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>Random</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>(default) maximum random</td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>Maximum</td>
+</tr>
+<tr>
+<td></td>
+<td>4</td>
+<td>Exponential</td>
+</tr>
+<tr>
+<td><em>New since V4.4</em></td>
+<td>5</td>
+<td>Exponential-random</td>
+</tr>
+<tr>
+<td>idcor <em>New since V4.4</em></td>
+<td></td>
+<td>Decorrelation length flag for <em>cldovrlp=4 or 5</em></td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>Constant decorrelation length, 2500 m</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>Latitude-varying decorrelation length</td>
+</tr>
+<tr>
+<td>ra_sw_eclipse</td>
+<td>0</td>
+<td>Eclipse effect on shortwave radiation. 0: off, 1: on. Works<br> with RRTMG, Goddard, old Goddard, and Dudhia schemes.</td>
+</tr>
+<tr>
+<td>ghg_input <em>New since V4.4</em></td>
+<td>1</td>
+<td>Option to read CAMtr_volume_mixing_ratio files of<br> greenhouse gas values. Default is SSP 2 with RCP 4.5 -&gt; SSP245. Used with <em>ra_lw_physics<br> = 1, 3,4,24</em> and <em>ra_sw_physics = 3,4,24</em></td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>Do not read in annual data; for constant values for<br> backward compatibility (prior to V4.4)</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>Read in time-dependent data for CO2, N2O, CH4, CFC11, CFC12</td>
+</tr>
+<tr>
+<td><strong><em>Note:  The following 5 variables for CAM are<br> automatically set</em></strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>cam_abs_freq_s</td>
+<td>21600</td>
+<td>default CAM clear sky longwave absorption calculation<br> frequency (recommended minimum value to speed scheme up)</td>
+</tr>
+<tr>
+<td>levsiz</td>
+<td>59</td>
+<td>number of ozone data levels for  CAM radiation</td>
+</tr>
+<tr>
+<td>paerlev</td>
+<td>29</td>
+<td>number of aerosol data levels for CAM radiation</td>
+</tr>
+<tr>
+<td>cam_abs_dim1</td>
+<td>4</td>
+<td>dimension for <em>absnxt</em> (absorption save array) in<br> CAM radiation</td>
+</tr>
+<tr>
+<td>cam_abs_dim2</td>
+<td>same as e_vert</td>
+<td>dimension for <em>abstot</em> (2nd absorption save array)<br> in CAM radiation</td>
+</tr>
+<tr>
+<td>o3input</td>
+<td></td>
+<td>ozone input option (RRTMG only)</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>use  profile inside<br> the scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>2<br><br> <br></td>
+<td>(default) use CAM ozone data (from <em>ozone.formatted</em> file)</td>
+</tr>
+<tr>
+<td>aer_opt</td>
+<td></td>
+<td>aerosol input option (RRTMG only)</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>off</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>use Tegen climatology</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>use J. A. Ruiz-Arias method (see other aer* options)</td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>use Thompson water/ice-friendly climatological aerosol</td>
+</tr>
+<tr>
+<td>alevsiz</td>
+<td>12</td>
+<td>number of vertical levels in aerosol data. Value set<br> automatically.</td>
+</tr>
+<tr>
+<td>no_src_types</td>
+<td>6</td>
+<td>number of aerosol types: organic and black carbon, sea<br> salt, sulfate, dust and stratospheric aerosol (volcanic ash – currently<br> 0).  Value set automatically.</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>do not interpolate</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>Interpolate</td>
+</tr>
+<tr>
+<td>use_rap_aero_icbc <em>(New since V4.4)</em></td>
+<td>.true.</td>
+<td>Option to ingest real-time data containing aerosols <em><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/pull/1567">details</a></em> (default is<br> false – off)</td>
+</tr>
+<tr>
+<td>qna_update <em>(New since V4.4)</em></td>
+<td>1</td>
+<td>Update time-varying sfc aerosol emission from climatology<br> or real-time data with <em>mp_physics = 28</em>. Use with input file ‘wrfqnainp_d0<em>’<br> (must set </em>auxinput17_interval<em> and </em>io_form_auxinput17*). Default<br> is 0=off</td>
+</tr>
+<tr>
+<td>wif_fire_emit <em>(New since V4.4)</em></td>
+<td>.true.</td>
+<td>Option to include biomass burning organic and black<br> carbon aerosols with <em>mp_physics = 28</em></td>
+</tr>
+<tr>
+<td>wif_fire_inj</td>
+<td>1</td>
+<td>(default) vertically distribute biomass burning emissions<br> in <em>mp_physics = 28</em></td>
+</tr>
+<tr>
+<td><strong><em>Note: The following<br> aerosol options allow RRTMG and new Goddard radiation to recognize the<br> aerosol option setting,  but the aerosols<br> are constant during the model integration</em></strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>aer_aod550_opt (max_dom)</td>
+<td>1</td>
+<td>(default) input constant value for AOD at 550 nm from<br> namelist; the value is read from <em>aer_aod550_val</em></td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>input value from auxiliary input 15, which is a time-varying<br> 2D grid in netcdf wrf-compatible format.</td>
+</tr>
+<tr>
+<td>aer_aod550_val (max_dom)</td>
+<td>0.12</td>
+<td>value to be used with  <em>aer_aod550_opt=1</em></td>
+</tr>
+<tr>
+<td>aer_angexp_opt (max_dom)</td>
+<td>1</td>
+<td>(default) input constant value for Angstrom exponent from<br> namelist.  The value is read from <em>aer_angexp_val</em></td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>input value from auxiliary input 5, as in <em>aer_aod550_opt</em></td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>Angstrom exponent value estimated from the aerosol type<br> defined in <em>aer_type</em>, and modulated with the RH in WRF.</td>
+</tr>
+<tr>
+<td>aer_angexp_val (max_dom)</td>
+<td>1.3</td>
+<td>value to be used with  <em>aer_angexp_opt=1</em></td>
+</tr>
+<tr>
+<td>aer_ssa_opt (max_dom)</td>
+<td>1</td>
+<td>(default)  input<br> constant value for single scattering albedo from namelist. The value is read<br> from <em>aer_ssa_val</em></td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>input value from auxiliary input 5, as in <em>aer_aod550_opt</em></td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>single scattering albedo value estimated from the aerosol<br> type defined in <em>aer_type</em>, and modulated with the RH in WRF.</td>
+</tr>
+<tr>
+<td>aer_ssa_val (max_dom)</td>
+<td>0.85</td>
+<td>value to be used with  <em>aer_ssa_opt=1</em></td>
+</tr>
+<tr>
+<td>aer_asy_opt (max_dom)</td>
+<td>1</td>
+<td>(default)  input<br> constant value for asymmetry parameter from namelist. The value is read from <em>aer_asy_val</em></td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>input value from auxiliary input 5, as in <em>aer_aod550_opt</em></td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>asymmetry parameter value estimated from the aerosol type<br> defined in aer_type, and modulated with the RH in WRF.</td>
+</tr>
+<tr>
+<td>aer_asy_val (max_dom)</td>
+<td>0.9</td>
+<td>value to be used with <em>aer_asy_opt=1</em></td>
+</tr>
+<tr>
+<td>aer_type (max_dom)</td>
+<td></td>
+<td>aerosol type to be used with the above aerosol options</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>(default) rural</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>urban</td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>maritime</td>
+</tr>
+<tr>
+<td>sf_sfclay_physics (max_dom)</td>
+<td></td>
+<td>surface layer option. The same value should be used for<br> all domains.</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>no surface-layer</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>Revised MM5 Monin-Obukhov scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>Monin-Obukhov (Janjic Eta) scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>4</td>
+<td>QNSE</td>
+</tr>
+<tr>
+<td></td>
+<td>5</td>
+<td>MYNN</td>
+</tr>
+<tr>
+<td></td>
+<td>7</td>
+<td>Pleim-Xiu, only tested with Pleim-Xiu surface and ACM2<br> PBL</td>
+</tr>
+<tr>
+<td></td>
+<td>10</td>
+<td>TEMF</td>
+</tr>
+<tr>
+<td></td>
+<td>91</td>
+<td>old MM5 surface layer scheme (previously option 1)</td>
+</tr>
+<tr>
+<td>iz0tlnd</td>
+<td></td>
+<td>switch to control land thermal roughness length</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>(default) old, or non-vegetation dependent thermal<br> roughness length over land</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>veg dependent (see <a target="_blank" rel="noopener" href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2009GL037980">Chen,<br> F. and Zhang, Y., 2009</a>)</td>
+</tr>
+<tr>
+<td>sf_surface_physics (max_dom)</td>
+<td></td>
+<td>land-surface option (set this before running <em>real.exe</em>; also make sure <em>num_soil_layers</em> is set correctly). The same value should be used for all domains.</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>no surface temp prediction</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>thermal diffusion scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>unified Noah land-surface model</td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>RUC land-surface model</td>
+</tr>
+<tr>
+<td></td>
+<td>4</td>
+<td>Noah-MP land-surface model (see additional options under the<br> <em>&amp;noah_mp</em> section)</td>
+</tr>
+<tr>
+<td></td>
+<td>5</td>
+<td>CLM4 (Community Land Model Version 4)</td>
+</tr>
+<tr>
+<td></td>
+<td>7</td>
+<td>Pleim-Xiu scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>8</td>
+<td>SSiB land-surface model. Works <em>with ra_lw_physics=1, 3,</em> <em>or 4,</em> and <em>ra_sw_physics=1, 3, or 4</em></td>
+</tr>
+<tr>
+<td>sf_urban_physics (max_dom)</td>
+<td></td>
+<td>activate urban canopy model (in Noah LSM only). The same<br> value should be used for all domains.</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>off</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>Single-layer, UCM</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>Multi-layer, Building Environment Parameterization (BEP)<br> scheme (works only with the MYJ, BouLac and YSU PBL)</td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>Multi-layer, Building Environment Model (BEM) scheme<br> (works only with MYJ, BouLac and YSU PBL)</td>
+</tr>
+<tr>
+<td>use_wudapt_lcz</td>
+<td>0</td>
+<td>Option to use WUDAPT LCZ urban landuse categories. 0: use<br> traditional 31-33 urban categories; 1: use WUDAPT LCZ 31-41 categories.</td>
+</tr>
+<tr>
+<td>ua_phys</td>
+<td>.true.</td>
+<td>activate UA Noah LSM changes to use a different<br> snow-cover physics. Aimed toward improving treatment of snow as it relates to<br> the vegetation canopy.</td>
+</tr>
+<tr>
+<td>num_soil_layers</td>
+<td></td>
+<td>number of soil layers in land surface model (set before<br> running <em>real.exe</em>)</td>
+</tr>
+<tr>
+<td></td>
+<td>5</td>
+<td>(default) thermal diffusion scheme for temp only</td>
+</tr>
+<tr>
+<td></td>
+<td>4</td>
+<td>Noah land-surface model</td>
+</tr>
+<tr>
+<td></td>
+<td>6 or 9</td>
+<td>RUC land-surface model</td>
+</tr>
+<tr>
+<td></td>
+<td>10</td>
+<td>CLM4 land-surface model</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>Pleim-Xu land-surface model</td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>SSiB land-surface model</td>
+</tr>
+<tr>
+<td>bl_pbl_physics (max_dom)</td>
+<td></td>
+<td>boundary layer option. The same value should be used for<br> all domains that have this turned on.</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>no boundary-layer</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>YSU scheme; must use <em>sf_sfclay_physics=1</em></td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>Mellor-Yamada-Janjic (Eta) TKE scheme; must use <em>sf_sfclay_physics=2</em></td>
+</tr>
+<tr>
+<td></td>
+<td>4</td>
+<td>QNSE-EDMF; must use <em>sf_sfclay_physics=4</em></td>
+</tr>
+<tr>
+<td></td>
+<td>5</td>
+<td>MYNN 2.5 level TKE; must use <em>sf_sfclay_physics=1, 2, or<br> 5</em></td>
+</tr>
+<tr>
+<td></td>
+<td>6</td>
+<td>MYNN 3rd level TKE; must use <em>sf_sfclay_physics=5</em></td>
+</tr>
+<tr>
+<td></td>
+<td>7</td>
+<td>ACM2 (Pleim) scheme; must use <em>sf_sfclay_physics=1 or 7</em></td>
+</tr>
+<tr>
+<td></td>
+<td>8</td>
+<td>Bougeault and Lacarrere (BouLac) TKE; must use <em>sf_sfclay_physics=1<br> or 2</em></td>
+</tr>
+<tr>
+<td></td>
+<td>9</td>
+<td>Bretherton-Park/UW TKE scheme; must use <em>sf_sfclay_physics=1<br> or 2</em></td>
+</tr>
+<tr>
+<td></td>
+<td>10</td>
+<td>TEMF scheme; must use  <em>sf_sfclay_physics=10</em></td>
+</tr>
+<tr>
+<td></td>
+<td>11</td>
+<td>Shin-Hong ‘scale-aware’ PBL scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>12</td>
+<td>GBM TKE-type scheme; must use  <em>sf_sfclay_physics=1</em></td>
+</tr>
+<tr>
+<td></td>
+<td>16</td>
+<td>EEPS: TKE+TKE dissipation rate (epsilon) scheme; works with<br> sf_<em>sfclay_physics = 1,91,5</em></td>
+</tr>
+<tr>
+<td></td>
+<td>99</td>
+<td>MRF scheme (to be removed in the future)</td>
+</tr>
+<tr>
+<td>mfshconv (max_dom)</td>
+<td>1</td>
+<td>turns on day-time EDMF for QNSE (0=off)</td>
+</tr>
+<tr>
+<td>bldt (max_dom)</td>
+<td>0</td>
+<td>minutes between boundary-layer physics calls (0=call<br> every time step – recommended)</td>
+</tr>
+<tr>
+<td>topo_wind (max_dom)</td>
+<td></td>
+<td>topographic surface wind correction. requires extra input<br> from geogrid. YSU PBL only</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>off</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>Jimenez method</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>UW method</td>
+</tr>
+<tr>
+<td>bl_mynn_tkebudget (max_dom)</td>
+<td>1</td>
+<td>adds MYNN tke budget terms to output</td>
+</tr>
+<tr>
+<td>bl_mynn_tkeadvect (max_dom)</td>
+<td>.true.</td>
+<td>Turn on MYNN TKE advection to couple subgrid-scale clouds<br> from the PBL scheme (MYNN only) to radiation schemes</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>option to couple the subgrid-scale clouds from the PBL<br> scheme (MYNN only) to the radiation scheme</td>
+</tr>
+<tr>
+<td>bl_mynn_cloudmix (max_dom)</td>
+<td>1</td>
+<td>option to activate mixing of qc and qi in MYNN (NOTE:  qnc and qni are mixed when <em>scalar_pblmix=1</em>)</td>
+</tr>
+<tr>
+<td>bl_mynn_mixlength</td>
+<td></td>
+<td>option to change mixing length formulation in MYNN</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>original, as in Nakanishi and Niino 2009</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>RAP/HRRR (including BouLac in free atmosphere)</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>(default) experimental (includes cloud-specific mixing length<br> and a scale-aware mixing length; following Ito et al. 2015, BLM); this option<br> has been well-tested with the edmf options.</td>
+</tr>
+<tr>
+<td>bl_mynn_cloudpdf</td>
+<td></td>
+<td>option to switch to diffrent cloud PDFs to represent<br> subgrid clouds</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>original (Sommeria and Deardorf 1977)</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>Kuwano et al. 2010; similar to option 0, but uses<br> resolved scale gradients, as opposed to higher order moments</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>(default) from Chaboureau and Bechtold 2002 (JAS, with<br> mods)</td>
+</tr>
+<tr>
+<td>bl_mynn_edmf (max_dom)</td>
+<td></td>
+<td>option to activate mass-flux scheme in MYNN</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>regular MYNN</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>(default) for StEM</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>for TEMF</td>
+</tr>
+<tr>
+<td>bl_mynn_edmf_mom (max_dom)</td>
+<td>1</td>
+<td>option to activate momentum transport in MYNN mass-flux<br> scheme (assuming <em>bl_mynn_edmf &gt; 0</em>)</td>
+</tr>
+<tr>
+<td>bl_mynn_edmf_tke (max_dom)</td>
+<td>1</td>
+<td>option to activate TKE transport in MYNN mass-flux scheme<br> (assumumg <em>bl_mynn_edmf &gt; 0</em>)</td>
+</tr>
+<tr>
+<td>scalar_pblmix</td>
+<td>1</td>
+<td>Option to mix scalar fields consistent with PBL option<br> (exch_h)</td>
+</tr>
+<tr>
+<td>tracer_pblmix</td>
+<td>1</td>
+<td>Option to mix tracer fields consistent with PBL option<br> (exch_h)</td>
+</tr>
+<tr>
+<td>shinhong_tke_diag (max_dom)</td>
+<td>1</td>
+<td>Use diagnostic TKE and mixing length from Shin-Hong PBL</td>
+</tr>
+<tr>
+<td>opt_thcnd</td>
+<td></td>
+<td>option to treat thermal conductivity in Noah LSM</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>(default) original</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>McCumber and Pielke for silt loam and sandy loam</td>
+</tr>
+<tr>
+<td>sf_surface_mosaic</td>
+<td>1</td>
+<td>option to use mosaic landuse categories for Noah LSM</td>
+</tr>
+<tr>
+<td>mosaic_lu</td>
+<td>1</td>
+<td>option to specify landuse parameters based on a mosaic<br> approach, when using the RUC land surfce model; default is 0 (off)</td>
+</tr>
+<tr>
+<td>mosaic_soil</td>
+<td>1</td>
+<td>option to specify soil parameters based on a masaic<br> approach, when using the RUC land surface model; default is 0 (off)</td>
+</tr>
+<tr>
+<td>mosaic_cat</td>
+<td>3</td>
+<td>number of mosaic landuse categories in a grid cell</td>
+</tr>
+<tr>
+<td>grav_settling (max_dom)</td>
+<td></td>
+<td>gravitational settling of fog/cloud droplets</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>(default) no settling of cloud droplets</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>settling from Dyunkerke 1991 (in atmosphere at at<br> surface)</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>Fogdes (vegetation and wind speed dependent; Katata et<br> al. 2008) at surface, and Dyunkerke in the atmosphere</td>
+</tr>
+<tr>
+<td>ysu_topdown_pblmix</td>
+<td>1</td>
+<td>turns on top-down radiation-driven mixing; 0: off, 1: on (default)</td>
+</tr>
+<tr>
+<td>cu_physics (max_dom)</td>
+<td></td>
+<td>cumulus parameterization option. The same value should be<br> used for all domains that have <em>cu_physics</em> turned on.</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>no cumulus parameterization</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>Kain-Fritsch (new Eta) scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>Betts-Miller-Janjic scheme. Can add <em>bmj_rad_feedback</em> option added in 4.2.</td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>Grell-Freitas ensemble scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>4</td>
+<td>Scale-aware GFS Simplified Arakawa-Schubert (SAS) scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>5</td>
+<td>New Grell scheme (G3)</td>
+</tr>
+<tr>
+<td></td>
+<td>6</td>
+<td>Tiedtke scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>7</td>
+<td>Zhang-McFarlane from CESM (works with MYJ and UW PBL)</td>
+</tr>
+<tr>
+<td></td>
+<td>10</td>
+<td>Modified Kain-Fritsch scheme with trigger function based<br> on PDFs</td>
+</tr>
+<tr>
+<td></td>
+<td>11</td>
+<td>Multi-scale Kain-Fritsch scheme. Momentum transport added<br> in 4.2.</td>
+</tr>
+<tr>
+<td></td>
+<td>14</td>
+<td>Scale-aware SAS from KIM, should pair with <em>shcu_physics=4</em></td>
+</tr>
+<tr>
+<td></td>
+<td>16</td>
+<td>A newer Tiedke scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>93</td>
+<td>Grell-Devenyi ensemble scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>95</td>
+<td>Previous GFS Simplified Arakawa-Schubert scheme</td>
+</tr>
+<tr>
+<td></td>
+<td>96</td>
+<td>GFS SAS from YSU, renamed from option 14)</td>
+</tr>
+<tr>
+<td></td>
+<td>99</td>
+<td>previous Kain-Fritsch scheme</td>
+</tr>
+<tr>
+<td>cudt (max_dom)</td>
+<td>0</td>
+<td>minutes between cumulus physics calls; set to 0 when using<br> all <em>cu_physics</em> except Kain-Fritsch (0 = call every time step)</td>
+</tr>
+<tr>
+<td>kfeta_trigger</td>
+<td></td>
+<td>The way to determines whether a grid point is convective;<br> use only with <em>cu_physics=1</em>.</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>default, original</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>moisture-advection based trigger (Ma and Tan 2009)</td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>relative humidity-dependent</td>
+</tr>
+<tr>
+<td>ishallow</td>
+<td>1</td>
+<td>turns on shallow convection used with <em>cu_physics=3 or 5</em> (default is 0 = off)</td>
+</tr>
+<tr>
+<td>cu_diag (max_dom)</td>
+<td>0</td>
+<td>Compute time-averaged time-step surface rainfall, cloud<br> water/ice from <em>cu_physics = 3, 5, and 93</em> (for WRF chemistry use)</td>
+</tr>
+<tr>
+<td>shcu_physics (max_dom)</td>
+<td></td>
+<td>independent shallow cumulus option (not tied to deep<br> convection)</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>no independent shallow cumulus (not tied to deep<br> convection)</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>Park and Bretherton shallow cumulus from CAM5</td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>GRIMS scheme</td>
+</tr>
+<tr>
+<td><em>(new since V4.1)</em></td>
+<td>5</td>
+<td>Deng shallow cumulus. Only works with MYNN and MYJ PBL<br> schemes.</td>
+</tr>
+<tr>
+<td><strong><em>Note:  The following 5 options show recommended #’s.<br> If you would like to use any other number, consult the code to understand what<br> you are doing.</em></strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>maxiens</td>
+<td>1</td>
+<td>Grell-Devenyi, G3 and GF only</td>
+</tr>
+<tr>
+<td>maxens</td>
+<td>3</td>
+<td>Grell-Devenyi, G3 and GF only</td>
+</tr>
+<tr>
+<td>maxens2</td>
+<td>3</td>
+<td>Grell-Devenyi, G3 and GF only</td>
+</tr>
+<tr>
+<td>maxens3</td>
+<td>16</td>
+<td>Grell-Devenyi, G3 and GF only</td>
+</tr>
+<tr>
+<td>ensdim</td>
+<td>144</td>
+<td>Grell-Devenyi, G3 and GF only</td>
+</tr>
+<tr>
+<td>cugd_avedx</td>
+<td>1</td>
+<td>(default) number of grid boxes over which subsidence is<br> spread, for large grid distances</td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>for small grid distances (DX &lt; 5 km), G3 only</td>
+</tr>
+<tr>
+<td>nsas_dx_factor</td>
+<td>1</td>
+<td>nsas grid distance dependent option</td>
+</tr>
+<tr>
+<td><em>For the KF-CuP<br> Scheme:</em></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>shallowcu_forced_ra (max_dom)</td>
+<td>.true.</td>
+<td>radiative impact of shallow Cu by a prescribed maximum<br> cloud fraction of 0.36. Use with <em>cu_physics=10</em> only</td>
+</tr>
+<tr>
+<td>numbins (max_dom)</td>
+<td>1</td>
+<td>number of perturbations for potential temperature and mixing<br> ratio in the CuP PDF. Use with <em>cu_physics=10</em> only ; should be an odd<br> number - recommended value is 21</td>
+</tr>
+<tr>
+<td>thBinSize (max_dom)</td>
+<td>1</td>
+<td>bin size of potential temperature perturbation<br> increment:  0.01 K. Use with <em>cu_physics=10</em> only</td>
+</tr>
+<tr>
+<td>rBinSize (max_dom)</td>
+<td>1</td>
+<td>bin size of mixing ratio perturbation increment: 1.0e-4<br> kg/kg. Use with <em>cu_physics=10</em> only</td>
+</tr>
+<tr>
+<td>minDeepFreq (max_dom)</td>
+<td>1</td>
+<td>minimum frequency required before deep convection is<br> allowed:  0.333 (cu_physics = 10 only;<br> default is 1)</td>
+</tr>
+<tr>
+<td>minShallowFreq (max_dom)</td>
+<td>1</td>
+<td>minimum frequency required before shallow convection is<br> allowed:  1.0e-2. Use with <em>cu_physics=10</em> only</td>
+</tr>
+<tr>
+<td>shcu_aerosols_opt (max_dom)</td>
+<td>2</td>
+<td>Prognostic option to include aerosols in shcu. Use with <em>cu_physics=10</em> only; must be run with WRF-Chem</td>
+</tr>
+<tr>
+<td>aercu_opt</td>
+<td></td>
+<td>Option to control aerosol interaction in MSKF and<br> Morrison microphysics. Use with <em>mp_physics=40</em> only</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>(default) no aerosol interaction</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>Aerosol interaction with only MSKF</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>Aerosol interaction with both MSKF and morrison</td>
+</tr>
+<tr>
+<td>aercu_fct</td>
+<td>1</td>
+<td>factor to multiply with aerosol amount. Use with <em>mp_physics=40</em> only</td>
+</tr>
+<tr>
+<td>no_src_types_cu</td>
+<td>1</td>
+<td>number of aerosol species in global aerosol data: 10 for<br> CESM input, set automatically. Use with <em>mp_physics=40</em> only</td>
+</tr>
+<tr>
+<td>alevsiz_cu</td>
+<td>1</td>
+<td>number of levels in global aerosol data: 30 for CESM<br> input, set automatically. Use with <em>mp_physics=40</em> only</td>
+</tr>
+<tr>
+<td>kf_edrates (max_dom)</td>
+<td>1</td>
+<td>option to output entrainment/detrainment rates and convective<br> timescale output variables for KF-based cumulus schemes (<em>cu_physics=1, 11,<br> and 99</em> only)</td>
+</tr>
+<tr>
+<td>convtrans_avglen_m</td>
+<td>30</td>
+<td>averaging time for convective transport output variables<br> (in minutes; only use with <em>cu_physics=3,5 and 93</em>)</td>
+</tr>
+<tr>
+<td>cu_rad_feedback (max dom)</td>
+<td>.true.</td>
+<td>sub-grid cloud effect to the optical depth in radiation; works<br> only for GF, G3, GD, and KF schemes; must set <em>cu_diag=1</em> for GF, G3,<br> and GD schemes</td>
+</tr>
+<tr>
+<td>bmj_cu_feedback (max_dom)</td>
+<td>.true.</td>
+<td>Turn on precipitation-derived sub-grid cloud effect for<br> radiation</td>
+</tr>
+<tr>
+<td>dust_emis</td>
+<td>1</td>
+<td>Turns on sfc dust emission scheme to enter <em>mp_physics=28</em> QNIFA (ice-friendly aerosol variable)</td>
+</tr>
+<tr>
+<td>erosion_dim</td>
+<td>3</td>
+<td>In conjunction with <em>dust_emis=1</em>; this value can<br> only be set equal to 3 (erodibility information)</td>
+</tr>
+<tr>
+<td>isfflx</td>
+<td></td>
+<td>heat and moisture fluxes from the surface for real-data<br> cases when a PBL is used; only works with <em>sf_sfclay_physics=1, 5, 7, or 11</em><br><br> 1 = fluxes are on<br><br> 0 = fluxes are off It also controls surface fluxes when <em>diff_opt=2</em> and <em>km_opt=3</em>, and a PBL isn’t used<br><br> 0 =  constant fluxes defined by tke_drag_coefficient<br> and tke_heat_flux<br><br> 1 =  use model-computed u<em> and heat and<br> moisture fluxes<br><br> 2 =  use model-computed u</em> and<br> specified heat flux by tke_heat_flux</td>
+</tr>
+<tr>
+<td>ideal_xland</td>
+<td></td>
+<td>sets XLAND for ideal cases with no input land-use run-time<br> switch for wrf.exe physics_init</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>land</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>water</td>
+</tr>
+<tr>
+<td>ifsnow</td>
+<td>1</td>
+<td>Turns on snow-cover effects (only works for <em>sf_surface_physics=1</em>)</td>
+</tr>
+<tr>
+<td>icloud</td>
+<td></td>
+<td>cloud effect to the optical depth in radiation (only<br> works with <em>ra_sw_physics=1,4</em> and <em>ra_lw_physics=1,4</em>); this also<br> controls the cloud fraction options</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>(default) with cloud effect; must use cloud fraction<br> option 1 (Xu-Randall mehod)</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>without cloud effect</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>with cloud effect; must use cloud fraction option 2, 0/1<br> based on threshold</td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>with cloud effect; must use cloud fraction option 3, a<br> Sundqvist method (Sundqvist et al. 1989)</td>
+</tr>
+<tr>
+<td>insert_init_cloud</td>
+<td>.false.</td>
+<td>Option to estimate initial model cloud using option icloud=3,<br> cold start only.</td>
+</tr>
+<tr>
+<td>swrad_scat</td>
+<td>1</td>
+<td>scattering tuning parameter; default 1 is 1.e-5 m-2 kg-1 (only for <em>ra_sw_physics=1</em>).  Increase for more scattering.</td>
+</tr>
+<tr>
+<td>surface_input_source</td>
+<td></td>
+<td>where landuse and soil category data come from</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>WPS/geogrid, but with dominant categories recomputed in<br> real</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>GRIB data from another model (only if arrays VEGCAT/SOILCAT<br> exist)</td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>(default) use dominant land and soil categories from<br> WPS/geogrid</td>
+</tr>
+<tr>
+<td>pxlsm_smois_init (max_dom)</td>
+<td></td>
+<td>Pleim-Xu land-surface model soil moisture initialization<br> option</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>from analysis</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>(default) from LANDUSE.TBL (SLMO, or moisture<br> availability)</td>
+</tr>
+<tr>
+<td>num_land_cat</td>
+<td></td>
+<td>number of land categories in input data</td>
+</tr>
+<tr>
+<td></td>
+<td>24</td>
+<td>(default) for USGS</td>
+</tr>
+<tr>
+<td></td>
+<td>20</td>
+<td>for MODIS</td>
+</tr>
+<tr>
+<td></td>
+<td>28</td>
+<td>for USGS if including lake category</td>
+</tr>
+<tr>
+<td></td>
+<td>21</td>
+<td>(default) for MODIS if including lake category</td>
+</tr>
+<tr>
+<td></td>
+<td>40</td>
+<td>NLCD2006 (North America only)</td>
+</tr>
+<tr>
+<td>num_soil_cat</td>
+<td>16</td>
+<td>number of soil categories in input data</td>
+</tr>
+<tr>
+<td>usemonalb</td>
+<td>.true.</td>
+<td>use monthly albedo map instead of table values (recommended<br> for <em>sst_update=1</em>)</td>
+</tr>
+<tr>
+<td></td>
+<td>.false.</td>
+<td>(default) use table values</td>
+</tr>
+<tr>
+<td>rdmaxalb</td>
+<td>.true.</td>
+<td>(default) use snow albedo from geogrid</td>
+</tr>
+<tr>
+<td></td>
+<td>.false.</td>
+<td>use snow albedo from table</td>
+</tr>
+<tr>
+<td>rdlai2d</td>
+<td>.true.</td>
+<td>use LAI  (Leaf Area<br> Index) from input data. If <em>sst_update=1</em>, LAI will also appear in<br> wrflowinp file</td>
+</tr>
+<tr>
+<td></td>
+<td>.false.</td>
+<td>(default) use LAI from table</td>
+</tr>
+<tr>
+<td>seaice_threshold</td>
+<td>100.</td>
+<td>If skin temp (TSK) is less than this value, water points<br> are changed to sea ice. If water point + 5-layer slab scheme, sets to land<br> point and permanent ice; if water point + Noah scheme, sets to land point,<br> permanent ice, sets temps from 2 m to surface, and sets smois and sh2o. The<br> default value was changed to 100. From 271. in 3.5.1 to avoid mixed-up use<br> with fractional seaice input. Only use with <em>sf_surface_physics = 1,2,3,4,8</em></td>
+</tr>
+<tr>
+<td>sst_update</td>
+<td>1</td>
+<td>Turns on option to use time-varying SST, seaice,<br> vegetation fraction, and albedo during a model simulation (set before running<br> <em>real.exe</em>). <em>real.exe</em> will create wrflowinp file(s) at the same time interval<br> as the available input data.  These<br> files contain SST, XICE, ALBEDO, and VEGFRA.  Also set <em>auxinput4_inname = “wrflowinp_d<domain>“, auxinput4_interval</em> and <em>io_form_auxinput4</em> in namelist section <em>&amp;time_control</em></td>
+</tr>
+<tr>
+<td>tmn_update</td>
+<td>1</td>
+<td>update deep layer soil temperature, useful for long<br> simulations (multi-year runs; default is 0 = off)</td>
+</tr>
+<tr>
+<td>lagday</td>
+<td>150</td>
+<td>days over which tnm (deep layer soil temp) is computed<br> using skin temperature</td>
+</tr>
+<tr>
+<td>sst_skin</td>
+<td>1</td>
+<td>calculate skin SST, useful for long simulations<br> (multi-year runs)</td>
+</tr>
+<tr>
+<td>bucket_mm</td>
+<td></td>
+<td>bucket reset values for water accumulation (unit in mm),<br> useful for long simulations (multi-year runs); default (-1) means inactive.</td>
+</tr>
+<tr>
+<td>bucket_j</td>
+<td></td>
+<td>bucket reset value for energy accumulations (unit in<br> Joules); useful for long simulations (multi-year runs); default (-1) means<br> inactive.</td>
+</tr>
+<tr>
+<td>slope_rad (max_dom)</td>
+<td>1</td>
+<td>Turns on slope-dependent radiation; for <em>ra_sw_physics</em></td>
+</tr>
+<tr>
+<td>topo_shading (max_dom)</td>
+<td>1</td>
+<td>applies neighboring-point shadow effects for <em>ra_sw_physics</em></td>
+</tr>
+<tr>
+<td>shadlen</td>
+<td>25000</td>
+<td>maximum length of orographic shadow (in meters); use only<br> with <em>topo_shading=1</em></td>
+</tr>
+<tr>
+<td>sf_ocean_physics<br><br> <br></td>
+<td></td>
+<td>activate ocean model</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>off</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>activate a simple ocean mixed layer (oml) model</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>activate a 3D Price-Weller-Pinkel (PWP) ocean model</td>
+</tr>
+<tr>
+<td>omdt</td>
+<td>1.</td>
+<td>3D PWP time step (minutes). It can be set the same as the<br> WRF time step in corresponding nested grids, but <em>omdt</em> should be no less<br> than 1.0 minute.</td>
+</tr>
+<tr>
+<td>oml_hml0<br><br> (for sf_ocean_physics=1)</td>
+<td>= 0</td>
+<td>initial ocean mixed layer depth from climatology</td>
+</tr>
+<tr>
+<td></td>
+<td>&gt; 0</td>
+<td>initial ocean mixed layer depth value (m); constant<br> everywhere (50 is default)</td>
+</tr>
+<tr>
+<td></td>
+<td>&lt; 0</td>
+<td>use input from ocean model</td>
+</tr>
+<tr>
+<td>oml_gamma<br><br> <br></td>
+<td>0.14</td>
+<td>(K m-1) lapse rate in deep water (below the<br> mixed layer) for oml; use with <em>sf_ocean_physics=1</em> only</td>
+</tr>
+<tr>
+<td>oml_relaxation_time</td>
+<td>0.</td>
+<td>relaxation time (seconds) of mixed layer ocean model back<br> to original values (e.g. value: 259200 sec - 3 days)</td>
+</tr>
+<tr>
+<td>ocean_levels<br><br> <br></td>
+<td>30</td>
+<td>number of vertical levels in 3D ocean model; use with <em>sf_ocean_physics=2</em> only</td>
+</tr>
+<tr>
+<td>isftcflx</td>
+<td></td>
+<td>alternative Ck (exchange coefficient for temp and moisture),<br> Cd (drag coefficient for momentum) formulation for tropical storm application</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>(default) off for Ck</td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>Donelan Cd + constant Z0q for Ck</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>Donelan Cd + Garratt Ck</td>
+</tr>
+<tr>
+<td>fractional_seaice</td>
+<td>1</td>
+<td>treats seaice as a fractional field; works only with <em>sf_sfclay_physics<br> = 1,2,3,4,5,7 or 91</em><br><br> Must also set <em>seaice_threshold=0</em>.</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>(default) either ice or no ice flag</td>
+</tr>
+<tr>
+<td>seaice_albedo_opt</td>
+<td></td>
+<td>option to set albedo over sea ice</td>
+</tr>
+<tr>
+<td></td>
+<td>0</td>
+<td>seaice albedo is a constant value from namelist option <em>seaice_albedo_default</em></td>
+</tr>
+<tr>
+<td></td>
+<td>1</td>
+<td>seaice albedo is a function of air temp, skin temp, and<br> snow</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>seaice albedo read in from input variable ALBSI</td>
+</tr>
+<tr>
+<td>seaice_albedo_default</td>
+<td>0.65<br><br> <br></td>
+<td>default value of seaice albedo for <em>seaice_albedo_opt=0</em></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/WRF/" rel="tag"># WRF</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/09/20/%E4%BD%BF%E7%94%A8python%E7%8E%A9%E8%BD%AClinux/" rel="prev" title="使用python玩转linux">
+                  <i class="fa fa-angle-left"></i> 使用python玩转linux
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/09/21/S2S%E6%95%B0%E6%8D%AE%E9%9B%86%E5%AD%A6%E4%B9%A0/" rel="next" title="S2S数据集学习">
+                  S2S数据集学习 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">MissLH88</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

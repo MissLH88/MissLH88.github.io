@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"misslh88.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="用python用惯了的人，就是很想用python封装每次需要操作的linux命令，然后达到只要修改一个py文件内部的内容，就把魔爪伸向整个模式的目的。不知道是不是一种理想主义。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用python玩转linux">
+<meta property="og:url" content="https://misslh88.github.io/2023/09/20/%E4%BD%BF%E7%94%A8python%E7%8E%A9%E8%BD%AClinux/index.html">
+<meta property="og:site_name" content="LH&#39;s blog">
+<meta property="og:description" content="用python用惯了的人，就是很想用python封装每次需要操作的linux命令，然后达到只要修改一个py文件内部的内容，就把魔爪伸向整个模式的目的。不知道是不是一种理想主义。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-09-20T01:10:41.000Z">
+<meta property="article:modified_time" content="2024-11-13T12:38:05.282Z">
+<meta property="article:author" content="MissLH88">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://misslh88.github.io/2023/09/20/%E4%BD%BF%E7%94%A8python%E7%8E%A9%E8%BD%AClinux/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://misslh88.github.io/2023/09/20/%E4%BD%BF%E7%94%A8python%E7%8E%A9%E8%BD%AClinux/","path":"2023/09/20/使用python玩转linux/","title":"使用python玩转linux"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>使用python玩转linux | LH's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">LH's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Research in atmospheric sciences, IAP, Beijing, China</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%90%AD%E5%BB%BApython%E7%8E%AF%E5%A2%83"><span class="nav-number">1.</span> <span class="nav-text">搭建python环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8python%E5%91%BD%E4%BB%A4linux"><span class="nav-number">2.</span> <span class="nav-text">使用python命令linux</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#OS"><span class="nav-number">2.1.</span> <span class="nav-text">OS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#subprocess"><span class="nav-number">2.2.</span> <span class="nav-text">subprocess</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">2.3.</span> <span class="nav-text">问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8python%E8%BF%90%E8%A1%8Cwrf"><span class="nav-number">3.</span> <span class="nav-text">使用python运行wrf</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8Cwps"><span class="nav-number">3.1.</span> <span class="nav-text">运行wps</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E5%A4%96%E9%83%A8%E4%BF%AE%E6%94%B9namelist-wps%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9"><span class="nav-number">3.2.</span> <span class="nav-text">从外部修改namelist.wps文件内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%87%E7%BA%A7conda"><span class="nav-number">3.3.</span> <span class="nav-text">升级conda</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85wrf-python"><span class="nav-number">3.4.</span> <span class="nav-text">安装wrf-python</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%83%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">元服务器的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E9%98%9F%E5%88%97"><span class="nav-number">4.1.</span> <span class="nav-text">查看队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1"><span class="nav-number">4.2.</span> <span class="nav-text">提交任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E4%BB%BB%E5%8A%A1%E6%83%85%E5%86%B5"><span class="nav-number">4.3.</span> <span class="nav-text">查看任务情况</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%82%E8%B5%B7%E3%80%81%E9%87%8A%E6%94%BE%E5%92%8C%E5%88%A0%E9%99%A4%E4%BD%9C%E4%B8%9A"><span class="nav-number">4.4.</span> <span class="nav-text">挂起、释放和删除作业</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E4%BA%9Bpython%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">5.</span> <span class="nav-text">一些python常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy"><span class="nav-number">5.1.</span> <span class="nav-text">numpy</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">MissLH88</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://misslh88.github.io/2023/09/20/%E4%BD%BF%E7%94%A8python%E7%8E%A9%E8%BD%AClinux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="MissLH88">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LH's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="使用python玩转linux | LH's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用python玩转linux
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-09-20 09:10:41" itemprop="dateCreated datePublished" datetime="2023-09-20T09:10:41+08:00">2023-09-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-11-13 20:38:05" itemprop="dateModified" datetime="2024-11-13T20:38:05+08:00">2024-11-13</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>用python用惯了的人，就是很想用python封装每次需要操作的linux命令，然后达到只要修改一个py文件内部的内容，就把魔爪伸向整个模式的目的。不知道是不是一种理想主义。</p>
+<span id="more"></span>
+<h1 id="搭建python环境"><a href="#搭建python环境" class="headerlink" title="搭建python环境"></a>搭建python环境</h1><p>一般在机器上安装一个anaconda即可，有可能大概率机器上已经有安装好的anaconda了，不必重复安装。然后搭建一个自己的环境</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/katrina1rani/article/details/108400459">环境配置（五)——Linux下 anaconda 安装与python环境配置_微知girl的博客-CSDN博客</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda create -n env_name python</span><br></pre></td></tr></table></figure>
+<p>其中env_name可以是你任何想要命名的环境名称，每次激活这个环境，可以保证你在激活环境的情况下安装的包和一些设置都是只针对你这个环境的，不会影响到其他人。</p>
+<p>环境搭建好后，可以通过</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">To activate this environment, use</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash"><span class="comment">#     $ conda activate python37</span></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash"><span class="comment"># To deactivate an active environment, use</span></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash"><span class="comment">#     $ conda deactivate</span></span></span><br></pre></td></tr></table></figure>
+<p><strong>如果出现报错：</strong></p>
+<pre><code>CommandNotFoundError: Your shell has not been properly 
+configured to use &#39;conda activate&#39;.
+To initialize your shell, run
+$ conda init &lt;SHELL_NAME&gt;
+</code></pre><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/cd0096b24b43">Anaconda使用conda activate激活环境出错（待完全解决）2018-06-09 - 简书</a></p>
+<p><strong>如果想要直接屏幕输入python命令：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">conda activete python37</span><br><span class="line">登陆信息前面出现（python37）</span><br><span class="line">再直接输入python</span><br><span class="line">就可以进入python环境，直接运行python命令</span><br><span class="line">ctrl+D就可以退出python</span><br></pre></td></tr></table></figure>
+<h1 id="使用python命令linux"><a href="#使用python命令linux" class="headerlink" title="使用python命令linux"></a>使用python命令linux</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/cui_yonghua/article/details/121419084#:~:text=python%E6%89%A7%E8%A1%8Clinux%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95%EF%BC%88python3%E7%BB%8F%E5%85%B8%E7%BC%96%E7%A8%8B%E6%A1%88%E4%BE%8B%EF%BC%89%201%201.%20%E4%BD%BF%E7%94%A8os.system%20%E4%BB%85%E4%BB%85%E5%9C%A8%E4%B8%80%E4%B8%AA%E5%AD%90%E7%BB%88%E7%AB%AF%E8%BF%90%E8%A1%8C%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4%EF%BC%8C%E8%80%8C%E4%B8%8D%E8%83%BD%E8%8E%B7%E5%8F%96%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%90%8E%E7%9A%84%E8%BF%94%E5%9B%9E%E4%BF%A1%E6%81%AF%20%E4%BB%A3%E7%A0%81%E5%A6%82%E4%B8%8B%3A%20...%202,4%204.%20%E5%85%B6%E4%BB%96%20os.system%20%28command%29%20%E8%BF%99%E4%B8%AA%E5%87%BD%E6%95%B0%E5%8F%AF%E4%BB%A5%E8%B0%83%E7%94%A8%20shell%E8%BF%90%E8%A1%8C%E5%91%BD%E4%BB%A4%E8%A1%8Ccommand%E5%B9%B6%E4%B8%94%E8%BF%94%E5%9B%9E%E5%AE%83%E7%9A%84%E8%BF%94%E5%9B%9E%E5%80%BC%E3%80%82%20">python执行linux系统命令的几种方法（python3经典编程案例）_python执行linux命令_数据知道的博客-CSDN博客</a></p>
+<h2 id="OS"><a href="#OS" class="headerlink" title="OS"></a>OS</h2><p>一个最简单的使用python执行linux命令的方式，就是引入os包：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.system(<span class="string">&#x27;ls&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>这个’ls’位置的内容，可以是任何你之前在linux中需要输入执行的命令。</p>
+<p>但是换当前工作目录达不到（就是linux中的cd命令），那么如何换目录呢?</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">os.chdir(<span class="string">&#x27;dir_name&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>这里相对路径的书写，依旧要遵循linux中的规则，可能python中的一些语法也要被注意。</p>
+<h2 id="subprocess"><a href="#subprocess" class="headerlink" title="subprocess"></a>subprocess</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/xiaoyaozizai017/article/details/72794469">python中 subprocess shell=False 与shell=True的区别_逍遥自在017的博客-CSDN博客</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> subprocess <span class="keyword">import</span> call  </span><br><span class="line">cmd = <span class="string">&quot;cat test.txt&quot;</span>  </span><br><span class="line">call(cmd, shell=<span class="literal">True</span>)</span><br><span class="line">call(<span class="string">&quot;chmod +x test.sh&quot;</span>,shell=<span class="literal">True</span>)</span><br><span class="line">call(<span class="string">&quot;./test.sh&quot;</span>,shell=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>以上好像都无法运行source命令，问题比较复杂，因为环境设置只是一次性的操作，就暂时先不纠结了。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source wrfenv.sh</span><br></pre></td></tr></table></figure>
+<p>我将wrf运行的环境变量都定义在里面了，看来每次只能打开shell的时候，手动source一下。</p>
+<h1 id="使用python运行wrf"><a href="#使用python运行wrf" class="headerlink" title="使用python运行wrf"></a>使用python运行wrf</h1><p>一些常用包的准备</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install -c conda-forge netcdf4</span><br></pre></td></tr></table></figure>
+<p>后台运行py程序的命令;nohup.out中显示不出来<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=python&amp;spm=1001.2101.3001.7020">python</a>程序中print的东西，这是因为python的输出有缓冲，导致nohup.out并不能够马上看到输出。</p>
+<p>python 有个-u参数，使得python不启用缓冲。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup python -u main_cnopi.py&gt;log_cnop.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup python -u main_random.py&gt;log_d6.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup python -u pyrun_wrf2.py&gt;log.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/rong11417/article/details/87613342">linux中如何利用Python来调用shell命令及其运行shell脚本_linux python 执行shell语句_GLL_的博客-CSDN博客</a></p>
+<h2 id="运行wps"><a href="#运行wps" class="headerlink" title="运行wps"></a>运行wps</h2><p>将运行wps的命令封装在<strong>run_wps.sh</strong>文件中，但是因为目录地址都是相对的，需要先os.chdir将工作目录转换到wps目录下面：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import os</span><br><span class="line">import subprocess</span><br><span class="line">from subprocess import call </span><br><span class="line"></span><br><span class="line">os.chdir(&#x27;/public1/home/你个人路径/Build_WRF2/WPS-4.4&#x27;)</span><br><span class="line">call(&#x27;chmod +x ./run_wps.sh&#x27;,shell=True)</span><br><span class="line">call(&#x27;./run_wps.sh&#x27;,shell=True)</span><br></pre></td></tr></table></figure>
+<p>run_wps.sh内命令如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line">./geogrid.exe &gt;&amp; log.geogrid</span><br><span class="line">echo &#x27;geogrid done&#x27;</span><br><span class="line">ln -sf ungrib/Variable_Tables/Vtable.ECMWF Vtable</span><br><span class="line">./link_grib.csh /public1/home/..../Build_WRF/DATA/2013/*.grib</span><br><span class="line">./ungrib.exe &gt;&amp; log.ungrib</span><br><span class="line">echo &#x27;ungrib done&#x27;</span><br><span class="line">./metgrid.exe &gt;&amp; log.metgrid</span><br><span class="line">echo &#x27;metgrid done&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="从外部修改namelist-wps文件内容"><a href="#从外部修改namelist-wps文件内容" class="headerlink" title="从外部修改namelist.wps文件内容"></a>从外部修改namelist.wps文件内容</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Kangyucheng/article/details/114143640">Linux下sed命令替换配置文件中某个变量的值（改变包含字符的一行的值）_sed替换变量的值_康雨城的博客-CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zy6103/p/10285914.html">linux sed 替换（整行替换，部分替换）、删除delete、新增add、选取 - 十年如一..bj - 博客园</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i &#x27;s/max_dom.*$/max_dom = 1,/g&#x27; namelist.wps</span><br></pre></td></tr></table></figure>
+<h2 id="升级conda"><a href="#升级conda" class="headerlink" title="升级conda"></a>升级conda</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install -c conda-forge wrf-python</span><br></pre></td></tr></table></figure>
+<h2 id="安装wrf-python"><a href="#安装wrf-python" class="headerlink" title="安装wrf-python"></a>安装wrf-python</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install -c conda-forge wrf-python</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://wrf-python.readthedocs.io/en/latest/installation.html">Installation &mdash; wrf-python 1.3.4.1 documentation</a></p>
+<p>~/anaconda3/envs/python37/bin/python</p>
+<h1 id="元服务器的使用"><a href="#元服务器的使用" class="headerlink" title="元服务器的使用"></a>元服务器的使用</h1><h2 id="查看队列"><a href="#查看队列" class="headerlink" title="查看队列"></a>查看队列</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bqueues</span><br></pre></td></tr></table></figure>
+<p>查看队列信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bqueues -l 队列名</span><br></pre></td></tr></table></figure>
+<h2 id="提交任务"><a href="#提交任务" class="headerlink" title="提交任务"></a>提交任务</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bsub</span><br></pre></td></tr></table></figure>
+<p>命令提交作业时， ptile 指定数值越小，需要申请的节点就越多，作业越不容易得到调度， ptile 过小会造成资源和机时费的浪费。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">BSUB W 12:00</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">BSUB n 48</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">BSUB R span[ptile=24]</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">BSUB q cpuII</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">BSUB o OUTPUTFILE</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">BSUB e ERRFILE</span></span><br><span class="line">mpijob.MPITYPE</span><br><span class="line">PROGRAM</span><br></pre></td></tr></table></figure>
+<p>提交任务是：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bsub &lt; test.bsub # 注意这个小于号一定要有</span><br></pre></td></tr></table></figure>
+<h2 id="查看任务情况"><a href="#查看任务情况" class="headerlink" title="查看任务情况"></a>查看任务情况</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bjobs -a</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bpeek &lt;JOBID&gt;  #查看作业的标准屏幕输出信息</span><br></pre></td></tr></table></figure>
+<p>PEND 作业正在队列中排队<br>RUN 作业正在被执行<br>DONE 作业已经执行完毕，并且正常退出<br>EXITED 作业非正常退出<br>PSUSP 作业在排队过程中被挂起<br>USUSP 作业在运行过程中被人为强制挂起<br>SSUSP 作业在运行过程中被系统挂起</p>
+<h2 id="挂起、释放和删除作业"><a href="#挂起、释放和删除作业" class="headerlink" title="挂起、释放和删除作业"></a>挂起、释放和删除作业</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bstop &lt;JOBID&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bresume JOBID</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">bkill JOBID</span><br><span class="line">bkill -u username 0 ## 杀死一个用户的所有任务</span><br><span class="line">bkill -q cpuII 0 ## 杀死某个队列上提交的所有任务</span><br><span class="line">bjobs -u 用户名 | grep USUSP|awk &#x27;&#123;print $1&#125;&#x27; |xargs bkill </span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 杀死某种状态的任务</span></span></span><br><span class="line">bjobs -w | grep lp37_t | awk &#x27;&#123;print $1&#125;&#x27; | xargs bkill</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 杀死任务名中有lp37_t的任务</span></span></span><br><span class="line">btop JOBID</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 提高某个任务的优先级</span></span></span><br></pre></td></tr></table></figure>
+<h1 id="一些python常用命令"><a href="#一些python常用命令" class="headerlink" title="一些python常用命令"></a>一些python常用命令</h1><h2 id="numpy"><a href="#numpy" class="headerlink" title="numpy"></a>numpy</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xpbest   = np.zeros((pN, dim)) <span class="comment"># 创建数组</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mask = np.expand_dims(mask,<span class="number">0</span>).repeat(<span class="number">4</span>,axis=<span class="number">0</span>) <span class="comment"># 增加维度</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T2_mask_land = ma.masked_array(T2,mask = mask_land) <span class="comment"># 添加掩码</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/09/17/%E5%AD%A6%E4%B9%A0%E5%92%8C%E5%AE%9E%E8%B7%B5%E7%9B%98%E5%8F%A4AI%E6%B0%94%E8%B1%A1%E6%A8%A1%E5%9E%8B/" rel="prev" title="学习和实践盘古AI气象模型">
+                  <i class="fa fa-angle-left"></i> 学习和实践盘古AI气象模型
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/09/21/%E5%AF%B9WRF%E5%8F%82%E6%95%B0%E5%8C%96%E9%80%89%E6%8B%A9%E5%92%8Cnamelist-input%E6%96%87%E4%BB%B6%E7%9A%84%E5%AD%A6%E4%B9%A0/" rel="next" title="对WRF参数化选择和namelist.input文件的学习">
+                  对WRF参数化选择和namelist.input文件的学习 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">MissLH88</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"misslh88.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="因为要对土壤湿度进行研究，想要对土壤湿度的观测手段和现有的数据集进行一些整理和学习。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="土壤湿度资料合集">
+<meta property="og:url" content="https://misslh88.github.io/2023/11/09/%E5%9C%9F%E5%A3%A4%E6%B9%BF%E5%BA%A6%E8%B5%84%E6%96%99%E5%90%88%E9%9B%86/index.html">
+<meta property="og:site_name" content="LH&#39;s blog">
+<meta property="og:description" content="因为要对土壤湿度进行研究，想要对土壤湿度的观测手段和现有的数据集进行一些整理和学习。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-11-09T05:43:47.000Z">
+<meta property="article:modified_time" content="2024-04-12T01:27:32.860Z">
+<meta property="article:author" content="MissLH88">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://misslh88.github.io/2023/11/09/%E5%9C%9F%E5%A3%A4%E6%B9%BF%E5%BA%A6%E8%B5%84%E6%96%99%E5%90%88%E9%9B%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://misslh88.github.io/2023/11/09/%E5%9C%9F%E5%A3%A4%E6%B9%BF%E5%BA%A6%E8%B5%84%E6%96%99%E5%90%88%E9%9B%86/","path":"2023/11/09/土壤湿度资料合集/","title":"土壤湿度资料合集"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>土壤湿度资料合集 | LH's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">LH's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Research in atmospheric sciences, IAP, Beijing, China</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%9F%E5%A3%A4%E6%B9%BF%E5%BA%A6%E7%9A%84%E8%A7%82%E6%B5%8B"><span class="nav-number">1.</span> <span class="nav-text">土壤湿度的观测</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.</span> <span class="nav-text">相关文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%83%98%E5%B9%B2%E7%A7%B0%E9%87%8D%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">烘干称重法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FDR%E9%A2%91%E5%9F%9F%E5%8F%8D%E5%B0%84%E6%B3%95"><span class="nav-number">1.3.</span> <span class="nav-text">FDR频域反射法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%9F%E5%A3%A4%E6%B9%BF%E5%BA%A6%E7%9A%84%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="nav-number">2.</span> <span class="nav-text">土壤湿度的数据集</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#EC"><span class="nav-number">2.1.</span> <span class="nav-text">EC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SMAP-L4"><span class="nav-number">2.2.</span> <span class="nav-text">SMAP_L4</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SoMo-ml"><span class="nav-number">2.3.</span> <span class="nav-text">SoMo.ml</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SMOS-L4"><span class="nav-number">2.4.</span> <span class="nav-text">SMOS_L4</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MERRA"><span class="nav-number">2.5.</span> <span class="nav-text">MERRA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CFSR"><span class="nav-number">2.6.</span> <span class="nav-text">CFSR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GLDAS"><span class="nav-number">2.7.</span> <span class="nav-text">GLDAS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GLDAS-NOAH2-1"><span class="nav-number">2.7.1.</span> <span class="nav-text">GLDAS-NOAH2.1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GLDAS-catchment2-2"><span class="nav-number">2.7.2.</span> <span class="nav-text">GLDAS-catchment2.2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESA-CCI-SM"><span class="nav-number">2.8.</span> <span class="nav-text">ESA CCI SM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ERA-Interim-SM"><span class="nav-number">2.9.</span> <span class="nav-text">ERA-Interim SM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ERA-Land"><span class="nav-number">2.10.</span> <span class="nav-text">ERA_Land</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NCEP-SM"><span class="nav-number">2.11.</span> <span class="nav-text">NCEP SM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NOAA-SM"><span class="nav-number">2.12.</span> <span class="nav-text">NOAA SM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ERA5-SM"><span class="nav-number">2.13.</span> <span class="nav-text">ERA5 SM</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%9F%E5%A3%A4%E6%B9%BF%E5%BA%A6%E7%9A%84%E8%AF%AF%E5%B7%AE"><span class="nav-number">3.</span> <span class="nav-text">土壤湿度的误差</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MYD17A3HGF"><span class="nav-number">4.</span> <span class="nav-text">MYD17A3HGF</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Npp-500m-Fill-Value-Classes"><span class="nav-number">4.0.1.</span> <span class="nav-text">Npp_500m Fill Value Classes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Collection"><span class="nav-number">4.0.2.</span> <span class="nav-text">Collection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Granule"><span class="nav-number">4.0.3.</span> <span class="nav-text">Granule</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">MissLH88</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://misslh88.github.io/2023/11/09/%E5%9C%9F%E5%A3%A4%E6%B9%BF%E5%BA%A6%E8%B5%84%E6%96%99%E5%90%88%E9%9B%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="MissLH88">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LH's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="土壤湿度资料合集 | LH's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          土壤湿度资料合集
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-11-09 13:43:47" itemprop="dateCreated datePublished" datetime="2023-11-09T13:43:47+08:00">2023-11-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-04-12 09:27:32" itemprop="dateModified" datetime="2024-04-12T09:27:32+08:00">2024-04-12</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>因为要对土壤湿度进行研究，想要对土壤湿度的观测手段和现有的数据集进行一些整理和学习。</p>
+<span id="more"></span>
+<h1 id="土壤湿度的观测"><a href="#土壤湿度的观测" class="headerlink" title="土壤湿度的观测"></a>土壤湿度的观测</h1><h2 id="相关文件"><a href="#相关文件" class="headerlink" title="相关文件"></a>相关文件</h2><p><a target="_blank" rel="noopener" href="http://sc.cma.gov.cn/zfxxgk/fdzdgknr/flfgbz/qxbz/202102/t20210210_2720472.html">气象观测资料质量控制 土壤水分</a></p>
+<p><a target="_blank" rel="noopener" href="https://openstd.samr.gov.cn/bzgk/gb/std_list?p.p1=0&amp;p.p90=circulation_date&amp;p.p91=desc&amp;p.p2=%E5%9C%9F%E5%A3%A4%E6%B0%B4%E5%88%86">国家标准全文阅读|标准检索</a></p>
+<p><a target="_blank" rel="noopener" href="http://c.gb688.cn/bzgk/gb/showGb?type=online&amp;hcno=751AA2C043AFBA9E03AA51C3FC29D319">在线预览|GB/T 33705-2017</a></p>
+<p><a target="_blank" rel="noopener" href="https://openstd.samr.gov.cn/bzgk/gb/newGbInfo?hcno=D40254E694577754D799DD967AF89E0B">国家标准|GB/T 28418-2012<strong>土壤水分（墒情）监测仪器基本技术条件</strong></a></p>
+<p><a target="_blank" rel="noopener" href="https://openstd.samr.gov.cn/bzgk/gb/newGbInfo?hcno=06057D447AE620E681755CD98C3D4AC9">国家标准|GB/T 41184.1-2021，<strong>土壤水分蒸发测量仪器 第1部分：水力式蒸发器</strong></a></p>
+<h2 id="烘干称重法"><a href="#烘干称重法" class="headerlink" title="烘干称重法"></a>烘干称重法</h2><h2 id="FDR频域反射法"><a href="#FDR频域反射法" class="headerlink" title="FDR频域反射法"></a>FDR频域反射法</h2><p>从安装方式分为插管和探针两种。</p>
+<p>自动土壤水分传感器利用频域反射法原理（FDR）来测定土壤体积含水量，它由传感器发出100MHz 高频信号，传感器电容（压）量与被测层次土壤的介电常数成函数关系。由于水的介电常数比一般介质的介电常数要大得多，所以当土壤中的水分变化时，其介电常数相应变化，测量时传感器给出的电容（压）值也随之变化，这种变化量被CPU 实时控制的数据采集器所采集，经过线性化和定量化处理，得出土壤水分观测值，并按一定的格式存储在采集器中。</p>
+<h1 id="土壤湿度的数据集"><a href="#土壤湿度的数据集" class="headerlink" title="土壤湿度的数据集"></a>土壤湿度的数据集</h1><p>NCAR提供了一个土壤湿度数据的对比网站。</p>
+<p><a target="_blank" rel="noopener" href="https://climatedataguide.ucar.edu/climate-data/soil-moisture-data-sets-overview-comparison-tables">Soil Moisture Data Sets: Overview &amp; Comparison Tables | Climate Data Guide</a></p>
+<p>用于初始化预测模型或地球系统模型的土壤湿度应与该模型中 LSM 的统计数据一致——如果不首先根据气候学年周期的标准差（异常）重新归一化数据，则绝不建议使用网格化土壤湿度分析作为 LSM 中的土壤湿度状态（Koster 等人，2009 年）。理想情况下，应使用由预测模型中使用的相同 LSM 生成的土壤湿度分析。同样，不应使用观测数据来验证模型中土壤水分的绝对值，因为它们不一定对应——模型土壤水分是土壤水分变化的结果，计算为水分平衡的残余（参见 Koster 和 Milly 1997）。谨慎的做法是比较异常（在时间上）或空间结构，而不是RMSE或其他第一时刻误差统计信息。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>Category</strong></th>
+<th><strong>Strengths</strong></th>
+<th><strong>Limitations</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Ground observations</strong></td>
+<td>- In situ (in the ground) measurement (most)<br>- Provides subsurface data (most)<br>- Represents “ground truth”</td>
+<td>- Point measurements; limited spatial and temporal coverage<br>- Prone to random and systematic errors<br>- May not match model soil moisture in terms of scale, characteristics</td>
+</tr>
+<tr>
+<td><strong>Satellite observations</strong></td>
+<td>- Global coverage<br>- Level 3+ products are on a regular grid<br>- Generally not obscured by clouds untless they are precipitating</td>
+<td>• Gaps in coverage due to satellite orbits; complete coverage typically every ~8 days, but locally can be more frequent.• Prone to random and systematic errors• Microwave sensors only see surface (~3cm), do not see soil where vegetation is dense• Microwave sensors prone to radio interference, signals especially corrupted over urban areas• Gravity sensors have low spatial resolution, sense all water including water table fluctuations.</td>
+</tr>
+<tr>
+<td><strong>Blended observations</strong><br></td>
+<td>• Global coverage• Data are gridded• Fewer coverage gaps and can achieve higher temporal resolution than individual satellites</td>
+<td>• Time series inconsistencies can arise when different sensors come in/out of operation/inclusion.• Prone to random and systematic errors</td>
+</tr>
+<tr>
+<td><strong>LSM-based analyses</strong></td>
+<td>• Global coverage, no gaps in space or time• Data are gridded, include subsurface data• Somewhat constrained by observations (especially precipitation)• Not prone to random errors</td>
+<td>• Prone to systematic errors due to errors in model physics, soils or vegetation data sets used by models• Not direct or indirect observations – model characteristics will strongly flavor the soil moisture analyses• Most do not assimilate soil moisture observations• Likely not representative of variations at spatial scales smaller than model grid cell</td>
+</tr>
+<tr>
+<td><strong>Reanalyses</strong></td>
+<td>• Global coverage, no gaps in space or time• Data are gridded, include subsurface data</td>
+<td>• Prone to systematic errors due to errors in atmospheric and land model physics, soils and vegetation data sets used by models</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="EC"><a href="#EC" class="headerlink" title="EC"></a>EC</h2><p><a target="_blank" rel="noopener" href="https://cds.climate.copernicus.eu/cdsapp#!/dataset/satellite-soil-moisture?tab=doc">Copernicus Climate Data Store</a></p>
+<p><a target="_blank" rel="noopener" href="https://confluence.ecmwf.int/pages/viewpage.action?pageId=355349314">SM v202212: Product User Guide and Specification (PUGS)</a></p>
+<p><a target="_blank" rel="noopener" href="https://apps.ecmwf.int/datasets/data/tigge/levtype=sfc/type=cf/">ECMWF | TIGGE Data Retrieval</a></p>
+<h2 id="SMAP-L4"><a href="#SMAP-L4" class="headerlink" title="SMAP_L4"></a>SMAP_L4</h2><p>SMAP Level 4产品在9 km分辨率的全球网格上提供地表( 0 ~ 5cm)土壤湿度和根区土壤湿度( 0 ~ 100 cm)数据，每3 h更新一次。该产品是利用L波段亮温测量、降水观测和陆面模式(赖希勒等2019)相结合的陆面数据同化系统生成的。对SMAP L4产品的全球评估表明，地表(根区)土壤湿度增量(赖希勒等2017a)存在约0.01 ( 0.03 ) m3 m - 3的中等区域偏差。</p>
+<h2 id="SoMo-ml"><a href="#SoMo-ml" class="headerlink" title="SoMo.ml"></a>SoMo.ml</h2><p>通过使用原位测量数据训练的机器学习获得的全球长期土壤湿度数据集，SoMo.ml.我们基于全球1000多个站点的原位数据，训练了一个长短期记忆( Long Short-Term Memory，LStM )模型来外推空间和时间上的逐日土壤湿度动态。</p>
+<p>So Mo . ml提供了2000 - 2019年0.25 °空间和日时间分辨率的多层土壤湿度数据( 0 ~ 10cm、10 ~ 30cm、30 ~ 50cm)。</p>
+<h2 id="SMOS-L4"><a href="#SMOS-L4" class="headerlink" title="SMOS_L4"></a>SMOS_L4</h2><p>SMOS CATDS Level 4产品提供了代表土壤0 ~ 100 cm深度的逐日根区土壤水分数据( m3 m-3 )，空间分辨率为0.25 °。该产品是通过将表层土壤湿度数据同化到一个双层水分收支模型中获得的，该模型使用了指数滤波器的修正公式，并考虑了土壤属性，如纹理，以确定田间持水量和水动力传递函数。根区土壤湿度为两层土壤湿度的加权平均值。Ahmad和Mahmoodi ( 2020 )提供了关于该产品的更多细节。</p>
+<h2 id="MERRA"><a href="#MERRA" class="headerlink" title="MERRA"></a>MERRA</h2><p>第2版( MERRA-2 )是美国国家航空航天局全球模拟与同化办公室( GMAO )制作的全球大气再分析资料。它跨越了从1980年至今的卫星观测时代。MERRA - 2同化了现代高光谱辐射和微波观测数据，以及GPS -无线电掩星和NASA臭氧数据集。陆地再分析是使用耦合的大气-陆地系统产生的，但使用观测校正的降水(赖希勒等2017b)。此外，它使用全耦合和半耦合系统进行首次猜测模拟和陆地再分析。MERRA - 2中的RZSM数据集包括两层( 0 ~ 5 cm和10 ~ 100 cm)，空间分辨率约为0.5 ° × 0.625 °。RZSM深度为0</p>
+<h2 id="CFSR"><a href="#CFSR" class="headerlink" title="CFSR"></a>CFSR</h2><p>CFSR是一个全球高分辨率的大气-海洋-陆地表层-海冰耦合系统，旨在提供这些耦合域状态的最佳估计。它是在美国国家环境预报中心( NCEP )的环境模式中心开发的。它优于以往的NCEP再分析资料，包括改进的模式、更精细的分辨率、更先进的同化方案和大气-海陆冰耦合，同化了卫星辐射而不是反演，并考虑了CO2和其他痕量气体、气溶胶和太阳变化( Saha et al 2014)。CFSR中的RZSM数据集包括3层( 0 ~ 10 cm、10 ~ 40 cm、40 ~ 100 cm和100 ~ 200 cm)，空间分辨率约为0.205 ° × 0.204 °。研究中使用了前三层的RZSM，并将其聚集到0 - 100 cm</p>
+<h2 id="GLDAS"><a href="#GLDAS" class="headerlink" title="GLDAS"></a>GLDAS</h2><p><a target="_blank" rel="noopener" href="https://ldas.gsfc.nasa.gov/index.php/data">https://ldas.gsfc.nasa.gov/index.php/data</a></p>
+<p><a target="_blank" rel="noopener" href="https://disc.gsfc.nasa.gov/datasets?keywords=GLDAS">https://disc.gsfc.nasa.gov/datasets?keywords=GLDAS</a></p>
+<h3 id="GLDAS-NOAH2-1"><a href="#GLDAS-NOAH2-1" class="headerlink" title="GLDAS-NOAH2.1"></a>GLDAS-NOAH2.1</h3><p>研究使用GLDAS NOAH2.1产品( Rodell et al.2004)，其时空分辨率为0.25 °，3 h。该产品使用陆地信息系统( Land Information System，LIS )版本7中的NOAH Model 3.6生成，使用美国国家海洋和大气管理局( National Oceanic and Atmospheric Administration，NOAA ) /全球资料同化系统( Global Data Assimilation System，GDAS )中的大气分析场、全球降水气候学项目( GPCP ) V1.3日分析中的降水场以及空军气象局农业气象建模系统( AGRMET )中的辐射场进行强迫。RZSM数据集由四层组成，但本研究仅使用前三层( 0 ~ 10 cm、10 ~ 40 cm、40 ~ 100 cm)与其他产品保持一致。</p>
+<h3 id="GLDAS-catchment2-2"><a href="#GLDAS-catchment2-2" class="headerlink" title="GLDAS-catchment2.2"></a>GLDAS-catchment2.2</h3><p>我们在研究中使用GLDAS2.2日集水模型模拟( Rodell et al.2004)。本次模拟是利用ECMWF综合预报系统提供的气象分析场进行的。同化了重力恢复与气候实验( Gravity Recovery and Climate Experiment，GRACE )的总陆地水异常观测数据。日集水模型模拟采用AVHRR地表覆盖图中的UMD地表覆盖方案。根区土壤湿度( 0 ~ 100 cm)提供，空间分辨率为0.25 °。</p>
+<h2 id="ESA-CCI-SM"><a href="#ESA-CCI-SM" class="headerlink" title="ESA CCI SM"></a>ESA CCI SM</h2><p>Generated by the ESA Program Climate Change Initiative CCI project (ESA CCI)</p>
+<p>由欧空局气候变化倡议项目</p>
+<p>本研究采用欧空局CCI SM v04.4组合产品，提供了1978年11月至2018年6月的SM数据，空间分辨率为0.25 。</p>
+<p>欧空局CCI的项目是使用C波段微波散射计( Aqua卫星和Advance散射计、ASCAT)和多通道微波辐射计(即SMMR、SSM / I、TMI、AMSR - E、WindSat、AMSR2)产生一个长期可靠的SM ( Chakravorty et al , 2016)时间序列。</p>
+<h2 id="ERA-Interim-SM"><a href="#ERA-Interim-SM" class="headerlink" title="ERA-Interim SM"></a>ERA-Interim SM</h2><p>ERA - Interim是欧洲中期天气预报中心( ECMWF , 2009)生产的著名再分析产品。资料同化系统基于综合预报系统( IFS Cy31r2 )，包括一个12 h分析窗口的四维分析。本研究使用的ERA - Interim数据在80 km的固定网格上，时间分辨率为6 h、日尺度和月尺度。ERA - Interim开始于1979年，并在实时( Berrisford et al , 2011)中不断更新。ECMWF模式模拟了0 ~ 7、7 ~ 28、28 ~ 100和100 ~ 255 cm 4个深度的SM。根据An et al . ( 2016 )的建议，将7 ~ 28 cm深度的数据线性插值到10 cm深度进行评估。</p>
+<h2 id="ERA-Land"><a href="#ERA-Land" class="headerlink" title="ERA_Land"></a>ERA_Land</h2><p>欧洲中期天气预报中心( European Centre for Medium-Range Weather Forecasts，ECMWF )在欧盟委员会科佩尼库斯气候变化服务( Climate Change Service，C3S )的框架下，正在为第五代欧洲再分析( European ReAnalysis，ERA5 )的陆地部分制作一个增强的全球数据集，以下简称ERA5 - Land。</p>
+<p>与ERA5和ERA - Interim相比，ERA5 - Land的一个主要优势是水平分辨率，与31 km ( ERA5 )或80 km ( ERA-Interim )相比，ERA5 - Land的水平分辨率提高到9 km，而时间分辨率为ERA5的每小时。</p>
+<h2 id="NCEP-SM"><a href="#NCEP-SM" class="headerlink" title="NCEP SM"></a>NCEP SM</h2><p>NCEP是美国国家环境预报中心和能源部( NCEP-DOE ; Kanamitsu et al , 2002)提供的第二套再分析产品。该产品自1979年1月投入使用，空间分辨率约为200 km。时间分辨率包括日数据和月数据。NCEP在0 ~ 10 cm和10 ~ 200 cm有两层土壤湿度，选取第一层土壤湿度进行评估。</p>
+<h2 id="NOAA-SM"><a href="#NOAA-SM" class="headerlink" title="NOAA SM"></a>NOAA SM</h2><p>由美国国家海洋和大气管理局( NOAA )的地球系统研究实验室物理科学部和科罗拉多大学环境科学合作研究所( CIRES )领导的20世纪再分析项目( 20CR )也产生了长期的SM产品。这里使用的是V2c版本，时间跨度从1851年到2014年( Compo et al , 2011)，横跨整个20世纪。NOAA SM产品在6小时(也是每月)和4个次表层( 0、10、40、100cm)的空间分辨率为2o，其中10cm深度的数据被使用。</p>
+<h2 id="ERA5-SM"><a href="#ERA5-SM" class="headerlink" title="ERA5 SM"></a>ERA5 SM</h2><p><a target="_blank" rel="noopener" href="https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-pressure-levels?tab=form">Copernicus Climate Data Store | Copernicus Climate Data Store</a></p>
+<p><a target="_blank" rel="noopener" href="https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels?tab=form">Copernicus Climate Data Store | Copernicus Climate Data Store</a></p>
+<p>ERA5是ECMWF最新的再分析产品，时间跨度为1979年至今。该产品使用了ECMWF同化系统IFS ( IFS周期41R2)的新版本，并结合了大量的历史观测资料，包括臭氧、飞机和地面气压资料，以及ERA - Interim ( C3S , 2017)中无法吸收的各种新再处理的数据集和最近的仪器。ERA5模式输入包括适用于气候研究的温室气体、火山爆发、海表温度( SST )和海冰覆盖的世界气候研究计划( WCRP )耦合模式比较计划( CMIP )。</p>
+<p>此外，与ERA - Interim相比，ERA5的空间( 31 km)和时间(小时)分辨率较高。ERA5最终将覆盖1950年至今，其关键改进之一是更好的SM ( Komma et al , 2008)。ERA5驱动的土壤-生物圈-大气相互作用( ISBA )陆面模式相比ERA - Interim ( Albergel et al , 2018)驱动的陆面模式也表现出一致的改进，尤其是在地表SM上。与ERA - Interim类似，也有水平的SM数据，其中SM被插值到10cm进行评估。</p>
+<h1 id="土壤湿度的误差"><a href="#土壤湿度的误差" class="headerlink" title="土壤湿度的误差"></a>土壤湿度的误差</h1><p>对于误差的评估，选择的指标、资料种类、范围和时段不同，以及对于同一个指标的不同计算方式，都会得到不一样的结果。</p>
+<p>很多时候，我们看到的0.0几的RMSE，一般都是区域平均的结果，如果去看单独的站点的话，对于有些资料，是会存在一些到达0.4的误差的。</p>
+<h1 id="MYD17A3HGF"><a href="#MYD17A3HGF" class="headerlink" title="MYD17A3HGF"></a>MYD17A3HGF</h1><p><a target="_blank" rel="noopener" href="https://lpdaac.usgs.gov/products/myd17a3hgfv061/">LP DAAC - MYD17A3HGF</a></p>
+<p><a target="_blank" rel="noopener" href="https://e4ftl01.cr.usgs.gov/MOLA/MYD17A3HGF.061/2002.07.04/">https://e4ftl01.cr.usgs.gov/MOLA/MYD17A3HGF.061/2002.07.04/</a></p>
+<p><a target="_blank" rel="noopener" href="https://modis-land.gsfc.nasa.gov/MODLAND_grid.html">MODIS Land Team Home Page</a></p>
+<p>wget -e robots=off -m -np -R .html,.tmp -nH —cut-dirs=3 -o wget.log “<a target="_blank" rel="noopener" href="https://ladsweb.modaps.eosdis.nasa.gov/archive/orders/502180992/">https://ladsweb.modaps.eosdis.nasa.gov/archive/orders/502180992/</a>“ —header “Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbF9hZGRyZXNzIjoibGl1aHVpMjIxQG1haWxzLnVjYXMuYWMuY24iLCJpc3MiOiJBUFMgT0F1dGgyIEF1dGhlbnRpY2F0b3IiLCJpYXQiOjE3MTI2NzMzNDAsIm5iZiI6MTcxMjY3MzM0MCwiZXhwIjoxODcwMzUzMzQwLCJ1aWQiOiJsaXVodWkwODE4IiwidG9rZW5DcmVhdG9yIjoibGl1aHVpMDgxOCJ9.pjm-3Mu6VsBNLmUgemKT2fred9feC78oLZH04frzgUs” -P .</p>
+<p><strong>MYD17A2H.AYYYYDDD.hHHvVV.CCC.YYYYDDDHHMMSS.hdf</strong></p>
+<ul>
+<li>YYYYDDD = Year and Day of Year of acquisition</li>
+<li>hHH = Horizontal tile number (0-35)</li>
+<li>vVV = Vertical tile number (0-17)</li>
+<li>CCC = Collection number</li>
+<li>YYYYDDDHHMMSS = Production Date and Time</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>SDS Name</th>
+<th>Description</th>
+<th>Units</th>
+<th>Data Type</th>
+<th>Fill Value</th>
+<th>No Data Value</th>
+<th>Valid Range</th>
+<th>Scale Factor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gpp_500m</td>
+<td>Gross Primary Productivity</td>
+<td>kgC/m²/year</td>
+<td>16-bit unsigned integer</td>
+<td>65529 to 65535</td>
+<td>N/A</td>
+<td>0 to 65500</td>
+<td>0.0001</td>
+</tr>
+<tr>
+<td>Npp_500m</td>
+<td>Net Primary Productivity</td>
+<td>kgC/m²/year</td>
+<td>16-bit signed integer</td>
+<td>32761 to 32767</td>
+<td>N/A</td>
+<td>-30000 to 32700</td>
+<td>0.0001</td>
+</tr>
+<tr>
+<td>Npp_QC_500m</td>
+<td>Quality Control</td>
+<td>Percent</td>
+<td>8-bit unsigned integer</td>
+<td>249 to 255</td>
+<td>N/A</td>
+<td>0 to 100</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="Npp-500m-Fill-Value-Classes"><a href="#Npp-500m-Fill-Value-Classes" class="headerlink" title="Npp_500m Fill Value Classes"></a>Npp_500m Fill Value Classes</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Classes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>32761</td>
+<td>Land cover assigned as “unclassified” or not able to determine</td>
+</tr>
+<tr>
+<td>32762</td>
+<td>Land cover assigned as urban/built-up</td>
+</tr>
+<tr>
+<td>32763</td>
+<td>Land cover assigned as “permanent” wetlands/inundated marshland</td>
+</tr>
+<tr>
+<td>32764</td>
+<td>Land cover assigned as perennial snow, ice</td>
+</tr>
+<tr>
+<td>32765</td>
+<td>Land cover assigned as barren, sparse veg (rock, tundra, desert)</td>
+</tr>
+<tr>
+<td>32766</td>
+<td>Land cover assigned as perennial salt or inland fresh water</td>
+</tr>
+<tr>
+<td>32767</td>
+<td>Fill Value</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="Collection"><a href="#Collection" class="headerlink" title="Collection"></a>Collection</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Characteristic</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Collection</td>
+<td>Aqua MODIS</td>
+</tr>
+<tr>
+<td>DOI</td>
+<td>10.5067/MODIS/MYD17A3HGF.061</td>
+</tr>
+<tr>
+<td>File Size</td>
+<td>~0.8 MB</td>
+</tr>
+<tr>
+<td>Temporal Resolution</td>
+<td>Yearly</td>
+</tr>
+<tr>
+<td>Temporal Extent</td>
+<td>2002-07-04 to Present</td>
+</tr>
+<tr>
+<td>Spatial Extent</td>
+<td>Global</td>
+</tr>
+<tr>
+<td>Coordinate System</td>
+<td>Sinusoidal</td>
+</tr>
+<tr>
+<td>Datum</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>File Format</td>
+<td>HDF-EOS</td>
+</tr>
+<tr>
+<td>Geographic Dimensions</td>
+<td>1200 km x 1200 km</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="Granule"><a href="#Granule" class="headerlink" title="Granule"></a>Granule</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Characteristic</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of Science Dataset (SDS) Layers</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Columns/Rows</td>
+<td>2400 x 2400</td>
+</tr>
+<tr>
+<td>Pixel Size</td>
+<td>500 m</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/10/24/%E5%85%B3%E4%BA%8E%E9%99%86%E9%9D%A2%E6%A8%A1%E5%BC%8FNoahMP%E7%9A%84%E5%AD%A6%E4%B9%A0/" rel="prev" title="关于陆面模式NoahMP的学习">
+                  <i class="fa fa-angle-left"></i> 关于陆面模式NoahMP的学习
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/11/18/WRFDA%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" rel="next" title="WRFDA学习记录">
+                  WRFDA学习记录 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">MissLH88</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

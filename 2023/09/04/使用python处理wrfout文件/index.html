@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"misslh88.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="在前文已经成功驱动WRF模式的背景下，记录如何使用python处理wrfout文件。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用python处理wrfout文件">
+<meta property="og:url" content="https://misslh88.github.io/2023/09/04/%E4%BD%BF%E7%94%A8python%E5%A4%84%E7%90%86wrfout%E6%96%87%E4%BB%B6/index.html">
+<meta property="og:site_name" content="LH&#39;s blog">
+<meta property="og:description" content="在前文已经成功驱动WRF模式的背景下，记录如何使用python处理wrfout文件。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-09-04T11:29:13.000Z">
+<meta property="article:modified_time" content="2024-10-12T03:47:48.008Z">
+<meta property="article:author" content="MissLH88">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://misslh88.github.io/2023/09/04/%E4%BD%BF%E7%94%A8python%E5%A4%84%E7%90%86wrfout%E6%96%87%E4%BB%B6/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://misslh88.github.io/2023/09/04/%E4%BD%BF%E7%94%A8python%E5%A4%84%E7%90%86wrfout%E6%96%87%E4%BB%B6/","path":"2023/09/04/使用python处理wrfout文件/","title":"使用python处理wrfout文件"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>使用python处理wrfout文件 | LH's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">LH's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Research in atmospheric sciences, IAP, Beijing, China</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6%EF%BC%8C%E8%8E%B7%E5%8F%96%E5%8F%98%E9%87%8F"><span class="nav-number">1.</span> <span class="nav-text">读取文件，获取变量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96%E5%A4%9A%E6%97%B6%E6%AC%A1%E5%8D%95%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.</span> <span class="nav-text">读取多时次单文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%B9%E9%87%8F%E8%AF%BB%E5%8F%96%E5%8D%95%E6%97%B6%E6%AC%A1%E6%96%87%E4%BB%B6%E5%B9%B6%E6%8B%BC%E6%8E%A5"><span class="nav-number">1.2.</span> <span class="nav-text">批量读取单时次文件并拼接</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%BB%E5%9B%BE"><span class="nav-number">2.</span> <span class="nav-text">画图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%BB%E5%85%A8%E7%90%83%E5%9B%BE"><span class="nav-number">2.1.</span> <span class="nav-text">画全球图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%BBwrf-domain"><span class="nav-number">2.2.</span> <span class="nav-text">画wrf domain</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%BB%E5%A4%9A%E5%AD%90%E5%9B%BE"><span class="nav-number">2.3.</span> <span class="nav-text">画多子图</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E7%AE%97"><span class="nav-number">3.</span> <span class="nav-text">运算</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%80%BC%E5%88%B0%E8%A7%84%E5%88%99%E7%BB%8F%E7%BA%AC%E7%BD%91%E6%A0%BC"><span class="nav-number">3.1.</span> <span class="nav-text">插值到规则经纬网格</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Geocat"><span class="nav-number">3.1.1.</span> <span class="nav-text">Geocat</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#wrfout%E6%96%87%E4%BB%B6%E8%A7%A3%E8%AF%BB%EF%BC%88%E6%8C%89%E7%85%A7%E5%BC%80%E5%A4%B4%E5%AD%97%E6%AF%8D%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">wrfout文件解读（按照开头字母）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%8D%E6%B0%B4%E5%A4%84%E7%90%86"><span class="nav-number">4.1.</span> <span class="nav-text">降水处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%91%E9%87%8F"><span class="nav-number">4.2.</span> <span class="nav-text">云量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E4%BD%8D%E4%B8%BAmm%E7%9A%84%E5%8F%98%E9%87%8F"><span class="nav-number">4.3.</span> <span class="nav-text">单位为mm的变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#instantaneous-amp-accumulated"><span class="nav-number">4.4.</span> <span class="nav-text">instantaneous &amp; accumulated</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%B0%E8%A1%A8%E8%83%BD%E9%87%8F%E5%B9%B3%E8%A1%A1%E7%9A%84%E8%AF%8A%E6%96%AD"><span class="nav-number">5.</span> <span class="nav-text">地表能量平衡的诊断</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">MissLH88</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://misslh88.github.io/2023/09/04/%E4%BD%BF%E7%94%A8python%E5%A4%84%E7%90%86wrfout%E6%96%87%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="MissLH88">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LH's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="使用python处理wrfout文件 | LH's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用python处理wrfout文件
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-09-04 19:29:13" itemprop="dateCreated datePublished" datetime="2023-09-04T19:29:13+08:00">2023-09-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-10-12 11:47:48" itemprop="dateModified" datetime="2024-10-12T11:47:48+08:00">2024-10-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%A7%91%E7%A0%94%E5%AE%9E%E8%B7%B5/" itemprop="url" rel="index"><span itemprop="name">科研实践</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>在前文已经成功驱动WRF模式的背景下，记录如何使用python处理wrfout文件。</p>
+<span id="more"></span>
+<p>参考网址：</p>
+<p><a target="_blank" rel="noopener" href="https://wrf-python.readthedocs.io/en/latest/installation.html">wrf-python 1.3.4.1 documentation</a></p>
+<p>首先在anaconda环境中安装wrf-python包：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install -c conda-forge wrf-python</span><br></pre></td></tr></table></figure>
+<h1 id="读取文件，获取变量"><a href="#读取文件，获取变量" class="headerlink" title="读取文件，获取变量"></a>读取文件，获取变量</h1><p>这是wrf-python中的一些命令与ncl中的一些命令的对应关系。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>NCL</th>
+<th>wrf-python</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>wrf_user_get_var</td>
+<td>wrf.getvar</td>
+<td>提取和计算变量，变量名参考<a target="_blank" rel="noopener" href="https://www.ncl.ucar.edu/Document/Functions/WRF_arw/wrf_user_getvar.shtml">wrf_user_getvar</a></td>
+</tr>
+<tr>
+<td>wrf_user_interp_level</td>
+<td>wrf.vinterp或wrf.interplevel</td>
+<td>将3D数据场插值到某个/些垂直层上</td>
+</tr>
+<tr>
+<td>wrf_user_vert_cross</td>
+<td>wrf.vertcross</td>
+<td>将3D数据场插值到某个水平线上</td>
+</tr>
+<tr>
+<td>wrf_user_interp_line</td>
+<td>wrf.interpline</td>
+<td>将2D数据场插值到某个线上</td>
+</tr>
+<tr>
+<td>wrf_user_ll_to_xy</td>
+<td>wrf.ll_to_xy</td>
+<td>Lat/Lon &lt;-&gt; XY Routines</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>获取文件中的诊断变量：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> netCDF4 <span class="keyword">import</span> Dataset</span><br><span class="line"><span class="keyword">from</span> wrf <span class="keyword">import</span> getvar</span><br><span class="line"></span><br><span class="line">ncfile = Dataset(<span class="string">&quot;wrfout_d01_2016-10-07_00_00_00&quot;</span>)</span><br><span class="line"></span><br><span class="line">p = getvar(ncfile, <span class="string">&quot;P&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(p)</span><br></pre></td></tr></table></figure>
+<p>常用的一些诊断变量：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>varname</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>lat</td>
+<td>latitude</td>
+</tr>
+<tr>
+<td>lon</td>
+<td>longitude</td>
+</tr>
+<tr>
+<td>p/pres</td>
+<td>Full model pressure [Pa]</td>
+</tr>
+<tr>
+<td>pressure</td>
+<td>Full model pressure [hPa]</td>
+</tr>
+<tr>
+<td>z/height</td>
+<td>Full model height [m]</td>
+</tr>
+<tr>
+<td>geopt/geopotential</td>
+<td></td>
+</tr>
+<tr>
+<td>pvo</td>
+<td>potential vorticity [PVU]</td>
+</tr>
+<tr>
+<td>slp</td>
+<td>Sea level pressure [hPa]</td>
+</tr>
+<tr>
+<td>ter</td>
+<td>Model terrain height [m]</td>
+</tr>
+<tr>
+<td>tc</td>
+<td>Temperature [C]</td>
+</tr>
+<tr>
+<td>tk</td>
+<td>Temperature [K]</td>
+</tr>
+<tr>
+<td>th/theta</td>
+<td>Potential temperature [K]</td>
+</tr>
+<tr>
+<td>times</td>
+<td>Times in file (return strings - recommended)</td>
+</tr>
+<tr>
+<td>Times</td>
+<td>Times in file (return characters)</td>
+</tr>
+<tr>
+<td>ua</td>
+<td>U component of wind on mass points</td>
+</tr>
+<tr>
+<td>va</td>
+<td>V component of wind on mass points</td>
+</tr>
+<tr>
+<td>wa</td>
+<td>W component of wind on mass points</td>
+</tr>
+<tr>
+<td>uvmet10</td>
+<td>10m U and V components of wind rotated to earth coordinates</td>
+</tr>
+<tr>
+<td>uvmet</td>
+<td>U and V components of wind rotated to earth coordinates</td>
+</tr>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>以数组的方式获取变量：disable xarray</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> netCDF4 <span class="keyword">import</span> Dataset</span><br><span class="line"><span class="keyword">from</span> wrf <span class="keyword">import</span> getvar, disable_xarray</span><br><span class="line"></span><br><span class="line">ncfile = Dataset(<span class="string">&quot;wrfout_d01_2016-10-07_00_00_00&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Disable xarray completely</span></span><br><span class="line">disable_xarray()</span><br><span class="line">p_no_meta = getvar(ncfile, <span class="string">&quot;P&quot;</span>)</span><br><span class="line"><span class="built_in">print</span> (<span class="built_in">type</span>(p_no_meta))</span><br><span class="line">enable_xarray()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Disable by using the meta parameter</span></span><br><span class="line">p_no_meta = getvar(ncfile, <span class="string">&quot;P&quot;</span>, meta=<span class="literal">False</span>)</span><br><span class="line"><span class="built_in">print</span> (<span class="built_in">type</span>(p_no_meta))</span><br></pre></td></tr></table></figure>
+<h2 id="读取多时次单文件"><a href="#读取多时次单文件" class="headerlink" title="读取多时次单文件"></a>读取多时次单文件</h2><p>如果一个wrfout文件中存储了多个时次，读取的时候如何获得完成的数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> netCDF4 <span class="keyword">import</span> Dataset</span><br><span class="line"><span class="keyword">from</span> wrf <span class="keyword">import</span> getvar,disable_xarray,ALL_TIMES</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ncfile = Dataset(file_dir+<span class="string">&quot;wrfout_d01_2013-07-15_00_00_00&quot;</span>)</span><br><span class="line">disable_xarray()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取数据坐标</span></span><br><span class="line">lon = getvar(ncfile,<span class="string">&quot;longitude&quot;</span>)</span><br><span class="line">lat = getvar(ncfile,<span class="string">&quot;latitude&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获得文件中第三个时刻的数据</span></span><br><span class="line">p = getvar(ncfile,<span class="string">&quot;pressure&quot;</span>,timeidx=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获得文件中所有时刻的数据</span></span><br><span class="line">p = getvar(ncfile,<span class="string">&quot;pressure&quot;</span>,ALL_TIMES)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Get the Sea Level Pressure</span></span><br><span class="line">slp = getvar(ncfile, <span class="string">&quot;slp&quot;</span>)</span><br><span class="line">z = getvar(ncfile, <span class="string">&quot;z&quot;</span>,ALL_TIMES)</span><br><span class="line"><span class="comment"># t = getvar(ncfile,&#x27;tc&#x27;)</span></span><br><span class="line">t2 = getvar(ncfile,<span class="string">&#x27;T2&#x27;</span>,ALL_TIMES)-<span class="number">273.15</span></span><br><span class="line">hours = getvar(ncfile, <span class="string">&quot;times&quot;</span>,ALL_TIMES)</span><br><span class="line"><span class="comment"># print(hours)</span></span><br></pre></td></tr></table></figure>
+<h2 id="批量读取单时次文件并拼接"><a href="#批量读取单时次文件并拼接" class="headerlink" title="批量读取单时次文件并拼接"></a>批量读取单时次文件并拼接</h2><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/2135670">用Python批处理指定数据-以WRF输出结果为例演示按照指定维度合并(附示例代码)-腾讯云开发者社区-腾讯云</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="画图"><a href="#画图" class="headerlink" title="画图"></a>画图</h1><h2 id="画全球图"><a href="#画全球图" class="headerlink" title="画全球图"></a>画全球图</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">proj = ccrs.PlateCarree(central_longitude=<span class="number">0</span>)</span><br><span class="line">fig = plt.figure(figsize=[<span class="number">5.4</span>,<span class="number">2.5</span>],dpi=<span class="number">200</span>)</span><br><span class="line">ax = plt.axes(projection=proj)</span><br><span class="line">ax.set_position([<span class="number">0.06</span>,<span class="number">0.1</span>,<span class="number">0.87</span>,<span class="number">0.87</span>])<span class="comment">#有colorbar绘图（下端）</span></span><br><span class="line">ax.coastlines(linewidth=<span class="number">0.25</span>)</span><br><span class="line">cycle_var, cycle_lon = add_cyclic_point(var, coord=lon)</span><br><span class="line"></span><br><span class="line">ax.set_extent([-<span class="number">180</span>,<span class="number">180</span>,-<span class="number">90</span>,<span class="number">90</span>], crs=ccrs.PlateCarree())<span class="comment">#一定要有！</span></span><br><span class="line">ax.set_xticks([<span class="number">0</span>,<span class="number">60</span>,<span class="number">120</span>,<span class="number">180</span>,-<span class="number">180</span>,-<span class="number">120</span>,-<span class="number">60</span>])<span class="comment">#指定要显示的经纬度                      </span></span><br><span class="line">ax.set_yticks([-<span class="number">90</span>,-<span class="number">60</span>,-<span class="number">30</span>,<span class="number">0</span>,<span class="number">30</span>,<span class="number">60</span>,<span class="number">90</span>])  </span><br><span class="line"><span class="comment"># ax.set_yticks([-80,-70,-50,-40,-20,-10],minor = True)</span></span><br><span class="line"></span><br><span class="line">ax.xaxis.set_major_formatter(LongitudeFormatter())<span class="comment">#刻度格式转换为经纬度样式                       </span></span><br><span class="line">ax.yaxis.set_major_formatter(LatitudeFormatter())                        </span><br><span class="line">ax.tick_params(axis=<span class="string">&#x27;both&#x27;</span>,which=<span class="string">&#x27;major&#x27;</span>,labelsize=<span class="number">10</span>,direction=<span class="string">&#x27;out&#x27;</span></span><br><span class="line">                ,length=<span class="number">3</span>,width=<span class="number">0.3</span>,pad=<span class="number">3</span>,top=<span class="literal">True</span>,right=<span class="literal">True</span>)</span><br><span class="line">yminorLocator = MultipleLocator(<span class="number">10</span>)</span><br><span class="line"><span class="comment"># import matplotlib</span></span><br><span class="line"><span class="comment"># ax.yaxis.set_minor_locator(matplotlib.ticker.FixedLocator(yminorLocator))</span></span><br><span class="line">ax.yaxis.set_minor_locator(yminorLocator)</span><br><span class="line">xminorLocator = MultipleLocator(<span class="number">10</span>)</span><br><span class="line">ax.xaxis.set_minor_locator(xminorLocator)</span><br><span class="line"></span><br><span class="line">ax.tick_params(top=<span class="string">&#x27;on&#x27;</span>,right=<span class="string">&#x27;on&#x27;</span>,which=<span class="string">&#x27;both&#x27;</span>) </span><br><span class="line">ax.tick_params(axis=<span class="string">&#x27;both&#x27;</span>,which=<span class="string">&#x27;minor&#x27;</span>,direction=<span class="string">&#x27;out&#x27;</span></span><br><span class="line">                ,length=<span class="number">1.5</span>,width=<span class="number">0.3</span>,top=<span class="literal">True</span>,right=<span class="literal">True</span>)</span><br><span class="line">ax.spines[<span class="string">&#x27;geo&#x27;</span>].set_linewidth(<span class="number">0.2</span>)<span class="comment">#调节边框粗细</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">levels = np.around(np.arange(-<span class="number">1.6</span>,<span class="number">2.1</span>,<span class="number">0.4</span>),<span class="number">2</span>) <span class="comment">#bsf_diff</span></span><br><span class="line">cs = ax.contourf(cycle_lon,lat, cycle_var[:,:],</span><br><span class="line">                  levels=levels,cmap=nclcmaps.cmap(<span class="string">&#x27;GMT_panoply&#x27;</span>),</span><br><span class="line">                  <span class="comment">#MPL_YlOrRd,NCV_blue_red,BlueYellowRed,MPL_RdYlBu</span></span><br><span class="line">                  <span class="comment">#BlueDarkRed18,BlueWhiteOrangeRed</span></span><br><span class="line">                  <span class="comment"># ts:NCV_bright</span></span><br><span class="line">                  <span class="comment"># psi:ncl_default</span></span><br><span class="line">                  <span class="comment"># ss: NCV_bright</span></span><br><span class="line">                  <span class="comment"># bsf:GMT_panoply</span></span><br><span class="line">                  extend=<span class="string">&#x27;both&#x27;</span>)</span><br><span class="line"></span><br><span class="line">v = np.around(np.arange(-<span class="number">1.6</span>,<span class="number">2.1</span>,<span class="number">0.4</span>),<span class="number">2</span>) <span class="comment">#bsf_diff</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">cax = fig.add_axes([<span class="number">0.92</span>,<span class="number">0.1</span>,<span class="number">0.025</span>,<span class="number">0.87</span>])</span><br><span class="line">bar = plt.colorbar(cs,cax = cax,orientation=<span class="string">&#x27;vertical&#x27;</span>,</span><br><span class="line">                    ticks=v,drawedges=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">bar.ax.tick_params(labelcolor=<span class="string">&#x27;k&#x27;</span>,labelsize=<span class="number">8</span>,pad=<span class="number">0.5</span>)</span><br><span class="line">bar.outline.set_linewidth(<span class="number">0.3</span>)</span><br><span class="line">bar.ax.set_yticklabels(v,fontsize=<span class="number">8</span>,fontname=<span class="string">&quot;Times New Roman&quot;</span>)</span><br><span class="line"></span><br><span class="line">fig.text(<span class="number">0.935</span>,<span class="number">0.03</span>,<span class="string">&quot;(Sv)&quot;</span>,fontsize=<span class="number">10</span>) <span class="comment"># bsf</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">plt.savefig(fp_0+<span class="string">&#x27;_yearmean89_&#x27;</span>+var_name+<span class="string">&quot;_diff2.png&quot;</span>,dpi=<span class="number">800</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="画wrf-domain"><a href="#画wrf-domain" class="headerlink" title="画wrf domain"></a>画wrf domain</h2><p><a target="_blank" rel="noopener" href="https://zhajiman.github.io/post/cartopy_lambert/">Cartopy 系列：为 Lambert 投影地图添加刻度 - 炸鸡人博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/benbenxiaofeifei/p/14552850.html">wrf模拟的domain图绘制 - xiaofeifeixd - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/FlKfCMW5fXjgYQuVogv-XQ">Python画wrf模式的模拟区域</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhajiman.github.io/post/cartopy_shapefile/#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5">Cartopy 系列：探索 shapefile - 炸鸡人博客</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</span><br><span class="line"><span class="keyword">import</span> xarray <span class="keyword">as</span> xr</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> netCDF4 <span class="keyword">import</span> Dataset</span><br><span class="line"><span class="keyword">import</span> netCDF4 <span class="keyword">as</span> nc</span><br><span class="line"><span class="keyword">from</span> wrf <span class="keyword">import</span> getvar,disable_xarray,ALL_TIMES</span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime, timedelta</span><br><span class="line"><span class="keyword">import</span> wrf</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> cartopy.crs <span class="keyword">as</span> ccrs</span><br><span class="line"><span class="keyword">import</span> cartopy.feature <span class="keyword">as</span> cfeature</span><br><span class="line"><span class="keyword">import</span> numpy.ma <span class="keyword">as</span> ma</span><br><span class="line"><span class="keyword">import</span> matplotlib</span><br><span class="line"><span class="keyword">from</span> global_land_mask <span class="keyword">import</span> globe</span><br><span class="line"><span class="keyword">from</span> cartopy.util <span class="keyword">import</span> add_cyclic_point</span><br><span class="line"><span class="keyword">from</span> cartopy.mpl.ticker <span class="keyword">import</span> LongitudeFormatter,LatitudeFormatter</span><br><span class="line"><span class="keyword">from</span> cartopy.mpl.gridliner <span class="keyword">import</span> LATITUDE_FORMATTER, LONGITUDE_FORMATTER</span><br><span class="line"><span class="keyword">from</span> matplotlib.pyplot <span class="keyword">import</span> MultipleLocator</span><br><span class="line"><span class="keyword">import</span> nclcmaps</span><br><span class="line"><span class="comment"># from datetime import datetime, timedelta</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> mod_lambert</span><br><span class="line"><span class="keyword">import</span> shapely.geometry <span class="keyword">as</span> sgeom</span><br><span class="line"></span><br><span class="line">plt.rcParams[<span class="string">&#x27;font.sans-serif&#x27;</span>]=[<span class="string">&#x27;Times New Roman&#x27;</span>]</span><br><span class="line">matplotlib.rcParams.update(&#123;<span class="string">&#x27;font.size&#x27;</span>: <span class="number">8</span>&#125;)</span><br><span class="line">file_dir = <span class="string">&#x27;D:\\LHwork\\wrfout\\&#x27;</span></span><br><span class="line"></span><br><span class="line">ncfile = Dataset(file_dir+<span class="string">&quot;met_em.d01.2022-08-04_00_00_00.nc&quot;</span>)</span><br><span class="line"></span><br><span class="line">disable_xarray()</span><br><span class="line"></span><br><span class="line">hgt = getvar(ncfile,<span class="string">&quot;HGT_M&quot;</span>)</span><br><span class="line">landmask = (getvar(ncfile,<span class="string">&quot;LANDMASK&quot;</span>))</span><br><span class="line">b = landmask==<span class="number">0</span></span><br><span class="line"></span><br><span class="line">hgt = ma.masked_array(hgt,mask = b)</span><br><span class="line">lon = getvar(ncfile,<span class="string">&quot;longitude&quot;</span>)</span><br><span class="line">lat = getvar(ncfile,<span class="string">&quot;latitude&quot;</span>)</span><br><span class="line"></span><br><span class="line">proj = ccrs.PlateCarree()  <span class="comment"># 创建坐标系</span></span><br><span class="line">ref_lat = <span class="number">38</span></span><br><span class="line">ref_lon = <span class="number">107</span></span><br><span class="line">true_lat1 = <span class="number">30</span></span><br><span class="line">true_lat2 = <span class="number">60</span></span><br><span class="line">false_easting = (<span class="number">216</span>-<span class="number">1</span>)/<span class="number">2</span>*<span class="number">30000</span></span><br><span class="line">false_northing = (<span class="number">179.5</span>-<span class="number">1</span>)/<span class="number">2</span>*<span class="number">30000</span></span><br><span class="line"></span><br><span class="line">proj_lambert = ccrs.LambertConformal(</span><br><span class="line">                central_longitude=ref_lon,</span><br><span class="line">                central_latitude=ref_lat,</span><br><span class="line">                standard_parallels=(true_lat1,true_lat2),</span><br><span class="line">                cutoff=-<span class="number">30</span>,</span><br><span class="line">                false_easting=false_easting,</span><br><span class="line">                false_northing=false_northing,</span><br><span class="line">            )</span><br><span class="line"><span class="comment">## 创建坐标系</span></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">4.5</span>,<span class="number">3.2</span>), dpi=<span class="number">200</span>)  <span class="comment"># 创建页面</span></span><br><span class="line">ax = fig.add_axes([<span class="number">0.04</span>,<span class="number">0.07</span>,<span class="number">0.85</span>,<span class="number">0.88</span>], projection=proj_lambert)  </span><br><span class="line">ax.set_extent([<span class="number">0</span>, false_easting*<span class="number">2</span>, <span class="number">0</span>, false_northing*<span class="number">2</span>], crs=proj_lambert)</span><br><span class="line">ax.coastlines(linewidth=<span class="number">0.8</span>,resolution=<span class="string">&#x27;50m&#x27;</span>)</span><br><span class="line">ax.add_feature(cfeature.LAKES.with_scale(<span class="string">&#x27;50m&#x27;</span>),linewidth=<span class="number">0.5</span>,edgecolor=<span class="string">&#x27;black&#x27;</span>,facecolor=<span class="string">&#x27;none&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加shp文件</span></span><br><span class="line"><span class="keyword">import</span> cartopy.io.shapereader <span class="keyword">as</span> shpreader</span><br><span class="line">filepath =<span class="string">&#x27;D:\LHwork\shpfile\中国GIS地图\国家基础地理数据/hyd1_4l.shp&#x27;</span></span><br><span class="line">crs = ccrs.PlateCarree()</span><br><span class="line">reader = shpreader.Reader(filepath)</span><br><span class="line">geoms = reader.geometries()</span><br><span class="line">ax.add_geometries(geoms, crs, lw=<span class="number">0.5</span>, fc=<span class="string">&#x27;none&#x27;</span>)</span><br><span class="line">reader.close()</span><br><span class="line"></span><br><span class="line"><span class="comment">## --设置网格属性, 不画默认的标签</span></span><br><span class="line">gl=ax.gridlines(draw_labels=<span class="literal">True</span>,linestyle=<span class="string">&quot;:&quot;</span>,linewidth=<span class="number">0.6</span> ,x_inline=<span class="literal">False</span>, y_inline=<span class="literal">False</span>,color=<span class="string">&#x27;k&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">## 关闭上面和右边的经纬度显示</span></span><br><span class="line">gl.top_labels=<span class="literal">False</span> <span class="comment">#关闭上部经纬标签                                  </span></span><br><span class="line"><span class="comment"># gl.bottom_labels = False</span></span><br><span class="line"><span class="comment"># gl.left_labels = False</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.ticker <span class="keyword">as</span> mticker</span><br><span class="line">gl.right_labels=<span class="literal">False</span></span><br><span class="line">gl.xformatter = LONGITUDE_FORMATTER  <span class="comment">#使横坐标转化为经纬度格式            </span></span><br><span class="line">gl.yformatter = LATITUDE_FORMATTER        </span><br><span class="line"></span><br><span class="line">gl.xlocator=mticker.FixedLocator(np.arange(<span class="number">60</span>,<span class="number">160</span>,<span class="number">10</span>))                              </span><br><span class="line">gl.ylocator=mticker.FixedLocator(np.arange(<span class="number">10</span>,<span class="number">60</span>,<span class="number">10</span>)) </span><br><span class="line">gl.rotate_labels = <span class="literal">False</span></span><br><span class="line">gl.xlabel_style=&#123;<span class="string">&#x27;size&#x27;</span>:<span class="number">10</span>,&#125;</span><br><span class="line">                  <span class="comment"># &#x27;rotation&#x27;:&#x27;horizontal&#x27;,&#x27;rotation_mode&#x27;:&#x27;default&#x27;,</span></span><br><span class="line">                  <span class="comment"># &#x27;horizontalalignment&#x27;:&#x27;center&#x27;,&#x27;verticalalignment&#x27;:&#x27;center&#x27;&#125;#修改经纬度字体大小                             </span></span><br><span class="line">gl.ylabel_style=&#123;<span class="string">&#x27;size&#x27;</span>:<span class="number">10</span>,&#125;<span class="comment">#&#x27;rotation&#x27;:&#x27;horizontal&#x27;&#125;</span></span><br><span class="line">ax.spines[<span class="string">&#x27;geo&#x27;</span>].set_linewidth(<span class="number">0.6</span>)<span class="comment">#调节边框粗细</span></span><br><span class="line"></span><br><span class="line">plt.plot([<span class="number">110</span>,<span class="number">122</span>], [<span class="number">28</span>,<span class="number">28</span>], <span class="string">&#x27;r--&#x27;</span>,linewidth=<span class="number">1</span>,transform=ccrs.PlateCarree(),zorder=<span class="number">5</span>)</span><br><span class="line">plt.plot([<span class="number">110</span>,<span class="number">122</span>], [<span class="number">32</span>,<span class="number">32</span>], <span class="string">&#x27;r--&#x27;</span>,linewidth=<span class="number">1</span>,transform=ccrs.PlateCarree(),zorder=<span class="number">5</span>)</span><br><span class="line">plt.plot([<span class="number">110</span>,<span class="number">110</span>], [<span class="number">28</span>,<span class="number">32</span>], <span class="string">&#x27;r--&#x27;</span>,linewidth=<span class="number">1</span>,transform=ccrs.PlateCarree(),zorder=<span class="number">5</span>)</span><br><span class="line">plt.plot([<span class="number">122</span>,<span class="number">122</span>], [<span class="number">28</span>,<span class="number">32</span>], <span class="string">&#x27;r--&#x27;</span>,linewidth=<span class="number">1</span>,transform=ccrs.PlateCarree(),zorder=<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">levels = np.around(np.arange(<span class="number">0</span>,<span class="number">5601</span>,<span class="number">400</span>),<span class="number">2</span>) <span class="comment">#bsf_diff</span></span><br><span class="line">cs = ax.contourf(lon,lat, hgt,transform=ccrs.PlateCarree(),</span><br><span class="line">                  levels=levels,cmap= nclcmaps.cmap(<span class="string">&#x27;OceanLakeLandSnow&#x27;</span>),<span class="comment">#&#x27;terrain&#x27;, &#x27;OceanLakeLandSnow&#x27;</span></span><br><span class="line">                  extend=<span class="string">&#x27;both&#x27;</span>)</span><br><span class="line">over_t = (<span class="number">224</span>/<span class="number">255</span>,<span class="number">224</span>/<span class="number">255</span>,<span class="number">224</span>/<span class="number">255</span>)</span><br><span class="line">under_t = (<span class="number">0</span>, <span class="number">71</span>/<span class="number">255</span> , <span class="number">71</span>/<span class="number">255</span> )</span><br><span class="line">under_t = (<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">cs.cmap.set_over(over_t) <span class="comment">#&#x27;fuchsia&#x27;</span></span><br><span class="line">cs.cmap.set_under(under_t) <span class="comment">#21</span></span><br><span class="line">cs.changed()</span><br><span class="line"></span><br><span class="line">v = np.around(np.arange(<span class="number">0</span>,<span class="number">5601</span>,<span class="number">400</span>),<span class="number">2</span>) <span class="comment">#bsf_diff</span></span><br><span class="line"></span><br><span class="line">cax = fig.add_axes([<span class="number">0.88</span>,<span class="number">0.07</span>,<span class="number">0.03</span>,<span class="number">0.88</span>])</span><br><span class="line">bar = plt.colorbar(cs,cax = cax,orientation=<span class="string">&#x27;vertical&#x27;</span>,</span><br><span class="line">                    ticks=v,drawedges=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">bar.ax.tick_params(labelcolor=<span class="string">&#x27;k&#x27;</span>,labelsize=<span class="number">8</span>,pad=<span class="number">0.5</span>)</span><br><span class="line">bar.outline.set_linewidth(<span class="number">0.3</span>)</span><br><span class="line">bar.ax.set_yticklabels(v,fontsize=<span class="number">9</span>,fontname=<span class="string">&quot;Times New Roman&quot;</span>)</span><br><span class="line"></span><br><span class="line">fig.text(<span class="number">0.92</span>,<span class="number">0.05</span>,<span class="string">&quot;(m)&quot;</span>,fontsize=<span class="number">10</span>) <span class="comment"># bsf</span></span><br><span class="line"></span><br><span class="line">plt.savefig(<span class="string">&quot;hgt.png&quot;</span>,dpi=<span class="number">800</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="画多子图"><a href="#画多子图" class="headerlink" title="画多子图"></a>画多子图</h2><p><a target="_blank" rel="noopener" href="https://yxy-biubiubiu.github.io/2020/09/09/map/">Cartopy地图投影绘制 | ZSYXY Meteorological workshop (yxy-biubiubiu.github.io)</a></p>
+<h1 id="运算"><a href="#运算" class="headerlink" title="运算"></a>运算</h1><h2 id="插值到规则经纬网格"><a href="#插值到规则经纬网格" class="headerlink" title="插值到规则经纬网格"></a>插值到规则经纬网格</h2><p>将WRF模拟结果与站点观测或者再分析资料进行对比之前，我们需要对WRF输出的网格资料进行插值（或regrid）</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/560132563">利用xesmf将WRF数据插值到站点/网格</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> salem</span><br><span class="line"><span class="keyword">import</span> xarray <span class="keyword">as</span> xr </span><br><span class="line"><span class="keyword">import</span> xesmf <span class="keyword">as</span> xe</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">lons = [<span class="number">100</span> , <span class="number">120</span>]</span><br><span class="line">lats = [<span class="number">30</span>  ,  <span class="number">40</span>]</span><br><span class="line">step = <span class="number">1</span></span><br><span class="line">ds_out_2D = xe.util.grid_2d(lons[<span class="number">0</span>]-step/<span class="number">2</span>, lons[<span class="number">1</span>]+step/<span class="number">2</span>, step, </span><br><span class="line">                        lats[<span class="number">0</span>]-step/<span class="number">2</span>, lats[<span class="number">1</span>]+step/<span class="number">2</span>, step) </span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/567607429">python—站点数据插值到规则网格&amp;EOF分解</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy.interpolate <span class="keyword">import</span> griddata</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">z[i] = griddata((lon_real,lat_real),</span><br><span class="line">                                    data_all[:,i],</span><br><span class="line">                                    (x_t,y_t),method=<span class="string">&#x27;cubic&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>注意，使用以上这些插值的效果，特别是scipy中的插值效果都不如ncl的rcm2rgrid_wrap命令，所以考虑找到这个命令在python中的替代，发现了<strong>geocat</strong>项目。</p>
+<h3 id="Geocat"><a href="#Geocat" class="headerlink" title="Geocat"></a>Geocat</h3><p><a target="_blank" rel="noopener" href="https://geocat-f2py.readthedocs.io/en/latest/installation.html">Installation — GeoCAT-f2py = “2023.03.0” %} documentation</a></p>
+<p><a target="_blank" rel="noopener" href="https://geocat-comp.readthedocs.io/en/v2023.03.0/installation.html">Installation (geocat-comp.readthedocs.io)</a></p>
+<p>不知道哪个可以用，就都安装试一下，但是貌似只能在linux下使用，在win下是不行的。</p>
+<p>使用了，goecat.comp以及被淘汰，目前新的在使用的是geocat.f2py</p>
+<h1 id="wrfout文件解读（按照开头字母）"><a href="#wrfout文件解读（按照开头字母）" class="headerlink" title="wrfout文件解读（按照开头字母）"></a>wrfout文件解读（按照开头字母）</h1><p><a target="_blank" rel="noopener" href="https://bbs.06climate.com/forum.php?mod=viewthread&amp;tid=13277">https://bbs.06climate.com/forum.php?mod=viewthread&amp;tid=13277</a></p>
+<p>float <strong>LU_INDEX</strong>(Time, south_north, west_east) ;<br>LU_INDEX:description = “LAND USE CATEGORY” ;<br>LU_INDEX:units = “” ;<br>土地利用类型（如城市、植被、湖泊等）  </p>
+<p>float <strong>ZNU</strong>(Time, bottom_top) ;<br>ZNU:description = “eta values on half (mass) levels” ;<br>ZNU:units = “” ;<br>eta半层（质量点）坐标值  </p>
+<p>float <strong>ZNW</strong>(Time, bottom_top_stag) ;<br>ZNW:description = “eta values on full (w) levels” ;<br>ZNW:units = “” ;<br>eta整层（w点）坐标值  </p>
+<p>float <strong>ZS</strong>(Time, soil_layers_stag) ;<br>ZS:description = “DEPTHS OF CENTERS OF SOIL LAYERS” ;<br>ZS:units = “m” ;<br>土壤层各层中间的深度  </p>
+<p>float <strong>DZS</strong>(Time, soil_layers_stag) ;<br>DZS:description = “THICKNESSES OF SOIL LAYERS” ;<br>DZS:units = “m” ;<br>土壤层厚度  </p>
+<p>float <strong>U</strong>(Time, bottom_top, south_north, west_east_stag) ;<br>U:description = “x-wind component” ;<br>U:units = “m s-1” ;<br>x方向风分量  </p>
+<p>float <strong>V</strong>(Time, bottom_top, south_north_stag, west_east) ;<br>V:description = “y-wind component” ;<br>V:units = “m s-1” ;<br>y方向风分量  </p>
+<p>float <strong>W</strong>(Time, bottom_top_stag, south_north, west_east) ;<br>W:description = “z-wind component” ;<br>W:units = “m s-1” ;<br>垂直风分量  </p>
+<p>float <strong>PH</strong>(Time, bottom_top_stag, south_north, west_east) ;<br>PH:description = “perturbation geopotential” ;<br>PH:units = “m2 s-2” ;<br>扰动位势高度  </p>
+<p>float <strong>PHB</strong>(Time, bottom_top_stag, south_north, west_east) ;<br>PHB:description = “base-state geopotential” ;<br>PHB:units = “m2 s-2” ;<br>基准态位势高度  </p>
+<p>float <strong>T</strong>(Time, bottom_top, south_north, west_east) ;<br>T:description = “perturbation potential temperature (theta-t0)” ;<br>T:units = “K” ;<br>扰动位温（theta-t0）  </p>
+<p>float <strong>MU</strong>(Time, south_north, west_east) ;<br>MU:description = “perturbation dry air mass in column” ;<br>MU:units = “Pa” ;<br>柱内扰动干空气质量  </p>
+<p>float <strong>MUB</strong>(Time, south_north, west_east) ;<br>MUB:description = “base state dry air mass in column” ;<br>MUB:units = “Pa” ;<br>柱内基准态干空气质量  </p>
+<p>float <strong>NEST_POS</strong>(Time, south_north, west_east) ;<br>NEST_POS:description = “-“ ;<br>NEST_POS:units = “-“ ;<br>作多层嵌套时粗（母）网格位置  </p>
+<p>float <strong>P</strong>(Time, bottom_top, south_north, west_east) ;<br>P:description = “perturbation pressure” ;<br>P:units = “Pa” ;<br>扰动气压  </p>
+<p>float <strong>PB</strong>(Time, bottom_top, south_north, west_east) ;<br>PB:description = “BASE STATE PRESSURE” ;<br>PB:units = “Pa” ;<br>基准态气压  </p>
+<p>float <strong>SR</strong>(Time, south_north, west_east) ;<br>SR:description = “fraction of frozen precipitation” ;<br>SR:units = “-“ ;<br>固体降水比例  </p>
+<p>float <strong>POTEVP</strong>(Time, south_north, west_east) ;<br>POTEVP:description = “accumulated potential evaporation” ;<br>POTEVP:units = “W m-2” ;<br>累计的潜在蒸发  </p>
+<p>float <strong>SNOPCX</strong>(Time, south_north, west_east) ;<br>SNOPCX:description = “snow phase change heat flux” ;<br>SNOPCX:units = “W m-2” ;<br>雪相态改变的热通量  </p>
+<p>float <strong>SOILTB</strong>(Time, south_north, west_east) ;<br>SOILTB:description = “bottom soil temperature” ;<br>SOILTB:units = “K” ;<br>土壤底部温度  </p>
+<p>float <strong>FNM</strong>(Time, bottom_top) ;<br>FNM:description = “upper weight for vertical stretching” ;<br>FNM:units = “” ;<br>作垂直方向展开时上层权重  </p>
+<p>float <strong>FNP</strong>(Time, bottom_top) ;<br>FNP:description = “lower weight for vertical stretching” ;<br>FNP:units = “” ; 作垂直方向展开时下层权重  </p>
+<p>float <strong>RDNW</strong>(Time, bottom_top) ;<br>RDNW:description = “inverse d(eta) values between full (w) levels” ;<br>RDNW:units = “” ;<br>1除以整层（w层）间eta值之差  </p>
+<p>float <strong>RDN</strong>(Time, bottom_top) ;<br>RDN:description = “inverse d(eta) values between half (mass) levels” ;<br>RDN:units = “” ;<br>1除以半层（质量层）间eta值之差  </p>
+<p>float <strong>DNW</strong>(Time, bottom_top) ;<br>DNW:description = “d(eta) values between full (w) levels” ;<br>DNW:units = “” ;<br>整层（w层）间eta值之差  </p>
+<p>float <strong>DN</strong>(Time, bottom_top) ;<br>DN:description = “d(eta) values between half (mass) levels” ;<br>DN:units = “” ;<br>半层（质量层）间eta值之差  </p>
+<p>float <strong>CFN</strong>(Time) ;<br>CFN:description = “extrapolation constant” ;<br>CFN:units = “” ;<br>外推常数  </p>
+<p>float <strong>CFN1</strong>(Time) ;<br>CFN1:description = “extrapolation constant” ;<br>CFN1:units = “” ;<br>外推常数1  </p>
+<p>float <strong>Q2</strong>(Time, south_north, west_east) ;<br>Q2:description = “QV at 2 M” ;<br>Q2:units = “kg kg-1” ;<br>地面上2m高度的比湿  </p>
+<p>float <strong><mark>T2</mark></strong>(Time, south_north, west_east) ;<br>T2:description = “TEMP at 2 M” ;<br>T2:units = “K” ;<br>地面上2m高度的温度  </p>
+<p>float <strong>TH2</strong>(Time, south_north, west_east) ;<br>TH2:description = “POT TEMP at 2 M” ;<br>TH2:units = “K” ;<br>地面上2m高度的位温  </p>
+<p>float <strong>PSFC</strong>(Time, south_north, west_east) ;<br>PSFC:description = “SFC PRESSURE” ;<br>PSFC:units = “Pa” ; 地面气压  </p>
+<p>float <strong>U10</strong>(Time, south_north, west_east) ;<br>U10:description = “U at 10 M” ;<br>U10:units = “m s-1” ;<br>地面上10m风场的纬向分量  </p>
+<p>float <strong>V10</strong>(Time, south_north, west_east) ;<br>V10:description = “V at 10 M” ;<br>V10:units = “m s-1” ;<br>地面上10m风场的经向分量  </p>
+<p>float <strong>RDX</strong>(Time) ;<br>RDX:description = “INVERSE X GRID LENGTH” ;<br>RDX:units = “” ;<br>1除以x方向网格距  </p>
+<p>float RDY(Time) ;<br>RDY:description = “INVERSE Y GRID LENGTH” ;<br>RDY:units = “” ;<br>1除以y方向网格距  </p>
+<p>float RESM(Time) ;<br>RESM:description = “TIME WEIGHT CONSTANT FOR SMALL STEPS” ;<br>RESM:units = “” ;<br>对小时间步长时的时间权重常数  </p>
+<p>float ZETATOP(Time) ;<br>ZETATOP:description = “ZETA AT MODEL TOP” ;<br>ZETATOP:units = “” ;<br>模式大气层顶的eta值  </p>
+<p>float CF1(Time) ;<br>CF1:description = “2nd order extrapolation constant” ;<br>CF1:units = “” ;<br>2阶外推常数1  </p>
+<p>float CF2(Time) ;<br>CF2:description = “2nd order extrapolation constant” ;<br>CF2:units = “” ;<br>2阶外推常数2  </p>
+<p>float CF3(Time) ;<br>CF3:description = “2nd order extrapolation constant” ;<br>CF3:units = “” ;<br>2阶外推常数3  </p>
+<p>int ITIMESTEP(Time) ;<br>ITIMESTEP:description = “” ;<br>ITIMESTEP:units = “” ;<br>时间步长计数  </p>
+<p>float XTIME(Time) ;<br>XTIME:description = “minutes since simulation start” ;<br>XTIME:units = “” ;<br>已经模拟时间的长度  </p>
+<p>float <strong>QVAPOR</strong>(Time, bottom_top, south_north, west_east) ;<br>QVAPOR:description = “Water vapor mixing ratio” ;<br>QVAPOR:units = “kg kg-1” ;<br>水汽混合比  </p>
+<p>float <strong>QCLOUD</strong>(Time, bottom_top, south_north, west_east) ;<br>QCLOUD:description = “Cloud water mixing ratio” ;<br>QCLOUD:units = “kg kg-1” ;<br>云水混合比  </p>
+<p>float <strong>QRAIN</strong>(Time, bottom_top, south_north, west_east) ;<br>QRAIN:description = “Rain water mixing ratio” ;<br>QRAIN:units = “kg kg-1” ;<br>雨水混合比  </p>
+<p>float <strong>LANDMASK</strong>(Time, south_north, west_east) ;<br>LANDMASK:description = “LAND MASK (1 FOR LAND, 0 FOR WATER)” ;<br>LANDMASK:units = “” ;<br>陆面指标（1是陆地，0是水体）  </p>
+<p>float <strong><mark>TSLB</mark></strong>(Time, soil_layers_stag, south_north, west_east) ;<br>TSLB:description = “SOIL TEMPERATURE” ;<br>TSLB:units = “K” ;<br>各层土壤温度  </p>
+<p>float <strong><mark>SMOIS</mark></strong>(Time, soil_layers_stag, south_north, west_east) ;<br>SMOIS:description = “SOIL MOISTURE” ;<br>SMOIS:units = “m3 m-3” ;<br>各层土壤湿度  </p>
+<p>float <strong>SH2O</strong>(Time, soil_layers_stag, south_north, west_east) ;<br>SH2O:description = “SOIL LIQUID WATER” ;<br>SH2O:units = “m3 m-3” ;<br>各层土壤液态水含量？  </p>
+<p>float <strong>SEAICE</strong>(Time, south_north, west_east) ;<br>SEAICE:description = “SEA ICE FLAG” ;<br>SEAICE:units = “” ;<br>海冰标志  </p>
+<p>float <strong>XICEM</strong>(Time, south_north, west_east) ;<br>XICEM:description = “SEA ICE FLAG (PREVIOUS STEP)” ;<br>XICEM:units = “” ;<br>上一步时的海冰标志  </p>
+<p>float <strong>SFROFF</strong>(Time, south_north, west_east) ;<br>SFROFF:description = “SURFACE RUNOFF” ;<br>SFROFF:units = “mm” ;<br>地表径流  </p>
+<p>float <strong>UDROFF</strong>(Time, south_north, west_east) ;<br>UDROFF:description = “UNDERGROUND RUNOFF” ;<br>UDROFF:units = “mm” ;<br>地下径流  </p>
+<p>int <strong>IVGTYP</strong>(Time, south_north, west_east) ;<br>IVGTYP:description = “DOMINANT VEGETATION CATEGORY” ;<br>IVGTYP:units = “” ;<br>占主导的植被种类  </p>
+<p>int <strong>ISLTYP</strong>(Time, south_north, west_east) ;<br>ISLTYP:description = “DOMINANT SOIL CATEGORY” ;<br>ISLTYP:units = “” ;<br>占主导的土壤种类  </p>
+<p>float VEGFRA(Time, south_north, west_east) ;<br>VEGFRA:description = “VEGETATION FRACTION” ;<br>VEGFRA:units = “” ;<br>植被比例  </p>
+<p>float <strong>GRDFLX</strong>(Time, south_north, west_east) ;<br>GRDFLX:description = “GROUND HEAT FLUX” ;<br>GRDFLX:units = “W m-2” ;<br>地面热通量  </p>
+<p>float SNOW(Time, south_north, west_east) ;<br>SNOW:description = “SNOW WATER EQUIVALENT” ;<br>SNOW:units = “kg m-2” ;<br>雪水当量  </p>
+<p>float SNOWH(Time, south_north, west_east) ;<br>SNOWH:description = “PHYSICAL SNOW DEPTH” ;<br>SNOWH:units = “m” ;<br>实际雪厚  </p>
+<p>float RHOSN(Time, south_north, west_east) ;<br>RHOSN:description = “ SNOW DENSITY” ;<br>RHOSN:units = “kg m-3” ;<br>雪密度  </p>
+<p>float CANWAT(Time, south_north, west_east) ;<br>CANWAT:description = “CANOPY WATER” ;<br>CANWAT:units = “kg m-2” ;<br>冠层中的水  </p>
+<p>float SST(Time, south_north, west_east) ;<br>SST:description = “SEA SURFACE TEMPERATURE” ;<br>SST:units = “K” ;<br>海表面温度  </p>
+<p>float QNDROPSOURCE(Time, bottom_top, south_north, west_east) ;<br>QNDROPSOURCE:description = “Droplet number source” ;<br>QNDROPSOURCE:units = “ /kg/s” ;<br>水滴数源  </p>
+<p>float MAPFAC_M(Time, south_north, west_east) ;<br>MAPFAC_M:description = “Map scale factor on mass grid” ;<br>MAPFAC_M:units = “” ;<br>质量格点处的地图比例系数  </p>
+<p>float MAPFAC_U(Time, south_north, west_east_stag) ;<br>MAPFAC_U:description = “Map scale factor on u-grid” ;<br>MAPFAC_U:units = “” ;<br>u-格点处的地图比例系数  </p>
+<p>float MAPFAC_V(Time, south_north_stag, west_east) ;<br>MAPFAC_V:description = “Map scale factor on v-grid” ;<br>MAPFAC_V:units = “” ;<br>v-格点处的地图比例系数  </p>
+<p>float MAPFAC_MX(Time, south_north, west_east) ;<br>MAPFAC_MX:description = “Map scale factor on mass grid, x direction” ;<br>MAPFAC_MX:units = “” ;<br>x方向上质量格点处的地图比例系数  </p>
+<p>float MAPFAC_MY(Time, south_north, west_east) ;<br>MAPFAC_MY:description = “Map scale factor on mass grid, y direction” ;<br>MAPFAC_MY:units = “” ;<br>y方向上质量格点处的地图比例系数  </p>
+<p>float MAPFAC_UX(Time, south_north, west_east_stag) ;<br>MAPFAC_UX:description = “Map scale factor on u-grid, x direction” ;<br>MAPFAC_UX:units = “” ;<br>x方向上u-格点处的地图比例系数  </p>
+<p>float MAPFAC_UY(Time, south_north, west_east_stag) ;<br>MAPFAC_UY:description = “Map scale factor on u-grid, y direction” ;<br>MAPFAC_UY:units = “” ;<br>y方向上u-格点处的地图比例系数  </p>
+<p>float MAPFAC_VX(Time, south_north_stag, west_east) ;<br>MAPFAC_VX:description = “Map scale factor on v-grid, x direction” ;<br>MAPFAC_VX:units = “” ;<br>x方向上v-格点处的地图比例系数  </p>
+<p>float MF_VX_INV(Time, south_north_stag, west_east) ;<br>MF_VX_INV:description = “Inverse map scale factor on v-grid, x direction”<br>MF_VX_INV:units = “” ;<br>1除以x方向上v-格点处的地图比例系数  </p>
+<p>float MAPFAC_VY(Time, south_north_stag, west_east) ;<br>MAPFAC_VY:description = “Map scale factor on v-grid, y direction” ;<br>MAPFAC_VY:units = “” ;<br>y方向上v-格点处的地图比例系数  </p>
+<p>float F(Time, south_north, west_east) ;<br>F:description = “Coriolis sine latitude term” ;<br>F:units = “s-1” ;<br>科氏力中sin(Ω)的部分，Ω为纬度  </p>
+<p>float E(Time, south_north, west_east) ;<br>E:description = “Coriolis cosine latitude term” ;<br>E:units = “s-1” ;<br>科氏力中cos(Ω)的部分，Ω为纬度  </p>
+<p>float SINALPHA(Time, south_north, west_east) ;<br>SINALPHA:description = “Local sine of map rotation” ;<br>SINALPHA:units = “” ;<br>局地sin（地图旋转角）  </p>
+<p>float COSALPHA(Time, south_north, west_east) ;<br>COSALPHA:description = “Local cosine of map rotation” ;<br>COSALPHA:units = “” ;<br>局地cos（地图旋转角）  </p>
+<p>float HGT(Time, south_north, west_east) ;<br>HGT:description = “Terrain Height” ;<br>HGT:units = “m” ;<br>地形高度  </p>
+<p>float HGT_SHAD(Time, south_north, west_east) ;<br>HGT_SHAD:description = “Height of orographic shadow” ;<br>HGT_SHAD:units = “m” ;<br>山岳背光坡的高度  </p>
+<p>float TSK(Time, south_north, west_east) ;<br>TSK:description = “SURFACE SKIN TEMPERATURE” ;<br>TSK:units = “K” ;<br>地表温度  </p>
+<p>float P_TOP(Time) ;<br>P_TOP:description = “PRESSURE TOP OF THE MODEL” ;<br>P_TOP:units = “Pa” ;<br>模式顶的气压  </p>
+<p>float MAX_MSTFX(Time) ;<br>MAX_MSTFX:description = “Max map factor in domain” ;<br>MAX_MSTFX:units = “” ;<br>区域内的最大地图比例系数  </p>
+<p>float RAINC(Time, south_north, west_east) ;<br>RAINC:description = “ACCUMULATED TOTAL CUMULUS PRECIPITATION” ;<br>RAINC:units = “mm” ;<br>累积的积云对流降水  </p>
+<p>float RAINNC(Time, south_north, west_east) ;<br>RAINNC:description = “ACCUMULATED TOTAL GRID SCALE PRECIPITATION” ;<br>RAINNC:units = “mm” ;<br>累积的格点降水  </p>
+<p>float PRATEC(Time, south_north, west_east) ;<br>PRATEC:description = “PRECIP RATE FROM CUMULUS SCHEME” ;<br>PRATEC:units = “mm s-1” ;<br>由积云方案算的对流降水率  </p>
+<p>float RAINCV(Time, south_north, west_east) ;<br>RAINCV:description = “TIME-STEP CUMULUS PRECIPITATION” ;<br>RAINCV:units = “mm” ;<br>计算对流降水的时间步长  </p>
+<p>float SNOWNC(Time, south_north, west_east) ;<br>SNOWNC:description = “ACCUMULATED TOTAL GRID SCALE SNOW AND ICE” ;<br>SNOWNC:units = “mm” ;<br>累积的格点降雪和冰量  </p>
+<p>float GRAUPELNC(Time, south_north, west_east) ;<br>GRAUPELNC:description = “ACCUMULATED TOTAL GRID SCALE GRAUPEL” ;<br>GRAUPELNC:units = “mm” ;<br>累积的格点降雪丸量  </p>
+<p>float EDT_OUT(Time, south_north, west_east) ;<br>EDT_OUT:description = “EDT FROM GD SCHEME” ;<br>EDT_OUT:units = “” ;<br>Grell-Devenyi方案计算的edt场  </p>
+<p>float SWDOWN(Time, south_north, west_east) ;<br>SWDOWN:description = “DOWNWARD SHORT WAVE FLUX AT GROUND SURFACE” ;<br>SWDOWN:units = “W m-2” ;<br>地表处的向下短波辐射通量  </p>
+<p>float GLW(Time, south_north, west_east) ;<br>GLW:description = “DOWNWARD LONG WAVE FLUX AT GROUND SURFACE” ;<br>GLW:units = “W m-2” ;<br>地表处的向下长波辐射通量  </p>
+<p>float OLR(Time, south_north, west_east) ;<br>OLR:description = “TOA OUTGOING LONG WAVE” ;<br>OLR:units = “W m-2” ;<br>TOA处的向上长波辐射通量  </p>
+<p>float XLAT(Time, south_north, west_east) ;<br>XLAT:description = “LATITUDE, SOUTH IS NEGATIVE” ;<br>XLAT:units = “degree_north” ;<br>质量点的纬度（南半球为负值）  </p>
+<p>float XLONG(Time, south_north, west_east) ;<br>XLONG:description = “LONGITUDE, WEST IS NEGATIVE” ;<br>XLONG:units = “degree_east” ;<br>质量点的经度（西半球为负值）  </p>
+<p>float XLAT_U(Time, south_north, west_east_stag) ;<br>XLAT_U:description = “LATITUDE, SOUTH IS NEGATIVE” ;<br>XLAT_U:units = “degree_north” ;<br>U-格点的纬度（南半球为负值）  </p>
+<p>float XLONG_U(Time, south_north, west_east_stag) ;<br>XLONG_U:description = “LONGITUDE, WEST IS NEGATIVE” ;<br>XLONG_U:units = “degree_east” ;<br>U-格点的经度（西半球为负值）  </p>
+<p>float XLAT_V(Time, south_north_stag, west_east) ;<br>XLAT_V:description = “LATITUDE, SOUTH IS NEGATIVE” ;<br>XLAT_V:units = “degree_north” ;<br>V-格点的纬度（南半球为负值）  </p>
+<p>float XLONG_V(Time, south_north_stag, west_east) ;<br>XLONG_V:description = “LONGITUDE, WEST IS NEGATIVE” ;<br>XLONG_V:units = “degree_east” ;<br>V-格点的经度（西半球为负值）  </p>
+<p>float ALBEDO(Time, south_north, west_east) ;<br>ALBEDO:description = “ALBEDO” ;<br>ALBEDO:units = “-“ ;<br>反照率  </p>
+<p>float ALBBCK(Time, south_north, west_east) ;<br>ALBBCK:description = “BACKGROUND ALBEDO” ;<br>ALBBCK:units = “” ;<br>背景反照率  </p>
+<p>float EMISS(Time, south_north, west_east) ;<br>EMISS:description = “SURFACE EMISSIVITY” ;<br>EMISS:units = “” ;<br>地面发射率  </p>
+<p>float TMN(Time, south_north, west_east) ;<br>TMN:description = “SOIL TEMPERATURE AT LOWER BOUNDARY” ;<br>TMN:units = “K” ;<br>更低边界处的土壤温度  </p>
+<p>float XLAND(Time, south_north, west_east) ;<br>XLAND:description = “LAND MASK (1 FOR LAND, 2 FOR WATER)” ;<br>XLAND:units = “” ;<br>陆面指标（1是陆地，2是水体）  </p>
+<p>float UST(Time, south_north, west_east) ;<br>UST:description = “U* IN SIMILARITY THEORY” ;<br>UST:units = “m s-1” ;<br>相似性理论中的摩擦速度  </p>
+<p>float PBLH(Time, south_north, west_east) ;<br>PBLH:description = “PBL HEIGHT” ;<br>PBLH:units = “m” ;<br>行星边界层高度  </p>
+<p>float HFX(Time, south_north, west_east) ;<br>HFX:description = “UPWARD HEAT FLUX AT THE SURFACE” ;<br>HFX:units = “W m-2” ;<br>地表面处向上的热量通量（感热通量）  </p>
+<p>float QFX(Time, south_north, west_east) ;<br>QFX:description = “UPWARD MOISTURE FLUX AT THE SURFACE” ;<br>QFX:units = “kg m-2 s-1” ;<br>地表面处向上的水汽通量  </p>
+<p>float LH(Time, south_north, west_east) ;<br>LH:description = “LATENT HEAT FLUX AT THE SURFACE” ;<br>LH:units = “W m-2” ;<br>地表面处的潜热通量  </p>
+<p>float SNOWC(Time, south_north, west_east) ;<br>SNOWC:description = “FLAG INDICATING SNOW COVERAGE (1 FOR SNOW COVER)” ;<br>SNOWC:units = “” ;<br>雪盖标志（1是有雪）</p>
+<h2 id="降水处理"><a href="#降水处理" class="headerlink" title="降水处理"></a>降水处理</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/islandowner2017/article/details/119719854">WRF后处理：降雨量的说明以及降雨的绘制_wrf模拟降水量偏小-CSDN博客</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RAINC: ACCUMULATED TOTAL CUMULUS PRECIPITATION</span><br><span class="line">RAINNC: ACCUMULATED TOTAL GRID SCALE PRECIPITATION</span><br><span class="line">RAINSH: ACCUMULATED SHALLOW CUMULUS PRECIPITATION</span><br></pre></td></tr></table></figure>
+<p>RAINC: 积云深对流过程产生的累积降水量，也就是模式中的积云对流参数化方案导致的降雨( cu_physics)。对于高分辨率的模拟，比如dx&lt;5km，通常会将积云对流参数化方案关闭，此时RAINC为0。</p>
+<p>RANNC: 此类降雨来源于云微物理参数化方案(mp_physics)，如大尺度抬升过程产生的凝结等微物理过程降水，也就是非对流产生的降水。</p>
+<p>RAINSH: 积云对流参数化方案主要是反映深对流的降水过程，但是一些积云对流参数化方案，能够支持浅对流导致的降水，此时总降水还需要加上RAINSH。WRF中支持浅对流的参数化方案(cu_physics)有以下几种：KF，SAS，G3，BMJ，Tiedtke。WRF中也有独立于深对流过程的浅对流方案，通过namelist中设置shcu_physics。一般情况下，浅对流产生的降水量较小。</p>
+<h2 id="云量"><a href="#云量" class="headerlink" title="云量"></a>云量</h2><p><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/total-cloud-fraction-definition-calculation-method.10862/">Total cloud fraction (definition &amp; calculation method) | WRF &amp; MPAS-A Support Forum (ucar.edu)</a></p>
+<p><a target="_blank" rel="noopener" href="https://wrf-python.readthedocs.io/en/latest/user_api/generated/wrf.cloudfrac.html">wrf.cloudfrac — wrf-python 1.3.4.1 documentation</a></p>
+<p>The <strong>UPP (Unified Post-Processing)</strong> column max method is a technique used to calculate the total cloud fraction from atmospheric model output files, such as WRF (Weather Research and Forecasting) model output. Let’s break down how it works:</p>
+<ol>
+<li><p><strong>Objective:</strong></p>
+<ul>
+<li>The goal is to determine the total cloud fraction within each grid cell of the model domain.</li>
+</ul>
+</li>
+<li><p><strong>Vertical Levels:</strong></p>
+<ul>
+<li>Atmospheric models represent the atmosphere in vertical layers (levels). These levels can be categorized as low, mid, and high.</li>
+<li>For cloud fraction calculations, we consider these vertical levels.</li>
+</ul>
+</li>
+<li><p><strong>Cloud Fraction Variable:</strong></p>
+<ul>
+<li>In WRF output files (e.g., <code>wrfout_d0*</code>), there is a variable called <code>CLDFRA</code> (cloud fraction).</li>
+<li>This variable provides the fraction of each grid cell covered by clouds at different vertical levels.</li>
+</ul>
+</li>
+<li><p><strong>Methodology:</strong></p>
+<ul>
+<li>For each grid cell, we examine the cloud fraction values at all vertical levels.</li>
+<li>The UPP column max method selects the <strong>maximum</strong> cloud fraction value across all vertical levels within that grid cell.</li>
+<li>This maximum value represents the total cloud fraction for that specific grid cell.</li>
+</ul>
+</li>
+<li><p><strong>Calculation:</strong></p>
+<ul>
+<li><p>Suppose we have cloud fraction values for low, mid, and high levels (denoted as <code>CLDFRA_low</code>, <code>CLDFRA_mid</code>, and <code>CLDFRA_high</code>).</p>
+</li>
+<li><p>The total cloud fraction (<code>CLDFRA_total</code>) is calculated as:</p>
+<p>CLDFRAtotal​=max(CLDFRAlow​,CLDFRAmid​,CLDFRAhigh​)</p>
+</li>
+</ul>
+</li>
+<li><p><strong>Application:</strong></p>
+<ul>
+<li>Researchers and meteorologists use this method to analyze cloud cover patterns, study cloud processes, and assess model performance.</li>
+<li>It’s essential to consider the limitations and assumptions associated with this approach when interpreting results.</li>
+</ul>
+</li>
+</ol>
+<h2 id="单位为mm的变量"><a href="#单位为mm的变量" class="headerlink" title="单位为mm的变量"></a>单位为mm的变量</h2><p>205</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GRAUPELNC</span><br></pre></td></tr></table></figure>
+<p>206</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HAILNC</span><br></pre></td></tr></table></figure>
+<p>201 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RAINC</span><br></pre></td></tr></table></figure>
+<p>203</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RAINNC</span><br></pre></td></tr></table></figure>
+<p>202</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RAINSH </span><br></pre></td></tr></table></figure>
+<p>150</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SFROFF  </span><br></pre></td></tr></table></figure>
+<p>204</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SNOWNC  </span><br></pre></td></tr></table></figure>
+<p>151</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UDROFF</span><br></pre></td></tr></table></figure>
+<h2 id="instantaneous-amp-accumulated"><a href="#instantaneous-amp-accumulated" class="headerlink" title="instantaneous &amp; accumulated"></a>instantaneous &amp; accumulated</h2><p><strong>instantaneous output</strong><br>accumulation over hours 0-3 = 10<br>output at hr 03 = 10<br>accumulation over hours 3-6 = 5<br>output at hr 06 = 5<br>accumulation over hours 6-9 = 7<br>output at hr 09 = 7  </p>
+<p><strong>accumulated output</strong><br>accumulation over hours 0-3 = 10<br>output at hr 03 = 10<br>accumulation over hours 3-6 = 5<br>output at hr 06 = 15<br>accumulation over hours 6-9 = 7<br>output at hr 09 = 22</p>
+<h1 id="地表能量平衡的诊断"><a href="#地表能量平衡的诊断" class="headerlink" title="地表能量平衡的诊断"></a>地表能量平衡的诊断</h1><p><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/confusing-names-for-variables-in-wrfout.5532/">Confusing names for variables in wrfout | WRF &amp; MPAS-A Support Forum (ucar.edu)</a></p>
+<p><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/wrf-surface-net-radiation.11545/">WRF surface net radiation | WRF &amp; MPAS-A Support Forum (ucar.edu)</a></p>
+<p><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/how-to-calculate-net-radiation-in-wrf.18049/">How to calculate Net radiation in WRF | WRF &amp; MPAS-A Support Forum (ucar.edu)</a></p>
+<p><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/sensible-heat-flux.5246/">Sensible heat flux | WRF &amp; MPAS-A Support Forum (ucar.edu)</a></p>
+<p><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/wrf-energy-and-moisture-budget.5674/">WRF energy and moisture budget? | WRF &amp; MPAS-A Support Forum (ucar.edu)</a></p>
+<p>n general, the following calculations can be used for radiative flux calculations:  </p>
+<p>$GSW=(1-ALBEDO)<em>SWDOWN$: net shortwave radiative flux<br>GLW: downward longwave radiative flux<br>$LWUPFLUX = STBOLT</em>TSK<em>*4$: where STBOLT is the Stefan-Boltzmann constant<br>$netLW = EMISS</em>(GLW-LWUPFLUX)$: net long wave radiative flux  </p>
+<p>net radiative flux: $RNET=GSW+netLW$  </p>
+<p>Surface energy budget can be computed as $RNET-GRDFLX-HFX-LH = 0$</p>
+<p>世纪巨坑：</p>
+<p>如果从陆面的角度拆解潜热和感热的话：</p>
+<p>$HFX/SH=F_{veg}<em>SHG+(1-F_{veg})</em>SHB+SHC$</p>
+<p>$LH=F_{veg}<em>EVG+(1-F_{veg})</em>EVB+EVC+TR$</p>
+<p>其中$F_{veg}$为植被分数，读取VEGFRA变量并除以100.</p>
+<p>HFX就是感热通量。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/WRF/" rel="tag"># WRF</a>
+              <a href="/tags/python/" rel="tag"># python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/08/28/Log/" rel="prev" title="Captain's Log">
+                  <i class="fa fa-angle-left"></i> Captain's Log
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/09/06/OpenIFS%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" rel="next" title="OpenIFS模式学习记录">
+                  OpenIFS模式学习记录 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">MissLH88</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

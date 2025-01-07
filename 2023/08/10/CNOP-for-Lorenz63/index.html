@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"misslh88.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="使用穆穆院士提出的CNOP方法对Lorenz63模型进行最优扰动的求解。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CNOP for Lorenz63">
+<meta property="og:url" content="https://misslh88.github.io/2023/08/10/CNOP-for-Lorenz63/index.html">
+<meta property="og:site_name" content="LH&#39;s blog">
+<meta property="og:description" content="使用穆穆院士提出的CNOP方法对Lorenz63模型进行最优扰动的求解。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-08-10T10:23:35.000Z">
+<meta property="article:modified_time" content="2023-08-28T12:05:48.670Z">
+<meta property="article:author" content="MissLH88">
+<meta property="article:tag" content="CNOP">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://misslh88.github.io/2023/08/10/CNOP-for-Lorenz63/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://misslh88.github.io/2023/08/10/CNOP-for-Lorenz63/","path":"2023/08/10/CNOP-for-Lorenz63/","title":"CNOP for Lorenz63"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CNOP for Lorenz63 | LH's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">LH's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Research in atmospheric sciences, IAP, Beijing, China</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Lorenz63%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">1 Lorenz63模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%B7%AE%E5%88%86%E6%B1%82%E8%A7%A3"><span class="nav-number">2.</span> <span class="nav-text">2 模型的差分求解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%88%87%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%BC%8F%E7%9A%84%E7%BC%96%E5%86%99%E5%92%8C%E6%A3%80%E9%AA%8C"><span class="nav-number">3.</span> <span class="nav-text">3 切线性模式的编写和检验</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E6%9E%84%E9%80%A0%E5%88%87%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 构造切线性模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E6%A3%80%E9%AA%8C%E5%88%87%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 检验切线性模式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E4%BC%B4%E9%9A%8F%E6%A8%A1%E5%BC%8F%E7%9A%84%E7%BC%96%E5%86%99%E5%92%8C%E6%A3%80%E9%AA%8C"><span class="nav-number">4.</span> <span class="nav-text">4 伴随模式的编写和检验</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E4%BB%80%E4%B9%88%E6%98%AF%E4%BC%B4%E9%9A%8F%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 什么是伴随模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E6%9E%84%E9%80%A0%E4%BC%B4%E9%9A%8F%E6%A8%A1%E5%BC%8F%E5%B9%B6%E6%A3%80%E9%AA%8C"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 构造伴随模式并检验</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E7%9B%AE%E6%A0%87%E5%87%BD%E6%95%B0%E5%92%8C%E6%A2%AF%E5%BA%A6"><span class="nav-number">5.</span> <span class="nav-text">5 目标函数和梯度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-SPG2%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95%E7%9A%84%E7%BC%96%E5%86%99"><span class="nav-number">6.</span> <span class="nav-text">6 SPG2优化算法的编写</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-SPG2%E7%AE%97%E6%B3%95%E4%BB%8B%E7%BB%8D"><span class="nav-number">6.1.</span> <span class="nav-text">6.1 SPG2算法介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-%E7%BC%96%E5%86%99SPG2%E7%AE%97%E6%B3%95"><span class="nav-number">6.2.</span> <span class="nav-text">6.2 编写SPG2算法</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">MissLH88</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://misslh88.github.io/2023/08/10/CNOP-for-Lorenz63/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="MissLH88">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LH's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="CNOP for Lorenz63 | LH's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CNOP for Lorenz63
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-08-10 18:23:35" itemprop="dateCreated datePublished" datetime="2023-08-10T18:23:35+08:00">2023-08-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-08-28 20:05:48" itemprop="dateModified" datetime="2023-08-28T20:05:48+08:00">2023-08-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%A7%91%E7%A0%94%E5%AE%9E%E8%B7%B5/" itemprop="url" rel="index"><span itemprop="name">科研实践</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>使用穆穆院士提出的CNOP方法对Lorenz63模型进行最优扰动的求解。</p>
+<span id="more"></span>
+<h1 id="1-Lorenz63模型"><a href="#1-Lorenz63模型" class="headerlink" title="1 Lorenz63模型"></a>1 Lorenz63模型</h1><p>Lorenz63模型由美国数学家、气象学家<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%88%B1%E5%BE%B7%E5%8D%8E%C2%B7%E8%AF%BA%E9%A1%BF%C2%B7%E6%B4%9B%E4%BC%A6%E8%8C%A8/1236343">爱德华·诺顿·洛伦茨（1917-2008）</a>1963年在论文《<strong>Deterministic Nonperiodic Flow</strong>》中首次提出。这个三变量无量纲模型简要地描述了大气中常见的热对流现象。</p>
+<p>$\frac {dx}{dt}=\sigma (y-x) $</p>
+<p>$\frac{dy}{dt}=x(\rho -z)-y$</p>
+<p>$\frac{dz}{dt}=xy-\beta z$</p>
+<p>其中$x,y,z$为变量，$x$与对流强度成正比例，$y$与上升和下降的温度差成比例，$z$表示平均温度的垂直梯度的偏离。$\sigma,\rho,\beta$为模型参数，$\sigma$是Prandtl数，反映了粘性和热传导之间的比例；$\rho$是Rayleigh数，表示上下层之间的温度差，反映对流强弱；$\beta$表示所研究对流区域的外形比参数。在Lorenz的文章中，这些参数分别取$\sigma=10,\beta=8/3,\rho=28$。</p>
+<p>为什么说Lorenz63模型（很多时候人们简称为Lorenz模型）是描述混沌的模型？因为在该模型中，<strong>系统初始状态的微小差别</strong>会导致<strong>迥然不同的状态发展变化</strong>，这种就是典型的混沌现象。也就是记者宣传描述的<strong>蝴蝶效应</strong>（一只蝴蝶在巴西轻拍翅膀，可以导致一个月后德克萨斯州的一场龙卷风）。当我们将该模型计算的结果，绘制在分别以变量$x,y,x$为坐标轴的空间里，图像形如蝴蝶振翅，这或许就是蝴蝶效应的灵感来源。</p>
+<blockquote>
+<p>Lorenz, Edward N., 1963: Deterministic Nonperiodic Flow. <em>Journal of the Atmospheric Sciences</em>, <strong>20</strong>, 130-141<a target="_blank" rel="noopener" href="https://doi.org/10.1175/1520-0469(1963">doi:0.1175/1520-0469(1963)020<0130:DNF>2.0.CO;2</a>020<0130:DNF>2.0.CO;2)</p>
+<p><a target="_blank" rel="noopener" href="https://www.docin.com/p-1325744260.html">lorenz模式的切线性模式有效性的研究 - 豆丁网</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/68229746/answer/705405940">如何通俗地解释混沌理论（chaos）和分岔理论（bifurcation）？</a></p>
+</blockquote>
+<h1 id="2-模型的差分求解"><a href="#2-模型的差分求解" class="headerlink" title="2 模型的差分求解"></a>2 模型的差分求解</h1><p>使用最简单的前向差分：$\frac{dx}{dt}=\frac{x_{i+1}-x_i}{\Delta t}=F(x_i,y_i,z_i)$</p>
+<p>于是：$x_{i+1}=x_i+\Delta t F(x_i,y_i,z_i)=x_i+\Delta t \sigma(y_i-x_i)$</p>
+<p>其余两个变量的差分类似。</p>
+<p>根据前向差分公式，定义一个计算通用的差分计算函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">x,func,h</span>):</span><br><span class="line">    x1 = x+h*func(x)</span><br><span class="line">    <span class="keyword">return</span> x1</span><br></pre></td></tr></table></figure>
+<p>再根据模型右边的具体表达式，定义函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">L63_rhs</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="comment"># ODE右端项，变量x为（3，）的数组，是[x,y,z]序列</span></span><br><span class="line">    <span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">    dx=np.ones_like(x);</span><br><span class="line">    sigma=<span class="number">10.0</span>; rho=<span class="number">28.0</span>;beta=<span class="number">8</span>/<span class="number">3</span>;   <span class="comment"># default parameters</span></span><br><span class="line">    dx[<span class="number">0</span>]=sigma*(x[<span class="number">1</span>]-x[<span class="number">0</span>])</span><br><span class="line">    dx[<span class="number">1</span>]=rho*x[<span class="number">0</span>]-x[<span class="number">1</span>]-x[<span class="number">0</span>]*x[<span class="number">2</span>];</span><br><span class="line">    dx[<span class="number">2</span>]=x[<span class="number">0</span>]*x[<span class="number">1</span>]-beta*x[<span class="number">2</span>]</span><br><span class="line">    <span class="keyword">return</span> dx</span><br></pre></td></tr></table></figure>
+<p>以上函数结合构成求解的函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">L63_adv_1step</span>(<span class="params">x0,delta_t</span>):</span><br><span class="line">    <span class="comment"># 使用forward求解ODE，从初值x0求得步长delta_t后的x状态</span></span><br><span class="line">    x1=forward(x0,L63_rhs,delta_t)</span><br><span class="line">    <span class="keyword">return</span> x1</span><br></pre></td></tr></table></figure>
+<p>对函数进行反复迭代调用求解问题：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">time = <span class="number">1200</span> <span class="comment"># 计算1200步</span></span><br><span class="line">delta_t = <span class="number">0.01</span> <span class="comment"># 取时间间隔0.01</span></span><br><span class="line">xbase0 = np.array([<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>])<span class="comment"># 给定初始场</span></span><br><span class="line">xbase = np.zeros([time,<span class="number">3</span>]);xbase[<span class="number">0</span>]=xbase0</span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,time): <span class="comment"># 进行迭代求解</span></span><br><span class="line">    xbase[j] = L63_adv_1step(xbase[j-<span class="number">1</span>],delta_t)</span><br></pre></td></tr></table></figure>
+<p>绘制三维结果图：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib <span class="keyword">as</span> mpl</span><br><span class="line"><span class="keyword">from</span> mpl_toolkits.mplot3d <span class="keyword">import</span> Axes3D</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">mpl.rcParams[<span class="string">&#x27;legend.fontsize&#x27;</span>] = <span class="number">10</span></span><br><span class="line">fig = plt.figure()</span><br><span class="line"><span class="comment"># ax = fig.gca(projection=&#x27;3d&#x27;)</span></span><br><span class="line">ax = fig.add_axes(Axes3D(fig)) </span><br><span class="line">ax.plot(xbase[:,<span class="number">0</span>], xbase[:,<span class="number">1</span>], xbase[:,<span class="number">2</span>],<span class="string">&#x27;r&#x27;</span>, label=<span class="string">&#x27;control&#x27;</span>)</span><br><span class="line">ax.legend()</span><br><span class="line">plt.xlabel(<span class="string">&#x27;x&#x27;</span>);plt.ylabel(<span class="string">&#x27;y&#x27;</span>);</span><br><span class="line">ax.set_zlabel(<span class="string">&#x27;z&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="3-切线性模式的编写和检验"><a href="#3-切线性模式的编写和检验" class="headerlink" title="3 切线性模式的编写和检验"></a>3 切线性模式的编写和检验</h1><p>切线性模式近似描述初始扰动随时间的增长规律。切线性模式是非线性模式的一阶近似。</p>
+<h2 id="3-1-构造切线性模式"><a href="#3-1-构造切线性模式" class="headerlink" title="3.1 构造切线性模式"></a>3.1 构造切线性模式</h2><p>对初始基态$(x,y,z)$添加扰动$(\delta x,\delta y,\delta z)$，得到如下方程：</p>
+<p>$\frac{d(x+\delta x)}{dt}=-\sigma(x+\delta x)+\sigma(y+\delta y)$</p>
+<p>$\frac{d(y+\delta y)}{dt}=-(x+\delta x)(z+\delta z)+\rho(x+\delta x)-(y+\delta y)$</p>
+<p>$\frac{d(z+\delta z)}{dt}=(x+\delta x)(y+\delta y)-\beta (z+\delta z)$</p>
+<p>左右约去基态满足的部分（原始Lorenz方程），再省略高阶项（如$\delta x\delta z$等），就得到Lorenz的切线性模式：</p>
+<p>$\frac{d\delta x}{dt}=-\sigma \delta x+\sigma \delta y$</p>
+<p>$\frac{d\delta y}{dt}=(\rho-z)\delta x-\delta y-x\delta z$</p>
+<p>$\frac{d \delta z}{dt}=y\delta x+x\delta y-\beta \delta z$</p>
+<p>根据公式写出切线性模式的计算函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">TL_model</span>(<span class="params">x,dx</span>):</span><br><span class="line">    <span class="comment"># 切线性模式,x为计算使用的基态，dx为扰动</span></span><br><span class="line">    <span class="comment"># dx1为下个时刻的dx</span></span><br><span class="line">    dx1 = np.ones_like(dx)</span><br><span class="line">    sigma=<span class="number">10.0</span>; rho=<span class="number">28.0</span>;beta=<span class="number">8</span>/<span class="number">3</span></span><br><span class="line">    dx1[<span class="number">0</span>] = sigma*(dx[<span class="number">1</span>]-dx[<span class="number">0</span>])</span><br><span class="line">    dx1[<span class="number">1</span>] = (rho-x[<span class="number">2</span>])*dx[<span class="number">0</span>]-dx[<span class="number">1</span>]-x[<span class="number">0</span>]*dx[<span class="number">2</span>]</span><br><span class="line">    dx1[<span class="number">2</span>] = x[<span class="number">1</span>]*dx[<span class="number">0</span>]+x[<span class="number">0</span>]*dx[<span class="number">1</span>]-beta*dx[<span class="number">2</span>]</span><br><span class="line">    <span class="keyword">return</span> dx1</span><br></pre></td></tr></table></figure>
+<p>和原始模式一样，切线性模式也使用前向差分进行迭代计算，注意计算每一步的切线性中，都需要给出相应时刻的基态$x0=[x_i,y_i,z_i]$，这需要我们先正向计算一遍原始模式积分，然后在相应时刻将基本态输入给切线性模式作为”参数“：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span>  <span class="title function_">cal_TL</span>(<span class="params">x0,dx0,delta_t</span>):</span><br><span class="line">    <span class="comment"># 计算切线性模式</span></span><br><span class="line">    TL_model2 = partial(TL_model,x0) </span><br><span class="line">    <span class="comment"># partial是固定部分参数的函数</span></span><br><span class="line">    <span class="comment"># 将TL_model从两个参数的函数转变为forward需要的单参数函数</span></span><br><span class="line">    dx1=forward(dx0,TL_model2,delta_t)</span><br><span class="line">    <span class="keyword">return</span> dx1</span><br></pre></td></tr></table></figure>
+<h2 id="3-2-检验切线性模式"><a href="#3-2-检验切线性模式" class="headerlink" title="3.2 检验切线性模式"></a>3.2 检验切线性模式</h2><p>切线性模式构造地是否正确，需要进行检验，根据以下公式计算R：</p>
+<p>$R=\frac{||\pmb {M}(X_0+\alpha \cdot x_0 )-\pmb {M}(X_0)||}{\alpha ||\rm{\pmb{M}}(X_0) x_0||}=1+O(\alpha)$</p>
+<p>其中，$\pmb M$表示非线性模式；$\rm\pmb M$表示$\boldsymbol M$的切线性模式；$X_0$表示参考态的初始场；$x_o$表示$X_0$的初始扰动；$||X||=\sqrt {\sum_ix_i^2}$表示二范数；$0&lt;\alpha&lt;1$。</p>
+<p>该检验通过的标准是：</p>
+<ul>
+<li><p>$\alpha \rightarrow 0,R$一致逼近1；</p>
+</li>
+<li><p>$\alpha$继续减小，计算精度影响，$R$远离1；</p>
+</li>
+</ul>
+<p>以上两点满足，则说明该切线性模式编写准确。</p>
+<p>注意，由于切线性近似只在短距离内满足，所以验证的时候不要迭代非常长的时间，那样效果肯定很差。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">check_TL</span>(<span class="params">alpha</span>):</span><br><span class="line">    <span class="comment">#切线性模式的检验</span></span><br><span class="line">    time = <span class="number">120</span> <span class="comment">#时间越短，切线性的近似效果就越好</span></span><br><span class="line">    <span class="comment"># x0 = np.array([1.508870, -1.531271, 25.46091])</span></span><br><span class="line">    <span class="comment"># x0 = np.array([0, 1,0]) # 初始场，基态</span></span><br><span class="line">    x0 = np.array([-<span class="number">6</span>*math.sqrt(<span class="number">2</span>),-<span class="number">6</span>*math.sqrt(<span class="number">2</span>),<span class="number">27</span>])</span><br><span class="line">    diff_x0 = x0*<span class="number">0.01</span> <span class="comment">#初始扰动，与L63_RHS中的dx不同</span></span><br><span class="line">    Xtrue = np.zeros([time,<span class="number">3</span>]);Xtrue[<span class="number">0</span>]=x0</span><br><span class="line">    Xpert = np.zeros([time,<span class="number">3</span>]);Xpert[<span class="number">0</span>]=x0+alpha*diff_x0</span><br><span class="line">    diff_x = np.zeros([time,<span class="number">3</span>]);diff_x[<span class="number">0</span>] = diff_x0</span><br><span class="line">    delta_t= <span class="number">0.01</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,time):</span><br><span class="line">        Xtrue[j] = L63_adv_1step(Xtrue[j-<span class="number">1</span>],delta_t)</span><br><span class="line">        Xpert[j] = L63_adv_1step(Xpert[j-<span class="number">1</span>],delta_t)</span><br><span class="line">        diff_x[j] = cal_TL(Xtrue[j-<span class="number">1</span>], diff_x[j-<span class="number">1</span>], delta_t)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(diff_x[-<span class="number">1</span>])</span><br><span class="line">    fmu = alpha*np.linalg.norm(diff_x[-<span class="number">1</span>],<span class="built_in">ord</span>=<span class="number">2</span>)</span><br><span class="line">    <span class="built_in">print</span>(fmu)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">abs</span>(Xpert[-<span class="number">1</span>]-Xtrue[-<span class="number">1</span>]))</span><br><span class="line">    fzi = np.linalg.norm([Xpert[-<span class="number">1</span>]-Xtrue[-<span class="number">1</span>]],<span class="built_in">ord</span>=<span class="number">2</span>)</span><br><span class="line">    <span class="built_in">print</span>(fzi)</span><br><span class="line"></span><br><span class="line">    R = fzi/fmu</span><br><span class="line">    <span class="built_in">print</span>(R)</span><br><span class="line">    <span class="keyword">return</span> R</span><br><span class="line"></span><br><span class="line">NN = np.arange(-<span class="number">11</span>,<span class="number">1</span>) <span class="comment"># 生成alpha的次方</span></span><br><span class="line">RR = np.ones_like(NN,dtype=<span class="built_in">float</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(NN)):</span><br><span class="line">    n = NN[i]</span><br><span class="line">    <span class="built_in">print</span>(n)</span><br><span class="line">    alpha = math.<span class="built_in">pow</span>(<span class="number">10</span>,n)</span><br><span class="line">    RR[i] = check_TL(alpha)</span><br><span class="line">    <span class="comment"># print(alpha)</span></span><br><span class="line"></span><br><span class="line">fig, axs = plt.subplots(nrows=<span class="number">1</span>, ncols=<span class="number">1</span>, figsize=(<span class="number">8</span>, <span class="number">8</span>), dpi=<span class="number">100</span>)</span><br><span class="line">axs.plot(NN, RR, c=<span class="string">&#x27;k&#x27;</span>)</span><br><span class="line">axs.set_xlabel(<span class="string">&quot;lg(a)&quot;</span>, fontdict=&#123;<span class="string">&#x27;size&#x27;</span>: <span class="number">16</span>&#125;)</span><br><span class="line">axs.set_ylabel(<span class="string">&#x27;R&#x27;</span>, fontdict=&#123;<span class="string">&#x27;size&#x27;</span>: <span class="number">16</span>&#125;, rotation=<span class="number">0</span>)</span><br><span class="line">fig.autofmt_xdate()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<h1 id="4-伴随模式的编写和检验"><a href="#4-伴随模式的编写和检验" class="headerlink" title="4 伴随模式的编写和检验"></a>4 伴随模式的编写和检验</h1><h2 id="4-1-什么是伴随模式"><a href="#4-1-什么是伴随模式" class="headerlink" title="4.1 什么是伴随模式"></a>4.1 什么是伴随模式</h2><p>对于一个内积运算$&lt;,&gt;$（比如最简单的点积），若$\rm{\pmb {M^<em>}}$满足$<b,\rm\pmb M a>=&lt;\rm{\pmb {M^</em>}} b,a&gt;$则$\rm{\pmb {M^*}}$是线性模式$\rm{\pmb {M}}$的伴随模式，其中$a,b$均为矢量。</p>
+<p>那么伴随模式是如何与梯度联系起来的？</p>
+<p>存在一个非线性映射关系$y=M(x)$，若$y_0=M(x_0),y_1=M(x_1)，x_1=x_0+\delta x$，构造$M$的切线性模式$\rm{\pmb M}$使得$\delta y = M(x_1)-M(x_0)=\rm{\pmb M}\delta x$</p>
+<p>定义目标函数$J=||y_1-y_0||^2=||\delta y||^2$</p>
+<p>则目标函数的梯度为$\delta J=<2\delta y,\delta y>=2&lt;\rm{\pmb M}\delta x,\rm{\pmb M}\delta x&gt;$</p>
+<p>若存在$\rm\pmb M^<em>$使得$\delta J=2&lt;\rm{\pmb M}\delta x,\rm{\pmb M}\delta x&gt;=2&lt;\rm{\pmb M^</em>}\rm{\pmb M}\delta x,\delta x&gt;$，则$\rm{\pmb M^*}$是$\rm{\pmb M}$的伴随模式。</p>
+<p>考虑梯度的定义：对$x_0$的任一扰动$\delta x$产生的响应函数的一阶变化$\delta J$等于梯度向量$\nabla_{x_0}J$和扰动向量$\delta x$的内积：$\delta J=&lt;\nabla_{x_0}J,\delta x&gt;$</p>
+<p>于是，$\nabla_{x_0}J=2\rm{\pmb M^*}\rm{\pmb M}\delta x$</p>
+<h2 id="4-2-构造伴随模式并检验"><a href="#4-2-构造伴随模式并检验" class="headerlink" title="4.2 构造伴随模式并检验"></a>4.2 构造伴随模式并检验</h2><p>对于切线性模式，伴随模式就是其转置。</p>
+<p>根据上面构造的切线性模式，可以写出伴随模式：</p>
+<p>$x^<em>=-\sigma x^</em>+(\rho-z)y^<em>+yz^</em>$</p>
+<p>$y^<em>=\sigma x^</em>-y^<em>+xz^</em>$</p>
+<p>$z^<em>=-xy^</em>-bz^*$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">adj_model</span>(<span class="params">xb,xa</span>):</span><br><span class="line">    <span class="comment"># 计算伴随模式，其中xb为正向积分的参考基态，xa为伴随变量</span></span><br><span class="line">    xa0 = np.ones_like(xa)</span><br><span class="line">    sigma=<span class="number">10.0</span>; rho=<span class="number">28.0</span>;beta=<span class="number">8</span>/<span class="number">3</span></span><br><span class="line">    xa0[<span class="number">0</span>] = -sigma*xa[<span class="number">0</span>]+(rho-xb[<span class="number">2</span>])*xa[<span class="number">1</span>]+xb[<span class="number">1</span>]*xa[<span class="number">2</span>]</span><br><span class="line">    xa0[<span class="number">1</span>] = sigma*xa[<span class="number">0</span>]-xa[<span class="number">1</span>]+xb[<span class="number">0</span>]*xa[<span class="number">2</span>]</span><br><span class="line">    xa0[<span class="number">2</span>] = -xb[<span class="number">0</span>]*xa[<span class="number">1</span>]-beta*xa[<span class="number">2</span>]</span><br><span class="line">    <span class="keyword">return</span> xa0</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">cal_adj</span>(<span class="params">xb,xa,delta_t</span>):</span><br><span class="line">    <span class="comment"># 计算伴随模式</span></span><br><span class="line">    adj_model2 = partial(adj_model,xb) <span class="comment">#固定部分参数的函数</span></span><br><span class="line">    <span class="comment"># xa0 = double_appro(xa,adj_model2,delta_t)</span></span><br><span class="line">    xa0 = forward(xa,adj_model2,delta_t)</span><br><span class="line">    <span class="comment"># dx1=forward(dx0,TL_model2,delta_t)</span></span><br><span class="line">    <span class="comment"># dx1=RK45(dx0,TL_model2,delta_t)</span></span><br><span class="line">    <span class="keyword">return</span> xa0</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check_adj</span>():</span><br><span class="line">    time = <span class="number">120</span> <span class="comment">#时间越短，切线性的近似效果就越好</span></span><br><span class="line">    <span class="comment"># x0 = np.array([1.508870, -1.531271, 25.46091])</span></span><br><span class="line">    <span class="comment"># x0 = np.array([0, 1,0]) # 初始场，基态</span></span><br><span class="line">    x0 = np.array([-<span class="number">6</span>*math.sqrt(<span class="number">2</span>),-<span class="number">6</span>*math.sqrt(<span class="number">2</span>),<span class="number">27</span>])</span><br><span class="line">    diff_x0 = x0*<span class="number">0.01</span> <span class="comment">#初始扰动，与L63_RHS中的dx不同</span></span><br><span class="line">    xbase = np.zeros([time,<span class="number">3</span>]);xbase[<span class="number">0</span>]=x0</span><br><span class="line">    diff_x = np.zeros([time,<span class="number">3</span>]);diff_x[<span class="number">0</span>] = diff_x0</span><br><span class="line"></span><br><span class="line">    delta_t= <span class="number">0.01</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,time):</span><br><span class="line">        xbase[j] = L63_adv_1step(xbase[j-<span class="number">1</span>],delta_t)</span><br><span class="line">        diff_x[j] = cal_TL(xbase[j-<span class="number">1</span>], diff_x[j-<span class="number">1</span>], delta_t)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 切线性模式的输出变量，作为伴随模式的输入变量</span></span><br><span class="line">    xadj = np.zeros([time,<span class="number">3</span>]);xadj[-<span class="number">1</span>]=diff_x[-<span class="number">1</span>] </span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(time-<span class="number">1</span>,<span class="number">0</span>,-<span class="number">1</span>):</span><br><span class="line">        xadj[j-<span class="number">1</span>] = cal_adj(xbase[j-<span class="number">1</span>], xadj[j], delta_t)</span><br><span class="line"></span><br><span class="line">    left = np.dot(diff_x[<span class="number">0</span>],xadj[<span class="number">0</span>])</span><br><span class="line">    right = np.dot(diff_x[-<span class="number">1</span>],xadj[-<span class="number">1</span>])</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;left=&#x27;</span>,left)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;righ=&#x27;</span>,right)</span><br><span class="line"></span><br><span class="line">    left = np.dot(diff_x[<span class="number">0</span>],diff_x[<span class="number">0</span>])</span><br><span class="line">    xadj0 =  cal_adj(xbase[<span class="number">1</span>], diff_x[<span class="number">0</span>], delta_t)</span><br><span class="line">    right = np.dot(diff_x[<span class="number">0</span>],xadj0)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;left=&#x27;</span>,left)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;righ=&#x27;</span>,right)</span><br></pre></td></tr></table></figure>
+<h1 id="5-目标函数和梯度"><a href="#5-目标函数和梯度" class="headerlink" title="5 目标函数和梯度"></a>5 目标函数和梯度</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">cal_J</span>(<span class="params">x0,dx0</span>):</span><br><span class="line">    time = <span class="number">120</span></span><br><span class="line">    <span class="comment"># 计算目标函数</span></span><br><span class="line">    <span class="comment"># diff_x0 = dx0 #初始扰动，与L63_RHS中的dx不同</span></span><br><span class="line">    xbase = np.zeros([time,<span class="number">3</span>]);xbase[<span class="number">0</span>]=x0</span><br><span class="line">    xdiff = np.zeros([time,<span class="number">3</span>]);xdiff[<span class="number">0</span>]=x0+dx0</span><br><span class="line"></span><br><span class="line">    delta_t= <span class="number">0.01</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,time):</span><br><span class="line">        xbase[j] = L63_adv_1step(xbase[j-<span class="number">1</span>],delta_t)</span><br><span class="line">        xdiff[j] = L63_adv_1step(xdiff[j-<span class="number">1</span>],delta_t)</span><br><span class="line">    diff_xn = xdiff[-<span class="number">1</span>]-xbase[-<span class="number">1</span>]</span><br><span class="line">    J = -<span class="built_in">pow</span>(np.linalg.norm(diff_xn,<span class="built_in">ord</span>=<span class="number">2</span>),<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> J,diff_xn,xdiff</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># print(cal_J(x0,x0*0.01))</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">cal_G</span>(<span class="params">x0,dx0</span>):</span><br><span class="line">    <span class="comment"># 计算梯度</span></span><br><span class="line">    time = <span class="number">120</span></span><br><span class="line">    delta_t = <span class="number">0.01</span></span><br><span class="line">    J,diff_xn,xdiff = cal_J(x0,dx0)</span><br><span class="line">    xadj = np.zeros([time,<span class="number">3</span>]);xadj[-<span class="number">1</span>]=diff_xn </span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(time-<span class="number">1</span>,<span class="number">0</span>,-<span class="number">1</span>):</span><br><span class="line">        xadj[j-<span class="number">1</span>] = cal_adj(xdiff[j-<span class="number">1</span>], xadj[j], delta_t)</span><br><span class="line"></span><br><span class="line">    G = -<span class="number">2</span>*xadj[<span class="number">0</span>]</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;G=&#x27;</span>,G)</span><br><span class="line">    <span class="keyword">return</span> G</span><br><span class="line"></span><br><span class="line"><span class="comment"># print(cal_G(x0,x0*0.01))</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check_G</span>(<span class="params">alpha,x0,dx0</span>):</span><br><span class="line">    <span class="comment"># 检验梯度的计算</span></span><br><span class="line">    delta_t = <span class="number">0.01</span></span><br><span class="line">    Jbase,diff_x,xdiff = cal_J(x0,dx0)</span><br><span class="line">    G = cal_G(x0,dx0)</span><br><span class="line">    normG = np.linalg.norm(G,<span class="built_in">ord</span>=<span class="number">2</span>)</span><br><span class="line">    <span class="built_in">print</span>(normG)</span><br><span class="line">    dxalpha = dx0 + alpha*G/normG</span><br><span class="line">    Jalpha = cal_J(x0,dxalpha)[<span class="number">0</span>]</span><br><span class="line">    <span class="built_in">print</span>(Jalpha)</span><br><span class="line">    R = (Jalpha - Jbase)/(alpha*normG)</span><br><span class="line">    <span class="keyword">return</span> R</span><br><span class="line"></span><br><span class="line"><span class="comment"># print(check_G(0.0001,x0,x0*0.01))</span></span><br></pre></td></tr></table></figure>
+<h1 id="6-SPG2优化算法的编写"><a href="#6-SPG2优化算法的编写" class="headerlink" title="6 SPG2优化算法的编写"></a>6 SPG2优化算法的编写</h1><h2 id="6-1-SPG2算法介绍"><a href="#6-1-SPG2算法介绍" class="headerlink" title="6.1 SPG2算法介绍"></a>6.1 SPG2算法介绍</h2><h2 id="6-2-编写SPG2算法"><a href="#6-2-编写SPG2算法" class="headerlink" title="6.2 编写SPG2算法"></a>6.2 编写SPG2算法</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">func_project</span>(<span class="params">x_centre,x_out</span>):</span><br><span class="line">    <span class="comment"># 确保找到的小扰动在约束范围之内</span></span><br><span class="line">    <span class="comment"># x_out为那个需要约束投影的量</span></span><br><span class="line">    <span class="comment"># 对应SPG2里面的P(x)</span></span><br><span class="line">    diff_x = x_out - x_centre</span><br><span class="line">    radius_lim = <span class="number">0.01</span>*np.linalg.norm(x_centre,<span class="built_in">ord</span>=<span class="number">2</span>)</span><br><span class="line">    radius_diff = np.linalg.norm(diff_x,<span class="built_in">ord</span>=<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">if</span> radius_diff &lt;= radius_lim:</span><br><span class="line">        x_pro = x_out</span><br><span class="line">    <span class="keyword">else</span>:        </span><br><span class="line">        x_pro = diff_x/radius_diff*radius_lim+x_centre</span><br><span class="line">    <span class="keyword">return</span> x_pro</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># print(projection(np.array([0,1,0]),np.array([0,2,0])))</span></span><br><span class="line"></span><br><span class="line">time = <span class="number">1200</span></span><br><span class="line">delta_t = <span class="number">0.01</span></span><br><span class="line">xbase0 = np.array([-<span class="number">6</span>*math.sqrt(<span class="number">2</span>),-<span class="number">6</span>*math.sqrt(<span class="number">2</span>),<span class="number">27</span>])</span><br><span class="line"><span class="comment"># xbase0 = np.array([0,1,0])</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># diff_x在0.1x0的范围内</span></span><br><span class="line">xdiff0 = xbase0+np.random.rand(<span class="number">3</span>,)</span><br><span class="line">xdiff0 = func_project(xbase0, xdiff0)</span><br><span class="line">diff_x0 = xdiff0-xbase0</span><br><span class="line">maxit = <span class="number">1000</span></span><br><span class="line">maxfun = <span class="number">2000</span></span><br><span class="line"></span><br><span class="line">k = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">gamma = <span class="number">1e-4</span></span><br><span class="line"></span><br><span class="line">alpha_spg0 = <span class="number">1.0</span></span><br><span class="line">alpha_max = <span class="number">1e3</span></span><br><span class="line">alpha_min = <span class="number">1e-3</span></span><br><span class="line">sigma1 = <span class="number">0.1</span></span><br><span class="line">sigma2 = <span class="number">0.9</span></span><br><span class="line">g0 = cal_G(xbase0,diff_x0)</span><br><span class="line">d0 = func_project(xbase0, xdiff0-alpha_spg0*g0)-xdiff0</span><br><span class="line"><span class="comment"># print(&#x27;d=&#x27;,d0)</span></span><br><span class="line">J = []</span><br><span class="line">J0 = cal_J(xbase0,diff_x0)[<span class="number">0</span>]</span><br><span class="line">J.append(J0)</span><br><span class="line"><span class="comment"># print(&#x27;J=&#x27;,J)</span></span><br><span class="line">JP = []</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">spg_end_check</span>(<span class="params">x0,x,g</span>):</span><br><span class="line">    eps = <span class="number">0</span></span><br><span class="line">    xp = <span class="built_in">abs</span>(func_project(x0,x-g)-x)</span><br><span class="line">    <span class="comment"># print(xp)</span></span><br><span class="line">    <span class="comment"># print(max(xp))</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">max</span>(xp) &lt;= eps:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;SPG2 end!,info = 0&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">m = <span class="number">1</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> spg_end_check(xbase0,xdiff0,g0) == <span class="literal">False</span>:</span><br><span class="line">    <span class="comment"># 变量后缀0表示算法中第k次，后缀1表示k+1</span></span><br><span class="line">    m = m+<span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> m &gt;= maxit:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;m=&#x27;</span>,m)</span><br><span class="line">        lmd = <span class="number">1</span></span><br><span class="line">        xplus = xdiff0+d0</span><br><span class="line">        delta = np.dot(g0,d0)</span><br><span class="line">        Jplus = cal_J(xbase0,xplus-xbase0)[<span class="number">0</span>]</span><br><span class="line">        JP.append(Jplus)</span><br><span class="line">        <span class="comment"># print(&#x27;J=&#x27;,J)</span></span><br><span class="line">        <span class="comment"># print(Jplus &lt;= (max(max(J),Jplus)+gamma*lmd*delta))   </span></span><br><span class="line">        <span class="keyword">while</span> (Jplus &gt; (<span class="built_in">max</span>(<span class="built_in">max</span>(J),Jplus)+gamma*lmd*delta)):</span><br><span class="line">            <span class="comment"># print(0)</span></span><br><span class="line">            lmd_temp = -<span class="number">0.5</span>*(lmd**<span class="number">2</span>)*delta/(Jplus-J0-lmd*delta)</span><br><span class="line">            <span class="keyword">if</span> lmd_temp &gt;= sigma1 <span class="keyword">and</span> lmd_temp &lt;= (sigma2*lmd):</span><br><span class="line">                lmd = lmd_temp</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                lmd = <span class="number">0.5</span>*lmd</span><br><span class="line">                xplus = xdiff0+lmd*d0</span><br><span class="line">                Jplus = cal_J(xbase0,xplus-xbase0)[<span class="number">0</span>]</span><br><span class="line">        lmd0 = lmd</span><br><span class="line">        <span class="comment"># print(&#x27;lmd0=&#x27;,lmd0)</span></span><br><span class="line"></span><br><span class="line">        xdiff1 = xdiff0+lmd0*d0</span><br><span class="line">        g1 = cal_G(xbase0,xdiff1-xbase0)</span><br><span class="line">        s0 = xdiff1-xdiff0</span><br><span class="line">        y0 = g1-g0</span><br><span class="line">        beta0 = np.dot(s0,y0)</span><br><span class="line">        <span class="keyword">if</span> beta0 &lt;= <span class="number">0</span>:</span><br><span class="line">            alpha_spg1 = alpha_max</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            alpha_spg1 = <span class="built_in">min</span>(alpha_max,<span class="built_in">max</span>(alpha_min,np.dot(s0,s0)/beta0))</span><br><span class="line">        <span class="comment"># print(&#x27;alpha_spg1=&#x27;,alpha_spg1)</span></span><br><span class="line">        xdiff0 = xdiff1</span><br><span class="line">        <span class="comment"># xdiff0 = func_project(xbase0, xdiff0) ##</span></span><br><span class="line">        alpha_spg0 = alpha_spg1</span><br><span class="line">        diff_x0 = xdiff0-xbase0</span><br><span class="line">        g0 = cal_G(xbase0,diff_x0)</span><br><span class="line">        d0 = func_project(xbase0, xdiff0-alpha_spg0*g0)-xdiff0</span><br><span class="line">        <span class="comment"># print(&#x27;d=&#x27;,d0)</span></span><br><span class="line">        J0 = cal_J(xbase0,diff_x0)[<span class="number">0</span>]</span><br><span class="line">        J.append(J0)        </span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CNOP/" rel="tag"># CNOP</a>
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/08/10/hello-world/" rel="prev" title="Hello World">
+                  <i class="fa fa-angle-left"></i> Hello World
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/08/19/WRF-learning-log/" rel="next" title="WRF learning log">
+                  WRF learning log <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">MissLH88</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
