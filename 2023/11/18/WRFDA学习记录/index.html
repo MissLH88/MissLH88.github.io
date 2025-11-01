@@ -27,7 +27,7 @@
 <meta property="og:description" content="因为试验需要，开始学习安装和运行WRFDA。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-11-18T01:44:31.000Z">
-<meta property="article:modified_time" content="2023-11-20T12:24:56.294Z">
+<meta property="article:modified_time" content="2025-09-23T07:13:19.800Z">
 <meta property="article:author" content="MissLH88">
 <meta property="article:tag" content="WRF">
 <meta property="article:tag" content="Linux">
@@ -115,7 +115,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85WRFDA"><span class="nav-number">1.</span> <span class="nav-text">安装WRFDA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85WRFDA-for-3DVAR-Run"><span class="nav-number">1.1.</span> <span class="nav-text">安装WRFDA for 3DVAR Run</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%88%E9%9D%9E%E5%BF%85%E8%A6%81%EF%BC%89%E5%AE%89%E8%A3%85WRFPLUS-and-WRFDA-for-4DVAR-Run"><span class="nav-number">1.2.</span> <span class="nav-text">（非必要）安装WRFPLUS and WRFDA for 4DVAR Run</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8COBSPROC%EF%BC%88for-3Dvar%EF%BC%89"><span class="nav-number">1.3.</span> <span class="nav-text">运行OBSPROC（for 3Dvar）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E8%A1%8CWRFDA"><span class="nav-number">2.</span> <span class="nav-text">运行WRFDA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%8B%E5%86%8C%E7%A4%BA%E4%BE%8B%EF%BC%883Dvar%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">手册示例（3Dvar）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#namelist-input%E6%96%87%E4%BB%B6%E8%A7%A3%E8%AF%BB"><span class="nav-number">2.2.</span> <span class="nav-text">namelist.input文件解读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RANDOMCV%E4%BA%A7%E7%94%9F%E5%88%9D%E5%A7%8B%E6%89%B0%E5%8A%A8"><span class="nav-number">2.3.</span> <span class="nav-text">RANDOMCV产生初始扰动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3DEnVar%E4%BA%A7%E7%94%9F%E5%88%9D%E5%A7%8B%E6%89%B0%E5%8A%A8"><span class="nav-number">2.4.</span> <span class="nav-text">3DEnVar产生初始扰动</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85WRFDA"><span class="nav-number">1.</span> <span class="nav-text">安装WRFDA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85WRFDA-for-3DVAR-Run"><span class="nav-number">1.1.</span> <span class="nav-text">安装WRFDA for 3DVAR Run</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%88%E9%9D%9E%E5%BF%85%E8%A6%81%EF%BC%89%E5%AE%89%E8%A3%85WRFPLUS-and-WRFDA-for-4DVAR-Run"><span class="nav-number">1.2.</span> <span class="nav-text">（非必要）安装WRFPLUS and WRFDA for 4DVAR Run</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8COBSPROC%EF%BC%88for-3Dvar%EF%BC%89"><span class="nav-number">1.3.</span> <span class="nav-text">运行OBSPROC（for 3Dvar）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E8%A1%8CWRFDA"><span class="nav-number">2.</span> <span class="nav-text">运行WRFDA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%8B%E5%86%8C%E7%A4%BA%E4%BE%8B%EF%BC%883Dvar%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">手册示例（3Dvar）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#namelist-input%E6%96%87%E4%BB%B6%E8%A7%A3%E8%AF%BB"><span class="nav-number">2.2.</span> <span class="nav-text">namelist.input文件解读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RANDOMCV%E4%BA%A7%E7%94%9F%E5%88%9D%E5%A7%8B%E6%89%B0%E5%8A%A8"><span class="nav-number">2.3.</span> <span class="nav-text">RANDOMCV产生初始扰动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3DEnVar%E4%BA%A7%E7%94%9F%E5%88%9D%E5%A7%8B%E6%89%B0%E5%8A%A8"><span class="nav-number">2.4.</span> <span class="nav-text">3DEnVar产生初始扰动</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#WRFDA-Ensemble-Initialization-Log"><span class="nav-number">3.</span> <span class="nav-text">WRFDA Ensemble Initialization Log</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E4%BB%BB%E5%8A%A1%E6%A6%82%E8%A6%81-Task-Overview"><span class="nav-number">3.1.</span> <span class="nav-text">1. 任务概要 (Task Overview)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%8E%AF%E5%A2%83%E4%B8%8E%E9%85%8D%E7%BD%AE-Environment-amp-Configuration"><span class="nav-number">3.2.</span> <span class="nav-text">2. 环境与配置 (Environment &amp; Configuration)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6-Input-Files"><span class="nav-number">3.3.</span> <span class="nav-text">3. 输入文件 (Input Files)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%A0%B8%E5%BF%83%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE-Core-Namelist-Parameters"><span class="nav-number">3.4.</span> <span class="nav-text">4. 核心参数设置 (Core Namelist Parameters)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B-Execution-Process"><span class="nav-number">3.5.</span> <span class="nav-text">5. 执行过程 (Execution Process)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C-Output"><span class="nav-number">3.6.</span> <span class="nav-text">6. 输出结果 (Output)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3-Issues-amp-Resolutions"><span class="nav-number">3.7.</span> <span class="nav-text">7. 遇到的问题与解决 (Issues &amp; Resolutions)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-%E8%B4%A8%E9%87%8F%E6%A3%80%E6%9F%A5-Quality-Check"><span class="nav-number">3.8.</span> <span class="nav-text">8. 质量检查 (Quality Check)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-%E6%80%BB%E7%BB%93-Summary"><span class="nav-number">3.9.</span> <span class="nav-text">9. 总结 (Summary)</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -202,7 +202,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-11-20 20:24:56" itemprop="dateModified" datetime="2023-11-20T20:24:56+08:00">2023-11-20</time>
+      <time title="修改时间：2025-09-23 15:13:19" itemprop="dateModified" datetime="2025-09-23T15:13:19+08:00">2025-09-23</time>
     </span>
 
   
@@ -421,6 +421,77 @@
 <p>由于扰动是在控制变量空间中进行的，所以扰动的一般模式将取决于背景误差。您应该能够使用随机cv (CV3, CV5, CV6或CV7)的任何背景错误选项。此外，这意味着你可以通过分别修改背景误差方差和长度缩放变量来控制它们的大小和长度尺度:在wrfvar7中修改。</p>
 <h2 id="3DEnVar产生初始扰动"><a href="#3DEnVar产生初始扰动" class="headerlink" title="3DEnVar产生初始扰动"></a>3DEnVar产生初始扰动</h2><p>要进行3DEnVar，需要提供集合平均和扰动数据，这些在hybird中不会产生，需要提前提供，或许还是要按照RANDOMCV的方式产生。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export WORK_DIR=your_hybrid_path</span><br><span class="line">export DAT_DIR=your_data_path</span><br><span class="line">cd $WORK_DIR</span><br></pre></td></tr></table></figure>
+<h1 id="WRFDA-Ensemble-Initialization-Log"><a href="#WRFDA-Ensemble-Initialization-Log" class="headerlink" title="WRFDA Ensemble Initialization Log"></a>WRFDA Ensemble Initialization Log</h1><h2 id="1-任务概要-Task-Overview"><a href="#1-任务概要-Task-Overview" class="headerlink" title="1. 任务概要 (Task Overview)"></a>1. 任务概要 (Task Overview)</h2><ul>
+<li><strong>任务描述</strong>: 使用WRFDA 3DVar系统，基于CV3背景误差协方差选项，生成40个初始集合扰动成员。</li>
+<li><strong>执行主机</strong>: <code>login08</code></li>
+<li><strong>工作目录</strong>: <code>/path/to/your/working_dir</code> (请替换为你的实际路径)</li>
+<li><strong>分析时间</strong>: <code>2008-02-05_12:00:00</code></li>
+<li><strong>时间窗设置</strong>: <code>2008-02-05_11:00:00</code> 至 <code>2008-02-05_13:00:00</code> (±1小时)</li>
+</ul>
+<h2 id="2-环境与配置-Environment-amp-Configuration"><a href="#2-环境与配置-Environment-amp-Configuration" class="headerlink" title="2. 环境与配置 (Environment &amp; Configuration)"></a>2. 环境与配置 (Environment &amp; Configuration)</h2><ul>
+<li><strong>WRFDA版本</strong>: V3.8 (或你的实际版本)</li>
+<li><strong>编译选项</strong>: 并行编译 (<code>dmpar</code>)</li>
+<li><strong>关键环境变量</strong>:<ul>
+<li><code>WRFDA_DIR = /path/to/your/WRFDA</code></li>
+<li><code>WORK_DIR = /path/to/your/working_dir</code></li>
+<li><code>DAT_DIR = /path/to/your/data</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="3-输入文件-Input-Files"><a href="#3-输入文件-Input-Files" class="headerlink" title="3. 输入文件 (Input Files)"></a>3. 输入文件 (Input Files)</h2><ul>
+<li><strong>背景场 (First Guess)</strong>: <code>$DAT_DIR/rc/2008020512/wrfinput_d01</code> (链接为 <code>./fg</code>)</li>
+<li><strong>观测数据</strong>: <code>$DAT_DIR/ob/2008020512/obs_gts_2008-02-05_12:00:00.3DVAR</code> (链接为 <code>./ob.ascii</code>)</li>
+<li><strong>背景误差</strong>: <code>$WRFDA_DIR/var/run/be.dat.cv3</code> (链接为 <code>./be.dat</code>)</li>
+<li><strong>固定文件</strong>: <code>LANDUSE.TBL</code></li>
+</ul>
+<h2 id="4-核心参数设置-Core-Namelist-Parameters"><a href="#4-核心参数设置-Core-Namelist-Parameters" class="headerlink" title="4. 核心参数设置 (Core Namelist Parameters)"></a>4. 核心参数设置 (Core Namelist Parameters)</h2><p>Namelist文件 <code>namelist.input</code> 中与控制扰动生成相关的关键参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&amp;wrfvar5</span><br><span class="line">  put_rand_seed = .<span class="literal">true</span>.,    ! 启用自定义随机种子</span><br><span class="line">/</span><br><span class="line">&amp;wrfvar7</span><br><span class="line">  cv_options = 3,            ! 使用CV3背景误差选项</span><br><span class="line">  as1 = 0.25,  1.00,  1.50,  ! ψ: 方差, 水平尺度, 垂直尺度</span><br><span class="line">  as2 = 0.25,  1.00,  1.50,  ! χ_u</span><br><span class="line">  as3 = 0.25,  1.00,  1.50,  ! T_u</span><br><span class="line">  as4 = 0.25,  1.00,  1.50,  ! RH</span><br><span class="line">  as5 = 0.25,  1.00,  1.50,  ! Ps_u</span><br><span class="line">/</span><br><span class="line">&amp;wrfvar11</span><br><span class="line">  seed_array1 = 2008020512,  ! 基础种子 (固定为分析日期)</span><br><span class="line">  seed_array2 = <span class="variable">$&#123;MEM_ID&#125;</span>,   ! 成员种子 (循环中设置为1-40)</span><br><span class="line">/</span><br><span class="line">&amp;wrfvar17</span><br><span class="line">  analysis_type = <span class="string">&#x27;RANDOMCV&#x27;</span>, ! 运行模式：生成随机扰动</span><br><span class="line">/</span><br></pre></td></tr></table></figure>
+<h2 id="5-执行过程-Execution-Process"><a href="#5-执行过程-Execution-Process" class="headerlink" title="5. 执行过程 (Execution Process)"></a>5. 执行过程 (Execution Process)</h2><ul>
+<li>核心运行命令：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./da_wrfvar.exe &gt;&amp; wrfda.log.02</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>脚本名称</strong>: <code>run_randomcv.sh</code></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"># 设置环境变量</span><br><span class="line">setenv WRFDA_DIR /path/to/your/WRFDA</span><br><span class="line">setenv WORK_DIR /path/to/your/working_dir</span><br><span class="line">cd $WORK_DIR</span><br><span class="line"></span><br><span class="line"># 循环40次，为每个成员运行</span><br><span class="line">set member = 1</span><br><span class="line">while ( $member &lt;= 40 )</span><br><span class="line"></span><br><span class="line">   # 为每个成员创建一个子目录，保持工作空间整洁</span><br><span class="line">   mkdir -p member_$member</span><br><span class="line">   cd member_$member</span><br><span class="line"></span><br><span class="line">   # 链接必要的输入文件</span><br><span class="line">   ln -sf $WORK_DIR/fg .</span><br><span class="line">   ln -sf $WORK_DIR/ob.ascii .</span><br><span class="line">   ln -sf $WORK_DIR/be.dat .</span><br><span class="line">   ln -sf $WORK_DIR/LANDUSE.TBL .</span><br><span class="line">   ln -sf $WRFDA_DIR/var/da/da_wrfvar.exe .</span><br><span class="line"></span><br><span class="line">   # 复制namelist.input模板</span><br><span class="line">   cp $WORK_DIR/namelist.input .</span><br><span class="line"></span><br><span class="line">   # 使用sed等工具修改当前目录namelist.input中的seed_array2</span><br><span class="line">   # 例如，使用sed命令替换seed_array2的值</span><br><span class="line">   sed -i &quot;s/seed_array2 = [0-9]*,/seed_array2 = $member,/&quot; namelist.input</span><br><span class="line"></span><br><span class="line">   # 运行WRFDA</span><br><span class="line">   ./da_wrfvar.exe &gt;&amp; wrfda.log.$member</span><br><span class="line"></span><br><span class="line">   # 运行成功后，输出文件为wrfvar_output</span><br><span class="line">   # 将其重命名为具有成员标识的文件，并移回主目录或指定位置</span><br><span class="line">   mv wrfvar_output $WORK_DIR/wrfinput_d01.mem$(printf &quot;%03d&quot; $member)</span><br><span class="line"></span><br><span class="line">   cd $WORK_DIR</span><br><span class="line"></span><br><span class="line">   @ member++</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>执行命令</strong>: <code>chmod +x run_randomcv.sh
+./run_randomcv.sh</code></p>
+</li>
+<li><p><strong>执行方式</strong>: 循环执行，每个成员顺序运行</p>
+</li>
+<li><p><strong>开始时间</strong>: <code>YYYY-MM-DD HH:MM:SS</code> (例如: 2023-10-27 14:05:01)</p>
+</li>
+</ul>
+<p><strong>成员生成状态</strong>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[INFO] 开始生成集合成员...</span><br><span class="line">[INFO] Member 001: 成功 - wrfinput_d01.mem001 (Seed: 2008020512, 1)</span><br><span class="line">[INFO] Member 002: 成功 - wrfinput_d01.mem002 (Seed: 2008020512, 2)</span><br><span class="line">...</span><br><span class="line">[INFO] Member 040: 成功 - wrfinput_d01.mem040 (Seed: 2008020512, 40)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>结束时间</strong>: <code>YYYY-MM-DD HH:MM:SS</code> (例如: 2023-10-27 15:22:18)</li>
+<li><strong>总耗时</strong>: <code>约 1小时17分钟</code></li>
+</ul>
+<h2 id="6-输出结果-Output"><a href="#6-输出结果-Output" class="headerlink" title="6. 输出结果 (Output)"></a>6. 输出结果 (Output)</h2><ul>
+<li><strong>成功生成文件</strong>: <code>wrfinput_d01.mem001</code> 到 <code>wrfinput_d01.mem040</code></li>
+<li><strong>文件位置</strong>: <code>$WORK_DIR/</code></li>
+<li><strong>日志文件</strong>: 每个成员拥有独立的运行日志 <code>wrfda.log.$MEM_ID</code></li>
+</ul>
+<h2 id="7-遇到的问题与解决-Issues-amp-Resolutions"><a href="#7-遇到的问题与解决-Issues-amp-Resolutions" class="headerlink" title="7. 遇到的问题与解决 (Issues &amp; Resolutions)"></a>7. 遇到的问题与解决 (Issues &amp; Resolutions)</h2><ul>
+<li><strong>问题</strong>: 初始运行时报错 <code>ERRORS while reading one or more namelists</code>。</li>
+<li><strong>原因</strong>: <code>namelist.input</code> 中 <code>&amp;wrfvar11</code> 段使用了 <code>#</code> 进行注释。</li>
+<li><strong>解决方案</strong>: 将注释符 <code>#</code> 改为 Fortran Namelist 标准注释符 <code>!</code>。</li>
+<li><strong>解决时间</strong>: <code>YYYY-MM-DD HH:MM:SS</code></li>
+<li><strong>结果</strong>: 修改后，namelist 读取正常，任务成功执行。</li>
+</ul>
+<h2 id="8-质量检查-Quality-Check"><a href="#8-质量检查-Quality-Check" class="headerlink" title="8. 质量检查 (Quality Check)"></a>8. 质量检查 (Quality Check)</h2><ul>
+<li><strong>检查方法</strong>: 使用 <code>ncdump -h</code> 快速检查每个成员文件的维度、变量是否完整。</li>
+<li><strong>检查结果</strong>: 所有40个成员文件均被成功创建，结构完整，文件大小合理且一致。</li>
+<li><strong>验证建议</strong>: 后续可通过计算集合平均和标准差，或可视化个别变量的扰动场来进一步验证扰动的合理性。</li>
+</ul>
+<h2 id="9-总结-Summary"><a href="#9-总结-Summary" class="headerlink" title="9. 总结 (Summary)"></a>9. 总结 (Summary)</h2><p><strong>任务状态: [SUCCESS]</strong></p>
+<ul>
+<li>成功生成40个初始条件扰动成员。</li>
+<li>通过固定 <code>seed_array1</code> 和循环改变 <code>seed_array2</code> 的方式，确保了扰动的可重复性和唯一性。</li>
+<li>通过调整CV3背景误差参数（<code>as1</code> - <code>as5</code>），实现了对扰动振幅和尺度的控制。</li>
+</ul>
 
     </div>
 
